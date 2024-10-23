@@ -1,21 +1,8 @@
 #include "main.h"
 #include "lemlib/api.hpp"
+#include "./devices.h"
+#include "./tasks.h"
 
-
-Controller master(E_CONTROLLER_MASTER);
-
-MotorGroup left({-1, -3, -11}, MotorGearset::blue);
-MotorGroup right({8, 10, 20}, MotorGearset::blue);
-
-Imu imu(17);
-
-lemlib::Drivetrain drivetrain(&left, &right, 11.5, lemlib::Omniwheel::NEW_325, 360, 2);
-lemlib::ControllerSettings lateral_controller(10, 0, 3, 3, 1, 100, 3, 500, 20);
-lemlib::ControllerSettings angular_controller(2, 0, 10, 3, 1, 100, 3, 500, 0);
-lemlib::OdomSensors sensors(nullptr, nullptr, nullptr, nullptr, nullptr);
-lemlib::ExpoDriveCurve throttle_curve(3, 10, 1.019);
-lemlib::ExpoDriveCurve steer_curve(3, 10, 1.019);
-lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller, sensors, &throttle_curve, &steer_curve);
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -27,19 +14,6 @@ void initialize() {
 	lcd::initialize();
 
 	chassis.calibrate();
-	imu.reset();
-	// leftIMU.tare();
-	// middleIMU.tare();
-	// rightIMU.tare();
-
-
-	pros::Task screen_task([&]() {
-		while (true) {
-			lcd::print(0, "Left: %.2f", imu.get_heading());
-			pros::delay(20);
-		}
-	});
-
 }
 
 /**
@@ -71,7 +45,9 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -87,11 +63,33 @@ void autonomous() {}
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+
+
+	bool clampState = false;
+
 	while (true) {
 		int leftY = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 		int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
 
 		chassis.arcade(leftY, rightX, false, 0.75);
+
+		if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
+			intake.move(-127);
+		} else {
+			intake.move(0);
+		}
+
+		if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
+			conveyor.move(100);
+		} else {
+			conveyor.move(0);
+		}
+
+		if (master.get_digital(E_CONTROLLER_DIGITAL_L1)) {
+			clamp.extend();
+		} else if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
+			clamp.retract();
+		}
 
 		delay(20);
 
