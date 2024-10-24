@@ -2,6 +2,13 @@
 #include "lemlib/api.hpp"
 #include "./devices.h"
 #include "./tasks.h"
+#include "logging.hpp"
+#include <iostream>
+#include <cmath>
+#include <string>
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 
 /**
@@ -11,9 +18,13 @@
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
+	std::cout << "foxglove" << std::endl;
 	lcd::initialize();
 
 	chassis.calibrate();
+	chassis.setPose(0,0,0);
+
+
 }
 
 /**
@@ -67,6 +78,8 @@ void opcontrol() {
 
 	bool clampState = false;
 
+	int count = 0;
+
 	while (true) {
 		int leftY = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 		int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
@@ -86,12 +99,46 @@ void opcontrol() {
 		}
 
 		if (master.get_digital(E_CONTROLLER_DIGITAL_L1)) {
-			clamp.extend();
+			mogoclamp.extend();
 		} else if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
-			clamp.retract();
+			mogoclamp.retract();
 		}
 
-		delay(20);
+		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
+			chassis.moveToPoint(0, 24, 4000, {.forwards = true}, true);
+		}
+
+		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
+			chassis.moveToPoint(0, 0, 4000, {.forwards = false}, true);
+		}
+
+
+	
+		lemlib::Pose pose = chassis.getPose();
+		// print to brain screen
+		lcd::print(0, "x: %f", pose.x);
+		lcd::print(1, "y: %f", pose.y);
+		lcd::print(2, "theta: %f", pose.theta);
+
+		// Odometry odom = {(double)pose.x, (double)pose.y, (double)pose.theta};
+		// Message odom_message = {"robot_position", odom};
+		// json j = static_cast<json>(odom_message);
+		// to_json(j, odom_message);
+		// std::string message = j.dump();
+		// int odom_message_length = sizeof(message);
+		// // convert message to unsigned char array
+		// unsigned char message_array[odom_message_length];
+		// for (int i = 0; i < odom_message_length; i++) {
+		// 	message_array[i] = message[i];
+		// }
+		// // send message
+		// serial.write(message_array, odom_message_length);
+
+		// serial.flush();
+
+		// std::cout << static_cast<json>(odom_message) << std::flush;
+
+		delay(10);
 
 	}
 }
