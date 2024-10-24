@@ -21,6 +21,8 @@ void initialize() {
 	std::cout << "foxglove" << std::endl;
 	lcd::initialize();
 
+	horizontal_tracker.set_position(0);
+	vertical_tracker.set_position(0);
 	chassis.calibrate();
 	chassis.setPose(0,0,0);
 
@@ -105,11 +107,11 @@ void opcontrol() {
 		}
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
-			chassis.moveToPoint(0, 24, 4000, {.forwards = true}, true);
+			chassis.moveToPose(0, 24, 0, 4000, {.horizontalDrift = 8, .lead = 0.3});
 		}
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
-			chassis.moveToPoint(0, 0, 4000, {.forwards = false}, true);
+			chassis.moveToPose(0, 0, 0, 4000, {.forwards=false, .horizontalDrift = 8, .lead = 0.3});
 		}
 
 

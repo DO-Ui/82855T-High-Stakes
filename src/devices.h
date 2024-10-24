@@ -9,8 +9,8 @@ Motor intake(20, MotorGears::green);
 Motor conveyor(6, MotorGears::green);
 Imu imu(19);
 
-Rotation horizontal_tracker(16); // 3.5 inches back
-Rotation vertical_tracker(18); // 1.15in to left
+Rotation horizontal_tracker(-16); // 3.5 inches back
+Rotation vertical_tracker(-18); // 1.15in to left
 
 
 adi::Pneumatics mogoclamp('a', false);
@@ -18,8 +18,8 @@ adi::Pneumatics wallmech('b', false);
 
 lemlib::Drivetrain drivetrain(&left, &right, 11.49, lemlib::Omniwheel::NEW_325, 450, 2);
 
-lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_tracker, lemlib::Omniwheel::OLD_275_HALF, -3.5);
-lemlib::TrackingWheel vertical_tracking_wheel(&vertical_tracker, lemlib::Omniwheel::OLD_275_HALF, -1.15);
+lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_tracker, lemlib::Omniwheel::OLD_275_HALF, -3.75);
+lemlib::TrackingWheel vertical_tracking_wheel(&vertical_tracker, lemlib::Omniwheel::OLD_275_HALF, -1.25);
 
 lemlib::OdomSensors sensors(&vertical_tracking_wheel, nullptr, &horizontal_tracking_wheel, nullptr, &imu);
 
