@@ -18,11 +18,13 @@ using json = nlohmann::json;
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	std::cout << "foxglove" << std::endl;
 	lcd::initialize();
 
 	horizontal_tracker.set_position(0);
 	vertical_tracker.set_position(0);
+	horizontal_tracker.reset();
+	vertical_tracker.reset();
+	delay(1000);
 	chassis.calibrate();
 	chassis.setPose(0,0,0);
 
@@ -107,11 +109,13 @@ void opcontrol() {
 		}
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
-			chassis.moveToPose(0, 24, 0, 4000, {.horizontalDrift = 8, .lead = 0.3});
+			chassis.moveToPoint(0, 24, 6000, {.maxSpeed=20});
+			// chassis.moveToPose(0, 24, 0, 4000, {.horizontalDrift = 8, .lead = 0.3});
 		}
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
-			chassis.moveToPose(0, 0, 0, 4000, {.forwards=false, .horizontalDrift = 8, .lead = 0.3});
+			chassis.moveToPoint(0, 0, 6000, {.forwards=false, .maxSpeed=20});
+			// chassis.moveToPose(0, 0, 0, 4000, {.forwards=false, .horizontalDrift = 8, .lead = 0.3});
 		}
 
 
@@ -121,6 +125,8 @@ void opcontrol() {
 		lcd::print(0, "x: %f", pose.x);
 		lcd::print(1, "y: %f", pose.y);
 		lcd::print(2, "theta: %f", pose.theta);
+		lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position());
+		lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position());
 
 		// Odometry odom = {(double)pose.x, (double)pose.y, (double)pose.theta};
 		// Message odom_message = {"robot_position", odom};
@@ -140,7 +146,7 @@ void opcontrol() {
 
 		// std::cout << static_cast<json>(odom_message) << std::flush;
 
-		delay(10);
+		delay(20);
 
 	}
 }
