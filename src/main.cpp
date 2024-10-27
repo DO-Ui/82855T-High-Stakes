@@ -18,8 +18,15 @@ using json = nlohmann::json;
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
+
+	std::cout << "foxglove" << std::endl;
 	lcd::initialize();
 
+
+
+	horizontal_tracker.set_data_rate(10);
+	vertical_tracker.set_data_rate(10);
+	imu.set_data_rate(10);
 	horizontal_tracker.set_position(0);
 	vertical_tracker.set_position(0);
 	horizontal_tracker.reset();
@@ -108,43 +115,58 @@ void opcontrol() {
 			mogoclamp.retract();
 		}
 
+		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) {
+			std::cout << "test" << std::endl;
+		}
+
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
-			chassis.moveToPoint(0, 24, 6000, {.maxSpeed=20});
-			// chassis.moveToPose(0, 24, 0, 4000, {.horizontalDrift = 8, .lead = 0.3});
+			// chassis.moveToPoint(0, 48, 6000);
+			chassis.moveToPose(0, 48, 0, 4000, {.horizontalDrift = 8, .lead = 0.5});
+			// chassis.tank(127, 127);
+			// delay(500);
+			// chassis.tank(0, 0);
+
+			// chassis.turnToPoint(0, 99999, 10000);
+			// chassis.turnToHeading(0, 10000);
 		}
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
-			chassis.moveToPoint(0, 0, 6000, {.forwards=false, .maxSpeed=20});
-			// chassis.moveToPose(0, 0, 0, 4000, {.forwards=false, .horizontalDrift = 8, .lead = 0.3});
+			// chassis.moveToPoint(0, 0, 6000, {.forwards=false});
+			// chassis.turnToHeading(90, 10000);
+			// chassis.turnToPoint(99999, 0, 10000);
+			chassis.moveToPose(0, 0, 0, 4000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5});
 		}
 
 
 	
+		// // print to brain screen
+		// lcd::print(0, "x: %f", pose.x);
+		// lcd::print(1, "y: %f", pose.y);
+		// lcd::print(2, "theta: %f", imu.get_heading());
+		// lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);
+		// lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position()/100);
+
+
 		lemlib::Pose pose = chassis.getPose();
-		// print to brain screen
-		lcd::print(0, "x: %f", pose.x);
-		lcd::print(1, "y: %f", pose.y);
-		lcd::print(2, "theta: %f", pose.theta);
-		lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position());
-		lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position());
 
-		// Odometry odom = {(double)pose.x, (double)pose.y, (double)pose.theta};
-		// Message odom_message = {"robot_position", odom};
-		// json j = static_cast<json>(odom_message);
-		// to_json(j, odom_message);
-		// std::string message = j.dump();
-		// int odom_message_length = sizeof(message);
-		// // convert message to unsigned char array
-		// unsigned char message_array[odom_message_length];
-		// for (int i = 0; i < odom_message_length; i++) {
-		// 	message_array[i] = message[i];
-		// }
-		// // send message
-		// serial.write(message_array, odom_message_length);
+		if (count == 3) {
+			master.print(0, 0, "x: %f", pose.x);
+		}
+		if (count == 6) {
+			master.print(1, 0, "y: %f", pose.y);
+		}
 
-		// serial.flush();
-
-		// std::cout << static_cast<json>(odom_message) << std::flush;
+		if (count == 9) {
+			master.print(2, 0, "theta: %f", pose.theta);
+			count = 0;
+		} 
+		count++;
+		
+		
+		
+		Odometry odom = {std::ceil((double)pose.x * 100.0) / 100.0, std::ceil((double)pose.y * 100.0) / 100.0, std::ceil((double)pose.theta * 100.0) / 100.0};
+		Message odom_message = {"odometry", odom};
+		std::cout << static_cast<json>(odom_message) << std::flush;
 
 		delay(20);
 

@@ -21,7 +21,7 @@ struct Odometry {
 };
 
 inline void to_json(json& j, const Odometry& msg) {
-    j = json{{"x", msg.x, "y", msg.y, "theta", msg.theta}};
+    j = json{{"x", msg.x}, {"y", msg.y}, {"theta", msg.theta}};
 }
 
 struct Speed {

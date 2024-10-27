@@ -50,7 +50,7 @@
  * namespace.
  */
 using namespace pros;
-using namespace pros::literals;
+// using namespace pros::literals;
 // using namespace okapi;
 
 /**
@@ -76,7 +76,6 @@ void opcontrol(void);
  */
 #include <iostream>
 #include <string>
-#include "./pros/serial.hpp"
 
 #endif
 
