@@ -3,6 +3,12 @@
 namespace lemlib {
 class PID {
     public:
+
+        // gains
+        float kP;
+        float kI;
+        float kD;
+
         /**
          * @brief Construct a new PID
          *
@@ -61,10 +67,6 @@ class PID {
          */
         void reset();
     protected:
-        // gains
-        const float kP;
-        const float kI;
-        const float kD;
 
         // optimizations
         const float windupRange;

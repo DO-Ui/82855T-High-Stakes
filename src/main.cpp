@@ -31,9 +31,18 @@ void initialize() {
 	vertical_tracker.set_position(0);
 	horizontal_tracker.reset();
 	vertical_tracker.reset();
-	delay(1000);
 	chassis.calibrate();
-	chassis.setPose(0,0,0);
+	chassis.setPose(-150, -60, 270);
+
+	Task odom_task([&]() {
+		while (true) {
+			lemlib::Pose pose = chassis.getPose();
+			Odometry odom = {std::ceil((double)pose.x * 100.0) / 100.0, std::ceil((double)pose.y * 100.0) / 100.0, std::ceil((double)pose.theta * 100.0) / 100.0};
+			Message odom_message = {"odometry", odom};
+			std::cout << static_cast<json>(odom_message) << std::flush;
+			delay(20);
+		}
+	});
 
 
 }
@@ -68,6 +77,13 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
+	delay(5000);
+	chassis.setPose(-150, -60, 270);
+	chassis.moveToPose(-2.5, -120, 290, 5000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5});
+	chassis.waitUntilDone();
+	// delay(500);
+	// mogoclamp.extend();
+
 
 }
 
@@ -121,20 +137,20 @@ void opcontrol() {
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
 			// chassis.moveToPoint(0, 48, 6000);
-			chassis.moveToPose(0, 48, 0, 4000, {.horizontalDrift = 8, .lead = 0.5});
+			// chassis.moveToPose(0, 48, 0, 4000, {.horizontalDrift = 8, .lead = 0.5});
 			// chassis.tank(127, 127);
 			// delay(500);
 			// chassis.tank(0, 0);
 
-			// chassis.turnToPoint(0, 99999, 10000);
+			chassis.turnToPoint(0, 99999, 10000);
 			// chassis.turnToHeading(0, 10000);
 		}
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
 			// chassis.moveToPoint(0, 0, 6000, {.forwards=false});
 			// chassis.turnToHeading(90, 10000);
-			// chassis.turnToPoint(99999, 0, 10000);
-			chassis.moveToPose(0, 0, 0, 4000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5});
+			chassis.turnToPoint(99999, 0, 10000);
+			// chassis.moveToPose(0, 0, 0, 4000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5});
 		}
 
 
@@ -147,23 +163,23 @@ void opcontrol() {
 		// lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position()/100);
 
 
+
+		// if (count == 3) {
+		// 	master.print(0, 0, "x: %f", pose.x);
+		// }
+		// if (count == 6) {
+		// 	master.print(1, 0, "y: %f", pose.y);
+		// }
+
+		// if (count == 9) {
+		// 	master.print(2, 0, "theta: %f", pose.theta);
+		// 	count = 0;
+		// } 
+		// count++;
+		
+		
+		
 		lemlib::Pose pose = chassis.getPose();
-
-		if (count == 3) {
-			master.print(0, 0, "x: %f", pose.x);
-		}
-		if (count == 6) {
-			master.print(1, 0, "y: %f", pose.y);
-		}
-
-		if (count == 9) {
-			master.print(2, 0, "theta: %f", pose.theta);
-			count = 0;
-		} 
-		count++;
-		
-		
-		
 		Odometry odom = {std::ceil((double)pose.x * 100.0) / 100.0, std::ceil((double)pose.y * 100.0) / 100.0, std::ceil((double)pose.theta * 100.0) / 100.0};
 		Message odom_message = {"odometry", odom};
 		std::cout << static_cast<json>(odom_message) << std::flush;
