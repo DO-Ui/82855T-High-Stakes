@@ -10,6 +10,15 @@
 
 using json = nlohmann::json;
 
+/**
+ * @brief Rounds a float to 2 decimal places
+ * 
+ * @param num The number to round
+ * @return float The rounded number
+ */
+float round2dp(float num) {
+	return std::ceil(num * 100.0) / 100.0;
+}
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -32,15 +41,16 @@ void initialize() {
 	horizontal_tracker.reset();
 	vertical_tracker.reset();
 	chassis.calibrate();
-	chassis.setPose(-150, -60, 270);
+	chassis.setPose(-58, -35, 270);
 
 	Task odom_task([&]() {
 		while (true) {
 			lemlib::Pose pose = chassis.getPose();
-			Odometry odom = {std::ceil((double)pose.x * 100.0) / 100.0, std::ceil((double)pose.y * 100.0) / 100.0, std::ceil((double)pose.theta * 100.0) / 100.0};
+			// Odometry odom = {std::ceil((double)pose.x * 100.0) / 100.0, std::ceil((double)pose.y * 100.0) / 100.0, std::ceil((double)pose.theta * 100.0) / 100.0};
+			Odometry odom = {round2dp(pose.x), round2dp(pose.y), round2dp(pose.theta)};
 			Message odom_message = {"odometry", odom};
 			std::cout << static_cast<json>(odom_message) << std::flush;
-			delay(20);
+			delay(25);
 		}
 	});
 
@@ -77,12 +87,49 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	delay(5000);
-	chassis.setPose(-150, -60, 270);
-	chassis.moveToPose(-2.5, -120, 290, 5000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5});
+	chassis.moveToPoint(-15, -36.7, 1000, {.forwards=false, .earlyExitRange=1.5}); // Move to intermediate point
+	chassis.turnToPoint(-8.5, -41.5, 800, {.forwards=false, .earlyExitRange=10}); // turn toward mogo flat side
+	// chassis.moveToPoint(-8.5, -42, 2000, {.forwards=false}); // move to mogo
+	chassis.moveToPose(-8.5, -41.75, 300, 1000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5, .maxSpeed = 75}); // move to mogo
 	chassis.waitUntilDone();
-	// delay(500);
+	delay(100);
+	mogoclamp.extend(); // clamp contested mogo
+	delay(400);
+	chassis.turnToPoint(-25, -47, 1000, {.earlyExitRange = 5}); // turn toward ring stack
+	conveyor.move(100); // score preload onto mogo
+	chassis.moveToPose(-25, -47, 270, 3500, {.horizontalDrift = 8, .lead = 0.3}); // move into ring stack
+	intake.move(-127); // start intaking bottom ring of stack
+	delay(1200);
+	intake.move(0); // stop intake to ensure conveyor grabs
+	chassis.moveToPose(-49.5, -20, 0, 2000, {.horizontalDrift = 8, .lead = 0.5, .earlyExitRange=4}); // move to intermediate point
+	delay(500);
+	intake.move(127); // make sure blue ring goes away
+	delay(1000);
+	conveyor.move(0);	
+	mogoclamp.retract(); // release the mogo
+	chassis.moveToPose(-49.5, -7.5, 0, 1500, {.horizontalDrift = 8, .lead = 0.5, .earlyExitRange=4}); // move to reversed stack	
+	intake.move(-100);
+	conveyor.move(127);
+	chassis.waitUntilDone();
+	chassis.moveToPose(-49.5, 7, 0, 2000, {.horizontalDrift = 8, .lead = 0.5, .maxSpeed = 50}); // intake the stack and toss the first ring
+	delay(780);
+	conveyor.move(0);
+	chassis.moveToPose(-32, -23, 300, 2000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5}); // move to mogo
+	intake.move(-25);
+	chassis.waitUntilDone();
+	mogoclamp.extend(); // clamp new mogo
+	conveyor.move(100); // score ring onto mogo
+	delay(1000);
+	conveyor.move(0);
+	mogoclamp.retract(); // release mogo
+	chassis.moveToPose(-27, -5, 0, 3000, {.horizontalDrift = 8, .lead = 0.5}); // move to ladder
+	intake.move(0);
+
+
+	// chassis.turnToPoint(-30, -19, 1000, {.forwards=false});
+	// chassis.moveToPose(-30, -19, 300, 3000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5});
 	// mogoclamp.extend();
+	// conveyor.move(127);
 
 
 }
@@ -176,13 +223,6 @@ void opcontrol() {
 		// 	count = 0;
 		// } 
 		// count++;
-		
-		
-		
-		lemlib::Pose pose = chassis.getPose();
-		Odometry odom = {std::ceil((double)pose.x * 100.0) / 100.0, std::ceil((double)pose.y * 100.0) / 100.0, std::ceil((double)pose.theta * 100.0) / 100.0};
-		Message odom_message = {"odometry", odom};
-		std::cout << static_cast<json>(odom_message) << std::flush;
 
 		delay(20);
 
