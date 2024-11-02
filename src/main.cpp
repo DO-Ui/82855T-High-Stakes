@@ -32,8 +32,6 @@ void initialize() {
 	lcd::initialize();
 
 	colour_sensor.set_led_pwm(100);
-
-
 	horizontal_tracker.set_data_rate(10);
 	// vertical_tracker.set_data_rate(10);
 	imu.set_data_rate(10);
@@ -43,6 +41,8 @@ void initialize() {
 	// vertical_tracker.reset();
 	chassis.calibrate();
 	chassis.setPose(0, 0, 0);
+
+	master.clear();
 
 	Task odom_task([&]() {
 		while (true) {
@@ -90,6 +90,9 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
+
+	sorter_active = false;
+
 	// MOGO RUSH SOLO AWP
 	// chassis.setPose(-58, -35, 270);
 	// chassis.moveToPoint(-15, -36.7, 1000, {.forwards=false, .earlyExitRange=1.5}); // Move to intermediate point
@@ -219,20 +222,20 @@ void autonomous() {
 	// conveyor.move(0);
 
 
-	// SAFE ALLIANCE STAKE
-	chassis.setPose(55, -15.65, 0);
-	chassis.moveToPose(55, 0, 0, 1000); // move to alliance stake
-	intake.move(127);
-	chassis.turnToHeading(270, 1200); // turn toward alliance stake
-	chassis.waitUntilDone();
-	chassis.setPose(55, 0, 270);
-	intake.move(0);
+	// SAFE ALLIANCE STAKE (Unfinished)
+	// chassis.setPose(55, -15.65, 0);
+	// chassis.moveToPose(55, 0, 0, 1000); // move to alliance stake
+	// intake.move(127);
+	// chassis.turnToHeading(270, 1200); // turn toward alliance stake
+	// chassis.waitUntilDone();
+	// chassis.setPose(55, 0, 270);
+	// intake.move(0);
 
-	chassis.moveToPose(62, 0, 270, 1000, {.forwards=false, .maxSpeed=60}); // move to alliance stake
-	chassis.waitUntilDone();
-	conveyor.move(120);
-	delay(1000);
-	conveyor.move(0);
+	// chassis.moveToPose(62, 0, 270, 1000, {.forwards=false, .maxSpeed=60}); // move to alliance stake
+	// chassis.waitUntilDone();
+	// conveyor.move(120);
+	// delay(1000);
+	// conveyor.move(0);
 
 	// chassis.moveToPoint(-41.258, -35, 1000, {.forwards=false, .earlyExitRange=5}); // Move to intermediate point
 	// chassis.turnToPoint(-30, -28.5, 800, {.forwards=false}); // turn toward mogo flat side
@@ -290,6 +293,8 @@ void opcontrol() {
 
 	bool clampState = true;
 
+	sorter_active = true;
+
 	int count = 0;
 
 	while (true) {
@@ -300,6 +305,8 @@ void opcontrol() {
 
 		if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
 			intake.move(-127);
+		}  else if(master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)) {
+			intake.move(127);
 		} else {
 			intake.move(0);
 		}
