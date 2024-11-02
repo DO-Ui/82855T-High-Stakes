@@ -24,11 +24,11 @@ inline void to_json(json& j, const Odometry& msg) {
     j = json{{"x", msg.x}, {"y", msg.y}, {"theta", msg.theta}};
 }
 
-struct Speed {
-    double left;
-    double right;
+struct Colour {
+    double hue;
+    std::string colours;
 };
 
-inline void to_json(json& j, const Speed& msg) {
-    j = json{{"left", msg.left, "right", msg.right}};
+inline void to_json(json& j, const Colour& msg) {
+    j = json{{"hue", msg.hue}, {"colours", msg.colours}};
 }

@@ -1,12 +1,12 @@
 #include "main.h"
 #include "lemlib/api.hpp"
 #include "./devices.h"
-#include "./tasks.h"
 #include "logging.hpp"
+#include "json.hpp"
 #include <iostream>
 #include <cmath>
 #include <string>
-#include "json.hpp"
+#include "./tasks.h"
 
 using json = nlohmann::json;
 
@@ -31,17 +31,18 @@ void initialize() {
 	std::cout << "foxglove" << std::endl;
 	lcd::initialize();
 
+	colour_sensor.set_led_pwm(100);
 
 
 	horizontal_tracker.set_data_rate(10);
-	vertical_tracker.set_data_rate(10);
+	// vertical_tracker.set_data_rate(10);
 	imu.set_data_rate(10);
 	horizontal_tracker.set_position(0);
-	vertical_tracker.set_position(0);
+	// vertical_tracker.set_position(0);
 	horizontal_tracker.reset();
-	vertical_tracker.reset();
+	// vertical_tracker.reset();
 	chassis.calibrate();
-	chassis.setPose(-58, -35, 270);
+	chassis.setPose(0, 0, 0);
 
 	Task odom_task([&]() {
 		while (true) {
@@ -54,6 +55,8 @@ void initialize() {
 		}
 	});
 
+	// NOTE: colour_task has logging, remove if not needed
+	Task colour_task(colour_sorter_task);
 
 }
 
@@ -165,6 +168,8 @@ void autonomous() {
 	// conveyor.move(0);
 	// intake.move(0);
 
+	
+
 	// TEAMMATE AWP RIGHT SIDE
 	// chassis.setPose(-58, -35, 270);
 	// chassis.moveToPoint(-41.258, -35, 1000, {.forwards=false, .earlyExitRange=5}); // Move to intermediate point
@@ -190,29 +195,80 @@ void autonomous() {
 	// delay(2000);
 	// chassis.tank(0, 0);
 
-	// ELIMS LEFT SIDE
-	chassis.setPose(-58.5, 48, 270);
-	chassis.turnToPoint(-32, 28.7, 1500, {.forwards=false, .earlyExitRange=5}); // turn toward mogo flat side
-	chassis.moveToPose(-32, 28.7, 300, 2000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5}); // move to mogo
+	// ELIMS LEFT SIDE (Unfinished)
+	// chassis.setPose(-58.5, 48, 270);
+	// chassis.turnToPoint(-32, 28.7, 1500, {.forwards=false, .earlyExitRange=5}); // turn toward mogo flat side
+	// chassis.moveToPose(-32, 28.7, 300, 2000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5}); // move to mogo
+	// chassis.waitUntilDone();
+	// delay(100);
+	// mogoclamp.extend(); // clamp mogo
+	// delay(400);
+	// conveyor.move(120);
+	// chassis.turnToPoint(-23.5, 47, 1000, {.earlyExitRange=10}); // turn toward ring stack
+	// chassis.moveToPose(-23.5, 47, 43, 2000, {.horizontalDrift = 8, .lead = 0.5}); // move into ring stack
+	// intake.move(-127); // start intaking bottom ring of stack
+	// delay(1100);
+	// intake.move(127); // ensure the blue isn't intaken
+	// chassis.moveToPoint(-9, 60, 1000, {.earlyExitRange=5}); // move to intermediate point
+	// chassis.moveToPose(-4, 37, 180, 2000, {.horizontalDrift = 8, .lead = 0.5, .maxSpeed=80}); // move into double ring stack
+	// intake.move(-127); // start intaking double ring stack
+	// chassis.waitUntilDone();
+	// intake.move(0); // stop intake to ensure conveyor grabs
+	// chassis.moveToPose(-47, 37, 90, 2000, {.horizontalDrift = 8, .lead = 0.2}); // move back
+	// chassis.waitUntilDone();
+	// conveyor.move(0);
+
+
+	// SAFE ALLIANCE STAKE
+	chassis.setPose(55, -15.65, 0);
+	chassis.moveToPose(55, 0, 0, 1000); // move to alliance stake
+	intake.move(127);
+	chassis.turnToHeading(270, 1200); // turn toward alliance stake
 	chassis.waitUntilDone();
-	delay(100);
-	mogoclamp.extend(); // clamp mogo
-	delay(400);
+	chassis.setPose(55, 0, 270);
+	intake.move(0);
+
+	chassis.moveToPose(62, 0, 270, 1000, {.forwards=false, .maxSpeed=60}); // move to alliance stake
+	chassis.waitUntilDone();
 	conveyor.move(120);
-	chassis.turnToPoint(-23.5, 47, 1000, {.earlyExitRange=10}); // turn toward ring stack
-	chassis.moveToPose(-23.5, 47, 43, 2000, {.horizontalDrift = 8, .lead = 0.5}); // move into ring stack
-	intake.move(-127); // start intaking bottom ring of stack
-	delay(1100);
-	intake.move(127); // ensure the blue isn't intaken
-	chassis.moveToPoint(-9, 60, 1000, {.earlyExitRange=5}); // move to intermediate point
-	chassis.moveToPose(-4, 37, 180, 2000, {.horizontalDrift = 8, .lead = 0.5, .maxSpeed=80}); // move into double ring stack
-	intake.move(-127); // start intaking double ring stack
-	chassis.waitUntilDone();
-	intake.move(0); // stop intake to ensure conveyor grabs
-	chassis.moveToPose(-47, 37, 90, 2000, {.horizontalDrift = 8, .lead = 0.2}); // move back
-	chassis.waitUntilDone();
+	delay(1000);
 	conveyor.move(0);
 
+	// chassis.moveToPoint(-41.258, -35, 1000, {.forwards=false, .earlyExitRange=5}); // Move to intermediate point
+	// chassis.turnToPoint(-30, -28.5, 800, {.forwards=false}); // turn toward mogo flat side
+	// chassis.moveToPose(-30, -28.5, 240, 2000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5, .earlyExitRange=3}); // move to mogo
+	// chassis.waitUntilDone();
+	// delay(100);
+	// mogoclamp.extend(); // clamp mogo
+	// delay(400);
+	// conveyor.move(120);
+	// chassis.turnToPoint(-23.6, -47.6, 1000, {.earlyExitRange=10}); // turn toward ring stack
+	// chassis.moveToPose(-23.6, -47.6, 180, 2000, {.horizontalDrift = 8, .lead = 0.5}); // move into ring stack
+	// intake.move(-127); // start intaking bottom ring of stack
+	// delay(1800); // TODO change delay
+	// intake.move(0); // stop intake to ensure conveyor grabs
+	// chassis.waitUntilDone();
+	// chassis.turnToPoint(-45, -10.5, 1000, {.earlyExitRange=10}); // turn toward reversed stack intermediate point
+	// delay(500);
+	// mogoclamp.retract(); // release mogo
+	// chassis.moveToPose(-45, -10.5, 0, 2000, {.horizontalDrift = 8, .lead = 0.5, .earlyExitRange=10}); // move to reversed stack intermediate point
+	// intake.move(-100);
+	// conveyor.move(127);
+	// chassis.moveToPose(-45, 2, 0, 2000, {.horizontalDrift = 8, .lead = 0.5, .maxSpeed = 55}); // intake the stack and toss the first ring
+	// delay(790);
+	// conveyor.move(0);
+	// intake.move(0);
+	// chassis.turnToPoint(-30, 15, 800, {.forwards=false}); // turn toward mogo flat side
+	// chassis.moveToPose(-30, 15, 240, 1000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5, .earlyExitRange=5}); // move to mogo
+	// chassis.waitUntilDone();
+	// delay(100);
+	// mogoclamp.extend(); // clamp mogo
+	// delay(400);
+	// conveyor.move(127);	
+	// chassis.moveToPoint(-23.6, 2, 1000, {.maxSpeed=60}); // Move to ladder
+	// chassis.waitUntilDone();
+	// conveyor.move(0);
+	// intake.move(0);
 
 }
 
@@ -232,7 +288,7 @@ void autonomous() {
 void opcontrol() {
 
 
-	bool clampState = false;
+	bool clampState = true;
 
 	int count = 0;
 
@@ -248,44 +304,18 @@ void opcontrol() {
 			intake.move(0);
 		}
 
-		if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
-			conveyor.move(100);
-		} else if (master.get_digital(E_CONTROLLER_DIGITAL_Y)) {
-			conveyor.move(127);
-		} else {
-			conveyor.move(0);
+
+
+		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
+			if (clampState) {
+				mogoclamp.extend();
+				clampState = !clampState;
+			} else {
+				mogoclamp.retract();
+				clampState = !clampState;
+			}
 		}
 
-		if (master.get_digital(E_CONTROLLER_DIGITAL_L1)) {
-			mogoclamp.extend();
-		} else if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
-			mogoclamp.retract();
-		}
-
-		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) {
-			std::cout << "test" << std::endl;
-		}
-
-		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
-			// chassis.moveToPoint(0, 48, 6000);
-			// chassis.moveToPose(0, 48, 0, 4000, {.horizontalDrift = 8, .lead = 0.5});
-			// chassis.tank(127, 127);
-			// delay(500);
-			// chassis.tank(0, 0);
-
-			chassis.turnToPoint(0, 99999, 10000);
-			// chassis.turnToHeading(0, 10000);
-		}
-
-		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
-			// chassis.moveToPoint(0, 0, 6000, {.forwards=false});
-			// chassis.turnToHeading(90, 10000);
-			chassis.turnToPoint(99999, 0, 10000);
-			// chassis.moveToPose(0, 0, 0, 4000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5});
-		}
-
-
-	
 		// // print to brain screen
 		// lcd::print(0, "x: %f", pose.x);
 		// lcd::print(1, "y: %f", pose.y);
