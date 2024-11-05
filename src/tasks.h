@@ -61,6 +61,8 @@ void colour_sorter_task() {
             } else {
                 if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
                     conveyor.move(100);
+                } else if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
+                    conveyor.move(-127);
                 } else if (master.get_digital(E_CONTROLLER_DIGITAL_Y)) {
                     conveyor.move(127);
                 } else {

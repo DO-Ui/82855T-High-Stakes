@@ -2,14 +2,14 @@
 
 Controller master(E_CONTROLLER_MASTER);
 
-MotorGroup right({3, 4, 5}, MotorGears::blue);
+MotorGroup right({16, 4, 5}, MotorGears::blue);
 MotorGroup left({-1, -8, -10}, MotorGears::blue);
 
 
 
-Motor intake(18, MotorGears::green);
+Motor intake(19, MotorGears::green);
 Motor conveyor(6, MotorGears::green);
-Imu imu(19);
+Imu imu(12);
 
 Rotation horizontal_tracker(-14); // 3.75 inches back
 // Rotation vertical_tracker(18); // 1.25in to left
