@@ -96,23 +96,23 @@ void autonomous() {
 	// chassis.moveToPose(0, 10, 0, 1000);
 
 	// SAFE TWO MOGOS AWP BLUE SIDE
-	chassis.setPose(58, -35, 90); // setPose modified
-	chassis.moveToPoint(41.258, -35, 1000, {.forwards=false, .earlyExitRange=5}); // Move to intermediate point
-	chassis.turnToPoint(30, -28.5, 800, {.forwards=false}); // turn toward mogo flat side
-	chassis.moveToPose(30, -28.5, 120, 2000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5, .earlyExitRange=3}); // move to mogo
-	chassis.waitUntilDone();
-	delay(100);
-	mogoclamp.extend(); // clamp mogo
-	delay(400);
-	conveyor.move(120);
-	chassis.turnToPoint(23.6, -47.6, 1000, {.earlyExitRange=10}); // turn toward ring stack
-	chassis.moveToPose(23.6, -47.6, 180, 2000, {.horizontalDrift = 8, .lead = 0.5}); // move into ring stack
-	intake.move(-127); // start intaking bottom ring of stack
-	delay(1800); // TODO change delay
-	intake.move(0); // stop intake to ensure conveyor grabs
-	chassis.waitUntilDone();
-	// delay(500);
-	conveyor.move(0);
+	// chassis.setPose(58, -35, 90); // setPose modified
+	// chassis.moveToPoint(41.258, -35, 1000, {.forwards=false, .earlyExitRange=5}); // Move to intermediate point
+	// chassis.turnToPoint(30, -28.5, 800, {.forwards=false}); // turn toward mogo flat side
+	// chassis.moveToPose(30, -28.5, 120, 2000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5, .earlyExitRange=3}); // move to mogo
+	// chassis.waitUntilDone();
+	// delay(100);
+	// mogoclamp.extend(); // clamp mogo
+	// delay(400);
+	// conveyor.move(120);
+	// chassis.turnToPoint(23.6, -47.6, 1000, {.earlyExitRange=10}); // turn toward ring stack
+	// chassis.moveToPose(23.6, -47.6, 180, 2000, {.horizontalDrift = 8, .lead = 0.5}); // move into ring stack
+	// intake.move(-127); // start intaking bottom ring of stack
+	// delay(1800); // TODO change delay
+	// intake.move(0); // stop intake to ensure conveyor grabs
+	// chassis.waitUntilDone();
+	// // delay(500);
+	// conveyor.move(0);
 
 	// mogoclamp.retract(); // release mogo
 	// chassis.moveToPose(45, -10.5, 0, 2000, {.horizontalDrift = 8, .lead = 0.5, .earlyExitRange=10}); // move to reversed stack intermediate point
@@ -442,6 +442,35 @@ void autonomous() {
 
 
 
+	// SKILLS ROUTE BY GRANT
+	chassis.setPose(-58, 0, 90); 
+	chassis.waitUntilDone();
+	conveyor.move(120); //score on red alliance stake
+	chassis.moveToPoint(-47, 0, 1500);
+	chassis.turnToHeading(180, 1000); //turn towards mogo
+	chassis.moveToPoint(-47, 24, 2000, {.forwards=false, .earlyExitRange=5}); //move to mogo
+	chassis.waitUntilDone();
+	mogoclamp.extend(); //clamp mogo
+	delay(400);
+	chassis.turnToHeading(90, 500); 
+	chassis.waitUntilDone();
+	intake.move(127);
+	conveyor.move(120);
+	chassis.moveToPoint(-24, 24, 2000); //move to first ring
+	chassis.moveToPose(-2.132, 56.514, 29, 3000); //move to wall stake ring
+	chassis.turnToPoint(-23.721, 47.496, 1000); //turn to next ring
+	chassis.moveToPoint(-23.721, 47.496, 2000); //move to next ring
+	chassis.turnToHeading(270, 1000);
+	chassis.moveToPoint(-54.328, 47.496, 3000); //grab two corner rings
+	chassis.moveToPose(-47.496, 58.974, 90, 2000); //grab last corner ring 
+	chassis.turnToHeading(110, 1000);
+	chassis.moveToPose(-59.52, 58.427, 140, 2000, {.forwards=false, .earlyExitRange=5}); //drive to corner
+	mogoclamp.retract();
+	intake.move(0); //REMOVE LATER
+	conveyor.move(0); //REMOVE LATER
+
+	
+
 }
 
 /**
@@ -468,6 +497,7 @@ void opcontrol() {
 	int count = 0;
 
 	while (true) {
+
 		int leftY = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 		int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
 
@@ -479,6 +509,10 @@ void opcontrol() {
 			intake.move(127);
 		} else {
 			intake.move(0);
+		}
+
+		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
+			autonomous();
 		}
 
 
