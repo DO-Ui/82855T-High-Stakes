@@ -447,7 +447,7 @@ void autonomous() {
 	chassis.setPose(-58, 0, 90); 
 	chassis.waitUntilDone();
 	conveyor.move(120); //score on red alliance stake
-	chassis.moveToPoint(-47, 0, 1500);
+	chassis.moveToPoint(-47, 0, 1500);	
 	chassis.turnToHeading(180, 1000); //turn towards mogo
 	chassis.moveToPoint(-47, 24, 2000, {.forwards=false, .earlyExitRange=5}); //move to mogo
 	chassis.waitUntilDone();
@@ -458,12 +458,12 @@ void autonomous() {
 	intake.move(127);
 	conveyor.move(120);
 	chassis.moveToPoint(-24, 24, 2000); //move to first ring
-	chassis.moveToPose(-2.132, 56.514, 29, 3000); //move to wall stake ring
+	chassis.moveToPose(-2.132, 56.514, 29, 3000, {.horizontalDrift = 8, .lead = 0.5}); //move to wall stake ring
 	chassis.turnToPoint(-23.721, 47.496, 1000); //turn to next ring
 	chassis.moveToPoint(-23.721, 47.496, 2000); //move to next ring
 	chassis.turnToHeading(270, 1000);
 	chassis.moveToPoint(-54.328, 47.496, 3000); //grab two corner rings
-	chassis.moveToPose(-47.496, 58.974, 90, 2000); //grab last corner ring
+	chassis.moveToPose(-47.496, 58.974, 90, 2000, {.horizontalDrift = 8, .lead = 0.5}); //grab last corner ring
 	chassis.turnToHeading(110, 1000);
 	chassis.moveToPose(-59.52, 58.427, 140, 2000, {.forwards=false, .earlyExitRange=5}); //drive to corner
 	mogoclamp.retract();
@@ -481,7 +481,7 @@ void autonomous() {
 	chassis.moveToPoint(-55.198, -47.15, 270); //pick up three horizontally aligned rings
 	// chassis.moveToPose(-17.435, -49.518, 295, 2000); using only moveToPose to grab the three horizontally aligned rings in lower left corner
 	// chassis.moveToPose(-59.738, -47.407, 270, 2000);
-	
+
 	chassis.turnToPoint(-47.365, -58.991, 1000);
 	chassis.moveToPoint(-47.365, -58.991, 1000); //pick up last ring in corner
 	chassis.turnToHeading(70, 1000);
