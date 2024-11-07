@@ -481,14 +481,14 @@ void autonomous() {
 	chassis.moveToPoint(-55.198, -47.15, 270); //pick up three horizontally aligned rings
 	// chassis.moveToPose(-17.435, -49.518, 295, 2000); using only moveToPose to grab the three horizontally aligned rings in lower left corner
 	// chassis.moveToPose(-59.738, -47.407, 270, 2000);
-
+	
 	chassis.turnToPoint(-47.365, -58.991, 1000);
 	chassis.moveToPoint(-47.365, -58.991, 1000); //pick up last ring in corner
 	chassis.turnToHeading(70, 1000);
 	chassis.moveToPoint(-56.788, -61.543, 1000, {.forwards = false, .earlyExitRange = 5});
 	chassis.waitUntilDone();
 	mogoclamp.retract(); //drop off mogo in lower left corner
-
+	//lower right corner
 	chassis.moveToPose(23.879, -47.111, 75, 3000); //move to first ring on right side
 	chassis.waitUntilDone();
 	conveyor.move(0); //turn off conveyor to store the ring
@@ -506,14 +506,35 @@ void autonomous() {
 	delay(200);
 	chassis.turnToPoint(2.496, -2.591, 1000); //grab ring under ladder
 	chassis.moveToPoint(2.496, -2.591, 2000);
-	chassis.turnToPoint(21.113, 20.567, 1000);
-	chassis.moveToPoint(21.113, 20.567, 1000);
+	chassis.turnToPoint(21.113, 20.567, 1000); 
+	chassis.moveToPoint(21.113, 20.567, 1000); //grab first ring in upper right corner
 	delay(200);
-	chassis.turnToPoint(23.714, 47.102, 1000);
+	chassis.turnToPoint(23.714, 47.102, 1000); //grab the rest of the rings
 	chassis.moveToPoint(23.714, 47.102, 1000);
-
-
-
+	chassis.turnToHeading(90, 1000);
+	chassis.moveToPoint(47.407, 47.102, 1000); 
+	delay(300);
+	chassis.turnToHeading(225, 1000);
+	chassis.moveToPoint(59.254, 58.948, 1000); //move to upper right corner 
+	chassis.waitUntilDone();
+	mogoclamp.retract(); //drop mogo off
+	chassis.turnToHeading(180, 1000);
+	chassis.moveToPoint(59.254, 39.59, 1000);
+	delay(500);
+	chassis.turnToHeading(0, 1000);
+	chassis.moveToPoint(59.254, 27.884, 1500, {.forwards = false, .earlyExitRange = 5});
+	chassis.waitUntilDone();
+	mogoclamp.extend(); //grab upper mogo on right side
+	delay(200);
+	//lower right corner
+	chassis.turnToPoint(32.138, -61.097, 1000);
+	chassis.moveToPoint(32.138, -61.097, 1000);
+	chassis.turnToHeading(270, 1000);
+	chassis.moveToPoint(58.727, -62.15, 1000, {.forwards = false, .earlyExitRange = 5});
+	chassis.waitUntilDone();
+	mogoclamp.retract(); //drop off final mogo in lower right corner
+	conveyor.move(0);
+	intake.move(0);
 
 
 
