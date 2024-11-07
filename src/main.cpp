@@ -489,10 +489,33 @@ void autonomous() {
 	chassis.waitUntilDone();
 	mogoclamp.retract(); //drop off mogo in lower left corner
 
-	chassis.moveToPose(23.879, -47.111, 75, 3000);
+	chassis.moveToPose(23.879, -47.111, 75, 3000); //move to first ring on right side
+	chassis.waitUntilDone();
+	conveyor.move(0); //turn off conveyor to store the ring
 	delay(100);
-	chassis.moveToPose(47, -16, 180, 2000);
-	
+	chassis.moveToPoint(47, -16, 2000); //setup to clamp middle mogo
+	chassis.turnToHeading(180, 1000);
+	delay(200);
+	chassis.moveToPoint(47, -7, 1000, {.forwards = false, .earlyExitRange = 5}); //plow middle mogo
+	chassis.waitUntilDone();
+	mogoclamp.extend(); //clamp middle mogo
+	delay(400);
+	conveyor.move(120);
+	chassis.turnToPoint(24.746, -22, 1000);
+	chassis.moveToPoint(24.746, -22, 1000); //grab ring before going under ladder
+	delay(200);
+	chassis.turnToPoint(2.496, -2.591, 1000); //grab ring under ladder
+	chassis.moveToPoint(2.496, -2.591, 2000);
+	chassis.turnToPoint(21.113, 20.567, 1000);
+	chassis.moveToPoint(21.113, 20.567, 1000);
+	delay(200);
+	chassis.turnToPoint(23.714, 47.102, 1000);
+	chassis.moveToPoint(23.714, 47.102, 1000);
+
+
+
+
+
 
 
 
