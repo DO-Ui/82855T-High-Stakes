@@ -462,6 +462,7 @@ void opcontrol() {
 	Task colour_task(colour_sorter_task);
 
 	bool clampState = true;
+	bool doinkerState = false;
 
 	sorter_active = true;
 
@@ -473,13 +474,6 @@ void opcontrol() {
 
 		chassis.arcade(leftY, rightX, false, 0.75);
 
-		if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
-			intake.move(-127);
-		}  else if(master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)) {
-			intake.move(127);
-		} else {
-			intake.move(0);
-		}
 
 
 
@@ -490,6 +484,16 @@ void opcontrol() {
 			} else {
 				mogoclamp.retract();
 				clampState = !clampState;
+			}
+		}
+
+		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L2)) {
+			if (doinkerState) {
+				doinker.extend();
+				doinkerState = !doinkerState;
+			} else {
+				doinker.retract();
+				doinkerState = !doinkerState;
 			}
 		}
 

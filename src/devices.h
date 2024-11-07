@@ -19,7 +19,7 @@ Distance distance_sensor(11);
 
 
 adi::Pneumatics mogoclamp('a', false);
-adi::Pneumatics wallmech('b', false);
+adi::Pneumatics doinker('b', false);
 
 lemlib::Drivetrain drivetrain(&left, &right, 11.5, lemlib::Omniwheel::NEW_325, 450, 8);
 
