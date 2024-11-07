@@ -443,6 +443,7 @@ void autonomous() {
 
 
 	// SKILLS ROUTE BY GRANT
+	//upper left corner
 	chassis.setPose(-58, 0, 90); 
 	chassis.waitUntilDone();
 	conveyor.move(120); //score on red alliance stake
@@ -462,12 +463,42 @@ void autonomous() {
 	chassis.moveToPoint(-23.721, 47.496, 2000); //move to next ring
 	chassis.turnToHeading(270, 1000);
 	chassis.moveToPoint(-54.328, 47.496, 3000); //grab two corner rings
-	chassis.moveToPose(-47.496, 58.974, 90, 2000); //grab last corner ring 
+	chassis.moveToPose(-47.496, 58.974, 90, 2000); //grab last corner ring
 	chassis.turnToHeading(110, 1000);
 	chassis.moveToPose(-59.52, 58.427, 140, 2000, {.forwards=false, .earlyExitRange=5}); //drive to corner
 	mogoclamp.retract();
-	intake.move(0); //REMOVE LATER
-	conveyor.move(0); //REMOVE LATER
+	//lower left corner
+	chassis.moveToPose(-47, -12.131, 0, 3000); //move to mogo in lower left corner
+	chassis.moveToPoint(-47, -24, 1000, {.forwards = false, .earlyExitRange = 5}); //plow mogo a bit
+	chassis.waitUntilDone();
+	mogoclamp.extend();
+	chassis.turnToPoint(-23.672, -23.714, 1000);
+	chassis.moveToPoint(-23.672, -23.714, 1000);
+	chassis.moveToPose(0.811, -58.991, 180, 2000); //move to middle bottom ring
+
+	chassis.turnToPoint(-6.287, -47.15, 1000);
+	chassis.turnToHeading(270, 1000);
+	chassis.moveToPoint(-55.198, -47.15, 270); //pick up three horizontally aligned rings
+	// chassis.moveToPose(-17.435, -49.518, 295, 2000); using only moveToPose to grab the three horizontally aligned rings in lower left corner
+	// chassis.moveToPose(-59.738, -47.407, 270, 2000);
+
+	chassis.turnToPoint(-47.365, -58.991, 1000);
+	chassis.moveToPoint(-47.365, -58.991, 1000); //pick up last ring in corner
+	chassis.turnToHeading(70, 1000);
+	chassis.moveToPoint(-56.788, -61.543, 1000, {.forwards = false, .earlyExitRange = 5});
+	chassis.waitUntilDone();
+	mogoclamp.retract(); //drop off mogo in lower left corner
+
+	chassis.moveToPose(23.879, -47.111, 75, 3000);
+	delay(100);
+	chassis.moveToPose(47, -16, 180, 2000);
+	
+
+
+
+
+
+
 
 	
 
