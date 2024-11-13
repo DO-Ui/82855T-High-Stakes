@@ -444,9 +444,9 @@ void autonomous() {
 
 	// SKILLS ROUTE BY GRANT
 	//upper left corner
-	chassis.setPose(-58, 0, 90); 
-	chassis.waitUntilDone();
-	conveyor.move(120); //score on red alliance stake
+	chassis.setPose(-62, 0, 90); 
+	conveyor.move(120); //score on red alliance stake 
+	delay(1000);
 	chassis.moveToPoint(-47, 0, 1500);	
 	chassis.turnToHeading(180, 1000); //turn towards mogo
 	chassis.moveToPoint(-47, 24, 2000, {.forwards=false, .earlyExitRange=5}); //move to mogo
@@ -563,7 +563,7 @@ void autonomous() {
  */
 void opcontrol() {
 
-	Task colour_task(colour_sorter_task);
+	//Task colour_task(colour_sorter_task);
 
 	bool clampState = true;
 
@@ -572,7 +572,9 @@ void opcontrol() {
 	int count = 0;
 
 	while (true) {
-
+		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
+			autonomous();
+		}
 		int leftY = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 		int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
 
@@ -586,9 +588,7 @@ void opcontrol() {
 			intake.move(0);
 		}
 
-		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-			autonomous();
-		}
+
 
 
 
@@ -602,12 +602,12 @@ void opcontrol() {
 			}
 		}
 
-		// // print to brain screen
-		// lcd::print(0, "x: %f", pose.x);
-		// lcd::print(1, "y: %f", pose.y);
-		// lcd::print(2, "theta: %f", imu.get_heading());
-		// lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);
-		// lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position()/100);
+		// print to brain screen
+		lcd::print(0, "x: %f", chassis.getPose().x);
+		lcd::print(1, "y: %f", chassis.getPose().y);
+		lcd::print(2, "theta: %f", imu.get_heading());
+		lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);
+		//lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position()/100);
 
 
 
