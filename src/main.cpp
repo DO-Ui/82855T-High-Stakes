@@ -514,6 +514,10 @@ void autonomous() {
 	chassis.turnToHeading(90, 1000);
 	chassis.moveToPoint(47.407, 47.102, 1000); 
 	delay(300);
+	chassis.turnToHeading(45, 1000); //turn to position to intake ring in upper right corner (TODO color sort out)
+	chassis.moveToPoint(59.903, 59.247, 1000); //intake ring
+	delay(500);
+	chassis.moveToPoint(57.443, 55.968, 1000); //go out a bit to have room to turn
 	chassis.turnToHeading(225, 1000);
 	chassis.moveToPoint(59.254, 58.948, 1000); //move to upper right corner 
 	chassis.waitUntilDone();
