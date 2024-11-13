@@ -7,7 +7,7 @@
 #include <cmath>
 #include <string>
 #include "./tasks.h"
-#include "autons.cpp"
+#include "autons.h"
 
 using json = nlohmann::json;
 
@@ -101,7 +101,7 @@ void autonomous() {
 	//redLeftElims();
 	//blueAllianceStake();
 	//redAllianceStake();
-	//skills();
+	skills();
 }
 
 /**

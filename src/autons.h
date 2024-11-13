@@ -1,4 +1,3 @@
-#include "main.cpp"
 /**
  * SAFE TWO MOGOS AWP BLUE SIDE
  */
@@ -388,7 +387,7 @@ inline void redAllianceStake(){
  */
 inline void skills(){
 	//upper left corner
-	chassis.setPose(-58, 0, 90); 
+	chassis.setPose(-62, 0, 90); 
 	conveyor.move(120); //score on red alliance stake 
 	delay(1000);
 	chassis.moveToPoint(-47, 0, 1500);	
@@ -477,6 +476,9 @@ inline void skills(){
 	//lower right corner
 	chassis.turnToPoint(32.138, -61.097, 1000);
 	chassis.moveToPoint(32.138, -61.097, 1000);
+	chassis.turnToHeading(90, 1000);
+	chassis.moveToPoint(58.727, -62.15, 1000);
+	delay(500);
 	chassis.turnToHeading(270, 1000);
 	chassis.moveToPoint(58.727, -62.15, 1000, {.forwards = false, .earlyExitRange = 5});
 	chassis.waitUntilDone();
