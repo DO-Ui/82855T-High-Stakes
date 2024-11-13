@@ -444,7 +444,7 @@ void autonomous() {
 
 	// SKILLS ROUTE BY GRANT
 	//upper left corner
-	chassis.setPose(-62, 0, 90); 
+	chassis.setPose(-58, 0, 90); 
 	conveyor.move(120); //score on red alliance stake 
 	delay(1000);
 	chassis.moveToPoint(-47, 0, 1500);	
