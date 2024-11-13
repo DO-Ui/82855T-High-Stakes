@@ -46,11 +46,6 @@ void colour_sorter_task() {
             last_colour = 'n';
         }
 
-
-
-
-
-
         if (sorter_active) {
             if ((colours.size() > 0 && colours.back() == current_sort) && distance_sensor.get() < 15) {
                 delay(100);
@@ -59,23 +54,41 @@ void colour_sorter_task() {
                 conveyor.move(0);
                 colours.pop_back();
             } else {
-                if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
+                if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
                     conveyor.move(100);
-                } else if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
+                } else if (master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)) {
                     conveyor.move(-127);
                 } else if (master.get_digital(E_CONTROLLER_DIGITAL_Y)) {
                     conveyor.move(127);
                 } else {
                     conveyor.move(0);
                 }
+                
+                if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
+                    intake.move(-127);
+                } else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
+                    intake.move(127);
+                } else {
+                    intake.move(0);
+                }
             }
         } else {
-            if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
+            if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
                 conveyor.move(100);
+            } else if (master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)) {
+                conveyor.move(-127);
             } else if (master.get_digital(E_CONTROLLER_DIGITAL_Y)) {
                 conveyor.move(127);
             } else {
                 conveyor.move(0);
+            }
+            
+            if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
+                intake.move(-127);
+            } else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
+			    intake.move(127);
+            } else {
+                intake.move(0);
             }
         }
 
