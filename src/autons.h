@@ -486,6 +486,28 @@ inline void skills(){
 	mogoclamp.retract(); //drop off final mogo in lower right corner
 	conveyor.move(0);
 	intake.move(0);
+
+
+	//daniels amazing second half of the auton route (starting from top-right-most red ring w mogo clamped)
+	chassis.moveToPoint(47.407, 47.365, 1000);
+	chassis.waitUntilDone();
+	conveyor.move(120); //not exactly sure how this works lol
+	delay(100);
+	conveyor.move(0);
+	chassis.turnToPoint(0, 0, 1000);
+	chassis.moveToPoint(59.25, 59.25, 2000, {.forwards=false, .earlyExitRange=5}); //move to corner also idk if earlyExitRange is correct
+	mogoclamp.retract(); //mogo drop top right
+	chassis.moveToPoint(58.991, 47.365, 1000);
+	chassis.waitUntilDone();
+	conveyor.move(120);
+	delay(100);
+	conveyor.move(0);
+	chassis.turnToPoint(59.25, 59.25, 1000);
+	chassis.moveToPoint(59.25, 27.884, 2000, {.forwards=false, .earlyExitRange=5}); //move to blue mogo
+	mogoclamp.extend();
+	chassis.moveToPoint(32.138, -61.097, 1000);
+	chassis.moveToPose(58.727, -62.15, 270, 2000);
+	//todo: make it so u intake the rings in the corners before u put the mogo there (hehehe i definitely remembered about them)
 }
 
 /**
