@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "Grungly Pungly",
+    "project_name": "Talos High Stakes",
     "target": "v5",
     "templates": {
       "LemLib": {
@@ -298,8 +298,8 @@
       }
     },
     "upload_options": {
-      "icon": "alien",
-      "slot": 2
+      "icon": "pizza",
+      "slot": 1
     },
     "use_early_access": false
   }
