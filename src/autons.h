@@ -493,15 +493,38 @@ inline void skills(){
  */
 inline void redLeft6RingElim(){
 	chassis.setPose(-50.775, 39.571, 300);
-	chassis.moveToPoint(-32.852, 29.223, 1000, {.forwards = false, .earlyExitRange = 5}); //move to left mogo
+	chassis.moveToPoint(-29.322, 27.338, 1000, {.forwards = false, .earlyExitRange = 5}); //move to left mogo
 	chassis.waitUntilDone();
 	mogoclamp.extend(); //clamp left mogo
 	delay(100);
 	conveyor.move(120);
 	intake.move(120);
 	chassis.turnToPoint(-10.219, 40.291, 1000);
-	chassis.moveToPoint(-10.219, 40.291, 2000);
+	chassis.moveToPoint(-10.219, 40.291, 2000); //go to first contested ring
 	delay(500);
-	
+	chassis.moveToPoint(-23.957, 30.871, 1000, {.forwards = false, .earlyExitRange = 5});
+	chassis.turnToHeading(0, 1000);
+	delay(200);
+	chassis.moveToPoint(-23.957, 50.759, 1000); //get ring behind contested rings
+	delay(200);
+	chassis.turnToPoint(-9.303, 50.759, 1000);
+	chassis.moveToPoint(-9.303, 50.759, 1000); //get final contested ring
+	delay(300);
+	chassis.moveToPoint(-43.605, 42.498, 2000, {.forwards = false, .earlyExitRange = 5});
+	chassis.turnToHeading(319, 1000);
+	chassis.moveToPoint(-56.035, 56.236, 1000);
+	delay(300);
+	doinker.extend();
+	delay(300);
+	chassis.turnToHeading(60, 1000); //spin robot to clear rings out of corner
+	delay(100);
+	doinker.retract();
+	chassis.turnToHeading(319, 1000);
+	chassis.moveToPoint(-59.478, 59.529, 1000); //move to left corner to grab lowest ring
+	delay(400);
+	chassis.moveToPoint(-47, 47, 1000, {.forwards = false, .earlyExitRange = 5});
+	chassis.turnToHeading(180, 1000);
+	chassis.moveToPoint(-47, -9, 2000);
+
 
 }
