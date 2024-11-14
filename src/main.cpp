@@ -119,7 +119,7 @@ void autonomous() {
  */
 void opcontrol() {
 
-	//Task colour_task(colour_sorter_task);
+	Task colour_task(colour_sorter_task);
 
 	bool clampState = true;
 	bool doinkerState = false;
@@ -160,11 +160,11 @@ void opcontrol() {
 		}
 
 		// // print to brain screen
-		// lcd::print(0, "x: %f", pose.x);
-		// lcd::print(1, "y: %f", pose.y);
-		// lcd::print(2, "theta: %f", imu.get_heading());
-		// lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);
-		// lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position()/100)
+		lcd::print(0, "x: %f", chassis.getPose().x);
+		lcd::print(1, "y: %f", chassis.getPose().y);
+		lcd::print(2, "theta: %f", imu.get_heading());
+		lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);
+		lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position()/100);
 
 
 		// if (count == 3) {
