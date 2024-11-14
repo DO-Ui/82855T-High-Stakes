@@ -384,6 +384,7 @@ inline void redAllianceStake(){
 
 /**
  * SKILLS ROUTE
+ * by Grant
  */
 inline void skills(){
 	//upper left corner
@@ -485,4 +486,22 @@ inline void skills(){
 	mogoclamp.retract(); //drop off final mogo in lower right corner
 	conveyor.move(0);
 	intake.move(0);
+}
+
+/**
+ * RED 6 RING ELIM
+ */
+inline void redLeft6RingElim(){
+	chassis.setPose(-50.775, 39.571, 300);
+	chassis.moveToPoint(-32.852, 29.223, 1000, {.forwards = false, .earlyExitRange = 5}); //move to left mogo
+	chassis.waitUntilDone();
+	mogoclamp.extend(); //clamp left mogo
+	delay(100);
+	conveyor.move(120);
+	intake.move(120);
+	chassis.turnToPoint(-10.219, 40.291, 1000);
+	chassis.moveToPoint(-10.219, 40.291, 2000);
+	delay(500);
+	
+
 }
