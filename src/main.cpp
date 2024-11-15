@@ -34,12 +34,12 @@ void initialize() {
 
 	colour_sensor.set_led_pwm(100);
 	horizontal_tracker.set_data_rate(10);
-	// vertical_tracker.set_data_rate(10);
+	vertical_tracker.set_data_rate(10);
 	imu.set_data_rate(10);
 	horizontal_tracker.set_position(0);
-	// vertical_tracker.set_position(0);
+	vertical_tracker.set_position(0);
 	horizontal_tracker.reset();
-	// vertical_tracker.reset();
+	vertical_tracker.reset();
 	chassis.calibrate();
 	chassis.setPose(0, 0, 0);
 
@@ -90,7 +90,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	sorter_active = false;
+	//sorter_active = false;
 	//blueDoubleMogoAWP();
 	//redDoubleMogoAWP();
 	//redMogoRushSoloAWP();
@@ -101,7 +101,8 @@ void autonomous() {
 	//redLeftElims();
 	//blueAllianceStake();
 	//redAllianceStake();
-	skills();
+	//skills();
+	redLeft6RingElim();
 }
 
 /**
@@ -129,14 +130,17 @@ void opcontrol() {
 	int count = 0;
 
 	while (true) {
-		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-			autonomous();
-		}
+		
 		int leftY = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 		int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
 
 		chassis.arcade(leftY, rightX, false, 0.75);
-
+		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
+			//chassis.moveToPoint(0, 10, 3000);
+		}
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
+			//chassis.moveToPoint(0, 0, 3000, {.forwards = false});
+		}
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
 			if (clampState) {
@@ -160,11 +164,11 @@ void opcontrol() {
 		}
 
 		// // print to brain screen
-		lcd::print(0, "x: %f", chassis.getPose().x);
-		lcd::print(1, "y: %f", chassis.getPose().y);
-		lcd::print(2, "theta: %f", imu.get_heading());
-		lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);
-		lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position()/100);
+		// lcd::print(0, "x: %f", chassis.getPose().x);
+		// lcd::print(1, "y: %f", chassis.getPose().y);
+		// lcd::print(2, "theta: %f", imu.get_heading());
+		// lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);
+		// lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position()/100);
 
 
 		// if (count == 3) {
