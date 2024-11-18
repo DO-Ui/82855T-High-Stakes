@@ -2,19 +2,19 @@
 
 Controller master(E_CONTROLLER_MASTER);
 
-MotorGroup right({16, 4, 5}, MotorGears::blue);
+MotorGroup right({3, 4, 5}, MotorGears::blue);
 MotorGroup left({-1, -8, -10}, MotorGears::blue);
 
 
 
-Motor intake(19, MotorGears::green);
+Motor intake(20, MotorGears::green);
 Motor conveyor(6, MotorGears::green);
 Imu imu(12);
 
 Rotation horizontal_tracker(-14); // 3.75 inches back
-// Rotation vertical_tracker(18); // 1.25in to left
+Rotation vertical_tracker(15); // 1.25in to left
 
-Optical colour_sensor(15);
+Optical colour_sensor(16);
 Distance distance_sensor(11);
 
 
@@ -24,9 +24,9 @@ adi::Pneumatics doinker('b', false);
 lemlib::Drivetrain drivetrain(&left, &right, 11.5, lemlib::Omniwheel::NEW_325, 450, 8);
 
 lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_tracker, lemlib::Omniwheel::OLD_275_HALF, -3.75);
-// lemlib::TrackingWheel vertical_tracking_wheel(&vertical_tracker, lemlib::Omniwheel::OLD_275_HALF, -1.25);
+lemlib::TrackingWheel vertical_tracking_wheel(&vertical_tracker, lemlib::Omniwheel::OLD_275_HALF, -1.25);
 
-lemlib::OdomSensors sensors(nullptr, nullptr, &horizontal_tracking_wheel, nullptr, &imu);
+lemlib::OdomSensors sensors(&vertical_tracking_wheel, nullptr, &horizontal_tracking_wheel, nullptr, &imu);
 
 // lemlib::ControllerSettings lateral_controller(10, 0, 60, 3, 1, 500, 3, 750, 15);
 lemlib::ControllerSettings lateral_controller(9, 0.2, 85, 4, 1, 500, 3, 750, 5);
