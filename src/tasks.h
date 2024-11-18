@@ -131,16 +131,16 @@ void colour_sorter_task() {
             }
         }
 
-        if (controller_print == 0) {
-            master.print(0, 0, "Sorter State: %s", sorter_active ? "Active" : "Inactive");
-            controller_print = 10;
-        } else if (controller_print == 5) {
-            master.print(1, 0, "Current Sort: %s", current_sort == 'r' ? "Red" : "Blue");
-        }
+        // if (controller_print == 0) {
+        //     master.print(0, 0, "Sorter State: %s", sorter_active ? "Active" : "Inactive");
+        //     controller_print = 10;
+        // } else if (controller_print == 5) {
+        //     master.print(1, 0, "Current Sort: %s", current_sort == 'r' ? "Red" : "Blue");
+        // }
 
-        if (controller_print > 0) {
-            controller_print--;
-        }
+        // if (controller_print > 0) {
+        //     controller_print--;
+        // }
 
         delay(20);
     }

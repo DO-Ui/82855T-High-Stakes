@@ -170,19 +170,30 @@ void opcontrol() {
 		// lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);
 		// lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position()/100);
 
+		if (master.get_digital(E_CONTROLLER_DIGITAL_LEFT)) {
+			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)) {
+				chassis.lateralPID.kD += 0.1;
+			} else if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_DOWN)) {
+				chassis.lateralPID.kD -= 0.1;
+			}
+		} else {
+			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)) {
+				chassis.lateralPID.kP += 0.1;
+			} else if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_DOWN)) {
+				chassis.lateralPID.kP -= 0.1;
+			}
+		}
 
-		// if (count == 3) {
-		// 	master.print(0, 0, "x: %f", pose.x);
-		// }
-		// if (count == 6) {
-		// 	master.print(1, 0, "y: %f", pose.y);
-		// }
 
-		// if (count == 9) {
-		// 	master.print(2, 0, "theta: %f", pose.theta);
-		// 	count = 0;
-		// } 
-		// count++;
+		if (count == 3) {
+			master.print(0, 0, "P: %f", chassis.lateralPID.kP);
+		}
+		if (count == 6) {
+			master.print(1, 0, "D: %f", chassis.lateralPID.kD);
+			count = 0;
+		}
+
+		count++;
 
 		delay(20);
 
