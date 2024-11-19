@@ -123,13 +123,13 @@ void colour_sorter_task() {
             sorter_active = !sorter_active;
         }
 
-        if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
-            if (current_sort == 'r') {
-                current_sort = 'b';
-            } else {
-                current_sort = 'r';
-            }
-        }
+        // if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
+        //     if (current_sort == 'r') {
+        //         current_sort = 'b';
+        //     } else {
+        //         current_sort = 'r';
+        //     }
+        // }
 
         // if (controller_print == 0) {
         //     master.print(0, 0, "Sorter State: %s", sorter_active ? "Active" : "Inactive");
