@@ -123,7 +123,7 @@ void opcontrol() {
 	Task colour_task(colour_sorter_task);
 
 	bool clampState = true;
-	bool doinkerState = false;
+	bool isDoinkerOut = false;
 
 	sorter_active = true;
 
@@ -154,13 +154,14 @@ void opcontrol() {
 
 
 		if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
-			if (doinkerState) {
+			if (!isDoinkerOut) {
 				doinker.extend();
-				doinkerState = !doinkerState;
-			} else {
-				doinker.retract();
-				doinkerState = !doinkerState;
+				isDoinkerOut = true;
 			}
+		}
+		else if(isDoinkerOut){
+			doinker.retract();
+			isDoinkerOut = false;
 		}
 
 		// // print to brain screen
