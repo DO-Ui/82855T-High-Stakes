@@ -153,7 +153,7 @@ void opcontrol() {
 		}
 
 
-		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L2)) {
+		if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
 			if (doinkerState) {
 				doinker.extend();
 				doinkerState = !doinkerState;
