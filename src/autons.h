@@ -581,15 +581,16 @@ inline void redLeftSoloAWP(){
  */
 inline void redRightSoloAWP(){
 	chassis.setPose(-55, -15.65, 180);
-	chassis.moveToPoint(-60, 0, 1000, {.forwards = false}); // move to alliance stake
-	chassis.turnToHeading(90, 1200); // turn toward alliance stake
+	chassis.turnToHeading(320, 1000);
+	chassis.moveToPoint(-61.813, -8.375, 1000, {.forwards = false}); // move to alliance stake
 	chassis.waitUntilDone();
 	conveyor.move(120); //score on alliance stake
 	delay(500);
 	intake.move(-127);
-	chassis.moveToPoint(-55.182, 0, 1000); //move to middle rings, intake bottom blue ring while ramming red ring forwards
+	chassis.turnToPoint(54.72, -4.389, 1000);
+	chassis.moveToPoint(54.72, -4.389, 1000); //move to middle rings, intake bottom blue ring while ramming red ring forwards
 	delay(300);
-	chassis.moveToPose(-43.901, 0, 90, 1000); //intake red ring
+	chassis.moveToPose(-44.778, 1.198, 60, 1000); //intake red ring
 	chassis.waitUntilDone();
 	intake.move(0);
 	conveyor.move(0); //store red ring in robot
