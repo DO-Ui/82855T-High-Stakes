@@ -102,7 +102,8 @@ void autonomous() {
 	//blueAllianceStake();
 	//redAllianceStake();
 	//skills();
-	redLeft6RingElim();
+	//redLeft6RingElim();
+	redRightSoloAWP();
 }
 
 /**
