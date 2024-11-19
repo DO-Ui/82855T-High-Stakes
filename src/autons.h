@@ -523,7 +523,7 @@ inline void redLeft6RingElim(){
 	chassis.turnToHeading(100, 1000, {.minSpeed = 100}); //spin robot to clear rings out of corner
 	chassis.turnToPoint(-59.478, 59.529, 1000);
 	doinker.retract();
-	chassis.moveToPoint(-59.478, 59.529, 1000); //move to left corner to grab lowest ring
+	chassis.moveToPose(-59.478, 59.529, 319, 1000); //move to left corner to grab lowest ring
 	delay(400);
 	chassis.moveToPoint(-47, 47, 1000, {.forwards = false});
 	chassis.turnToHeading(180, 1000);

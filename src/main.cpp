@@ -136,10 +136,10 @@ void opcontrol() {
 
 		chassis.arcade(leftY, rightX, false, 0.75);
 		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-			//chassis.moveToPoint(0, 10, 3000);
+			chassis.moveToPose(0, 24, 0, 3000);
 		}
 		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
-			//chassis.moveToPoint(0, 0, 3000, {.forwards = false});
+			chassis.moveToPose(0, 0, 0, 3000, {.forwards = false});
 		}
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
@@ -164,8 +164,8 @@ void opcontrol() {
 		}
 
 		// // print to brain screen
-		// lcd::print(0, "x: %f", chassis.getPose().x);
-		// lcd::print(1, "y: %f", chassis.getPose().y);
+		lcd::print(0, "x: %f", chassis.getPose().x);
+		lcd::print(1, "y: %f", chassis.getPose().y);
 		// lcd::print(2, "theta: %f", imu.get_heading());
 		// lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);
 		// lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position()/100);
