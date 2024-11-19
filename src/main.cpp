@@ -125,7 +125,7 @@ void opcontrol() {
 	bool clampState = true;
 	bool isDoinkerOut = false;
 
-	sorter_active = true;
+	sorter_active = false;
 
 	int count = 0;
 
