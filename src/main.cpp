@@ -90,6 +90,12 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
+	//RELEASE INTAKE
+	intake.move(-127);
+	delay(150);
+	intake.move(0);
+
+
 	//sorter_active = false;
 	//blueDoubleMogoAWP();
 	//redDoubleMogoAWP();
@@ -103,7 +109,7 @@ void autonomous() {
 	//redAllianceStake();
 	//skills();
 	//redLeft6RingElim();
-	redRightSoloAWP();
+	redLeftSoloAWP();
 }
 
 /**
