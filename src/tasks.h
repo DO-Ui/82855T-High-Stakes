@@ -18,8 +18,6 @@ void colour_sorter_task() {
 
     while (true) {
 
-        lcd::print(0, "x: %f", chassis.getPose().x);
-		lcd::print(1, "y: %f", chassis.getPose().y);
         // 200-ish is blue
         // 10-ish is red
         double hue = colour_sensor.get_hue();
