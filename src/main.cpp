@@ -41,7 +41,7 @@ void initialize() {
 	horizontal_tracker.reset();
 	vertical_tracker.reset();
 	chassis.calibrate();
-	chassis.setPose(0, 0, 0);
+	chassis.setPose(0, 0, 0); 
 
 	master.clear();
 
@@ -95,8 +95,8 @@ void autonomous() {
 	delay(150);
 	intake.move(0);
 
-
 	//sorter_active = false;
+
 	//blueDoubleMogoAWP();
 	//redDoubleMogoAWP();
 	//redMogoRushSoloAWP();
@@ -108,8 +108,8 @@ void autonomous() {
 	//blueAllianceStake();
 	//redAllianceStake();
 	//skills();
-	//redLeft6RingElim();
-	redLeftSoloAWP();
+	redLeft6RingElim();
+	//redLeftSoloAWP();
 }
 
 /**
@@ -143,10 +143,6 @@ void opcontrol() {
 
 		chassis.arcade(leftY, rightX, false, 0.75);
 		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-			//chassis.moveToPose(0, 24, 0, 3000);
-			chassis.setPose(-55, -15.65, 180);
-			chassis.moveToPoint(-60, 0, 1000, {.forwards = false}); // move to alliance stake
-			chassis.turnToHeading(90, 1200); // turn toward alliance stake
 		}
 		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
 			chassis.moveToPose(0, 0, 0, 3000, {.forwards = false});
