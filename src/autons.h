@@ -493,38 +493,36 @@ inline void skills(){
  * RED 6 RING ELIM
  */
 inline void redLeft6RingElim(){
-	chassis.setPose(-50.775, 39.571, 300);
-	chassis.moveToPoint(-31.749, 28.329, 1000, {.forwards = false, .minSpeed = 50, .earlyExitRange = 7}); //move to left mogo
-	chassis.moveToPoint(-31.749, 28.329, 1000, {.forwards = false, .maxSpeed = 40}); //move to left mogo
+	chassis.setPose(-57.5, 40.539, 270);
+	chassis.moveToPose(-31.749, 28.329, 300, 1000, {.forwards = false, .minSpeed = 50, .earlyExitRange = 7}); //move to left mogo
 	chassis.waitUntilDone();
+	chassis.tank(-60, -60);
+	delay(450);
+	chassis.tank(0, 0);
 	mogoclamp.extend(); //clamp left mogo
 	delay(100);
-	chassis.turnToPoint(-10.219, 40.291, 1000);
+	chassis.turnToPoint(-10.219, 40.291, 600);
 	chassis.waitUntilDone();
 	conveyor.move(120);
 	intake.move(-127);
-	chassis.moveToPoint(-10.447, 39.294, 2000, {.forwards = true, .minSpeed = 50, .earlyExitRange = 7}); //go to first contested ring
-	chassis.moveToPoint(-10.447, 39.294, 2000, {.forwards = true, .maxSpeed= 20}); //go to first contested ring
-	delay(300);
+	chassis.moveToPoint(-10.447, 39.294, 1500, {.forwards = true, .minSpeed = 50, .earlyExitRange = 7}); //go to first contested ring
+	chassis.moveToPoint(-10.447, 39.294, 1500, {.forwards = true, .maxSpeed= 20}); //go to first contested ring
 	chassis.moveToPoint(-23.957, 30.871, 1000, {.forwards = false});
 	chassis.turnToHeading(0, 1000);
-	delay(100);
 	chassis.moveToPoint(-23.957, 50.759, 1000); //get ring behind contested rings
-	chassis.turnToPoint(-9.303, 50.759, 1000);
+	chassis.turnToPoint(-9.303, 50.759, 700);
 	chassis.moveToPoint(-9.303, 50.759, 1000); //get final contested ring
-	delay(300);
-	chassis.moveToPoint(-43.605, 42.498, 2000, {.forwards = false});
-	chassis.turnToHeading(319, 1000);
-	chassis.moveToPoint(-57.274, 57.316, 1000);
-	delay(100);
+	chassis.moveToPoint(-43.605, 42.498, 1500, {.forwards = false});
+	chassis.turnToHeading(319, 7000);
 	doinker.extend();
-	delay(100);
+	chassis.moveToPoint(-57.274, 57.316, 1000);
 	//chassis.swingToHeading(110, DriveSide::RIGHT, 1000);
 	chassis.turnToHeading(100, 1000, {.minSpeed = 100}); //spin robot to clear rings out of corner
 	chassis.turnToPoint(-59.478, 59.529, 1000);
 	doinker.retract();
-	chassis.moveToPose(-59.478, 59.529, 315, 1000); //move to left corner to grab lowest ring
-	delay(400);
+	delay(200);
+	chassis.moveToPose(-59.478, 59.529, 319, 1000); //move to left corner to grab lowest ring
+	delay(200);
 	chassis.moveToPoint(-47, 47, 1000, {.forwards = false});
 	chassis.turnToHeading(180, 1000);
 	chassis.moveToPoint(-47, -9, 2000);
