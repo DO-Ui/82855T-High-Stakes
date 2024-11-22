@@ -92,8 +92,8 @@ void competition_initialize() {}
 void autonomous() {
 	//RELEASE INTAKE
 	intake.move(-127);
-	delay(150);
-	intake.move(0);
+	// delay(250);
+	// intake.move(0);
 
 	//sorter_active = false;
 
@@ -108,8 +108,13 @@ void autonomous() {
 	//blueAllianceStake();
 	//redAllianceStake();
 	//skills();
-	redLeft6RingElim();
-	//redLeftSoloAWP();
+
+	// These ones below work
+	// redLeft5RingElim();
+	// blueRight5RingElim();
+	// redLeftSoloAWP();
+	// blueRightSoloAWP();
+	redRight3RingPlusCorner();
 }
 
 /**
