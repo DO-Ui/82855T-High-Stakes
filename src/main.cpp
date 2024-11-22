@@ -110,11 +110,11 @@ void autonomous() {
 	//skills();
 
 	// These ones below work
-	// redLeft5RingElim();
+	redLeft5RingElim();
 	// blueRight5RingElim();
 	// redLeftSoloAWP();
 	// blueRightSoloAWP();
-	redRight3RingPlusCorner();
+	// redRight3RingPlusCorner();
 }
 
 /**
