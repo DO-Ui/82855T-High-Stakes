@@ -320,9 +320,9 @@ inline void blueRightSoloAWP(){
  */
 inline void redRight3RingPlusCorner(){
 	chassis.setPose(-54, -14.2, 180);
-	chassis.moveToPose(-54, 0.16, 180, 800, {.forwards = false}); // move to alliance stake
+	chassis.moveToPose(-54, 0, 180, 800, {.forwards = false}); // move to alliance stake
 	chassis.turnToHeading(90, 700); // turn toward alliance stake
-	chassis.moveToPoint(-61, 0.16, 700, {.forwards = false});
+	chassis.moveToPoint(-61, 0, 700, {.forwards = false});
 	chassis.waitUntilDone();
 	conveyor.move(127);
 	delay(400);
@@ -340,18 +340,20 @@ inline void redRight3RingPlusCorner(){
 	chassis.turnToPoint(-23, -50, 1000);
 	chassis.moveToPoint(-23, -50, 1500); //grab safe ring
 	intake.move(-127);
-	chassis.turnToPoint(-61, -61, 1000);
-	chassis.moveToPoint(-61, -61, 1100); //move to left corner to grab lowest ring
+	chassis.turnToPoint(-62.029, -63.693, 1000);
 	conveyor.move(120);
+	chassis.moveToPoint(-62.029, -63.693, 1100); //move to left corner to grab lowest ring
 	chassis.waitUntilDone();
 	chassis.tank(80, 80);
 	intake.move(127);
-	delay(300);
+	delay(1000);
 	chassis.tank(0, 0);
 	intake.move(-100);
-	delay(300);
+	delay(500);
+	chassis.moveToPose(-28.913, -7.98, 29.667, 3000); //move to ladder
+	chassis.waitUntilDone();
 	intake.move(0);
-	chassis.moveToPose(-24, -5, 0, 1000); //move to ladder
+	conveyor.move(0);
 
 }
 
