@@ -104,6 +104,7 @@ inline void skills(){
 
 /**
  * RED 5 RING ELIM
+ * Grab mogo -> score 5 rings on it -> run to positive corner
  */
 inline void redLeft5RingElim(){
 	chassis.setPose(-57.5, 40.5, 270);
@@ -167,6 +168,7 @@ inline void redLeft5RingElim(){
 
 /**
  * BLUE 5 RING ELIM
+ * Grab mogo -> score 5 rings on it -> run to positive corner
  */
 inline void blueRight5RingElim(){
 	chassis.setPose(57.5, 40.5, 90);
@@ -230,6 +232,7 @@ inline void blueRight5RingElim(){
 
 /**
  * Grant's Solo AWP Red Left side
+ * Score on alliance stake -> score three rings on left mogo -> touch ladder
  */
 inline void redLeftSoloAWP(){
 	chassis.setPose(-54, 14.2, 0);
@@ -274,6 +277,7 @@ inline void redLeftSoloAWP(){
 
 /**
  * Grant's Solo AWP Blue Right Side
+ * Score on alliance stake -> score three rings on right mogo -> touch ladder
  */
 inline void blueRightSoloAWP(){
 	chassis.setPose(54, 14.2, 0);
@@ -317,6 +321,7 @@ inline void blueRightSoloAWP(){
 
 /**
  * RED RIGHT 3 RING PLUS CORNER
+ * Score on alliance stake -> score 2 rings on right mogo -> touch ladder
  */
 inline void redRight3RingPlusCorner(){
 	chassis.setPose(-54, -14.2, 180);
@@ -341,21 +346,25 @@ inline void redRight3RingPlusCorner(){
 	chassis.moveToPoint(-23, -50, 1500); //grab safe ring
 	intake.move(-127);
 	chassis.turnToPoint(-62.029, -63.693, 1000);
-	conveyor.move(120);
+	conveyor.move(127);
 	chassis.moveToPoint(-62.029, -63.693, 1100); //move to left corner to grab lowest ring
 	chassis.waitUntilDone();
 	chassis.tank(80, 80);
 	intake.move(127);
 	delay(1000);
+	conveyor.move(0);
 	chassis.tank(0, 0);
 	intake.move(-100);
 	delay(500);
 	chassis.moveToPose(-28.913, -7.98, 29.667, 3000); //move to ladder
+	conveyor.move(127);
 	chassis.waitUntilDone();
 	intake.move(0);
 	conveyor.move(0);
 
 }
+
+
 
 //OLD ONES
 
