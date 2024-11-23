@@ -97,6 +97,20 @@ void autonomous() {
 
 	//sorter_active = false;
 
+
+	// These ones below work
+
+	//RED SIDE 
+	//redLeft5RingElim();
+	//redRightSoloAWP();
+	//redLeftSoloAWP();
+	//BLUE SIDE
+	//blueRightSoloAWP();
+	//blueLeftSoloAWP();
+	//blueRight5RingElim();
+
+
+	//NONFUNCTIONAL
 	//blueDoubleMogoAWP();
 	//redDoubleMogoAWP();
 	//redMogoRushSoloAWP();
@@ -111,12 +125,7 @@ void autonomous() {
 	// redLeftAllianceStake4Ring();
 
 
-	// These ones below work
-	//redLeft5RingElim();
-	// blueRight5RingElim();
-	// redLeftSoloAWP();
-	blueRightSoloAWP();
-	// redRight3RingPlusCorner();
+	
 }
 
 /**
