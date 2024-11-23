@@ -1,6 +1,30 @@
 using namespace pros;
 
 /**
+ * Slowly backs up and clamps onto mogo using chassis.tank();
+ * @param motorPower desired speed of motors when moving back
+ */
+void approachAndClampMogo(int motorPower){
+	chassis.waitUntilDone();
+	chassis.tank(-motorPower, -motorPower);
+	delay(450);
+	chassis.tank(0, 0);
+	mogoclamp.extend(); //clamp mogo
+}
+
+/**
+ * Slowly backs up and clamps onto mogo using chassis.tank();
+ * Motor speed is defaulted to -60
+ */
+void approachAndClampMogo(){
+	chassis.waitUntilDone();
+	chassis.tank(-60, -60);
+	delay(450);
+	chassis.tank(0, 0);
+	mogoclamp.extend(); //clamp mogo
+}
+
+/**
  * SKILLS ROUTE
  * by Grant
  */
@@ -8,12 +32,11 @@ inline void skills(){
 	//upper left corner
 	chassis.setPose(-62, 0, 90); 
 	conveyor.move(127); //score on red alliance stake 
-	delay(1000);
-	chassis.moveToPoint(-47, 0, 1500);	
+	delay(400);
+	chassis.moveToPoint(-47, 0, 1000);	
 	chassis.turnToHeading(180, 1000); //turn towards mogo
 	chassis.moveToPoint(-47, 24, 2000, {.forwards=false, .earlyExitRange=5}); //move to mogo
-	chassis.waitUntilDone();
-	mogoclamp.extend(); //clamp mogo
+	approachAndClampMogo();
 	delay(400);
 	chassis.turnToHeading(90, 500); 
 	chassis.waitUntilDone();
@@ -28,13 +51,14 @@ inline void skills(){
 	chassis.moveToPose(-47.496, 58.974, 90, 2000, {.horizontalDrift = 8, .lead = 0.5}); //grab last corner ring
 	chassis.turnToHeading(110, 1000);
 	chassis.moveToPose(-59.52, 58.427, 140, 2000, {.forwards=false, .earlyExitRange=5}); //drive to corner
+	chassis.waitUntilDone();
 	mogoclamp.retract();
 	//lower left corner
 	chassis.moveToPose(-47, -12.131, 0, 3000); //move to mogo in lower left corner
 	chassis.moveToPoint(-47, -24, 1000, {.forwards = false, .earlyExitRange = 5}); //plow mogo a bit
-	chassis.waitUntilDone();
-	mogoclamp.extend();
-	chassis.turnToPoint(-23.672, -23.714, 1000);
+	approachAndClampMogo();
+	delay(300);
+	chassis.turnToPoint(-23.672, -23.714, 700);
 	chassis.moveToPoint(-23.672, -23.714, 1000);
 	chassis.moveToPose(0.811, -58.991, 180, 2000); //move to middle bottom ring
 
@@ -51,7 +75,7 @@ inline void skills(){
 	chassis.waitUntilDone();
 	mogoclamp.retract(); //drop off mogo in lower left corner
 	//lower right corner
-	chassis.moveToPose(23.879, -47.111, 75, 3000); //move to first ring on right side
+	chassis.moveToPose(23.879, -47.111, 75, 4000); //move to first ring on right side
 	chassis.waitUntilDone();
 	conveyor.move(0); //turn off conveyor to store the ring
 	delay(100);
@@ -59,8 +83,7 @@ inline void skills(){
 	chassis.turnToHeading(180, 1000);
 	delay(200);
 	chassis.moveToPoint(47, -7, 1000, {.forwards = false, .earlyExitRange = 5}); //plow middle mogo
-	chassis.waitUntilDone();
-	mogoclamp.extend(); //clamp middle mogo
+	approachAndClampMogo();
 	delay(400);
 	conveyor.move(127);
 	chassis.turnToPoint(24.746, -22, 1000);
@@ -85,8 +108,7 @@ inline void skills(){
 	delay(500);
 	chassis.turnToHeading(0, 1000);
 	chassis.moveToPoint(59.254, 27.884, 1500, {.forwards = false, .earlyExitRange = 5});
-	chassis.waitUntilDone();
-	mogoclamp.extend(); //grab upper mogo on right side
+	approachAndClampMogo();
 	delay(200);
 	//lower right corner
 	chassis.turnToPoint(32.138, -61.097, 1000);
