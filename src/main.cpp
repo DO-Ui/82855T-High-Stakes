@@ -112,7 +112,7 @@ void autonomous() {
 
 
 	// These ones below work
-	// redLeft5RingElim();
+	//redLeft5RingElim();
 	// blueRight5RingElim();
 	// redLeftSoloAWP();
 	blueRightSoloAWP();
