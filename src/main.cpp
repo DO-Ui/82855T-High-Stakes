@@ -108,13 +108,15 @@ void autonomous() {
 	//blueAllianceStake();
 	//redAllianceStake();
 	//skills();
+	// redLeftAllianceStake4Ring();
+
 
 	// These ones below work
 	// redLeft5RingElim();
 	// blueRight5RingElim();
 	// redLeftSoloAWP();
-	// blueRightSoloAWP();
-	redRight3RingPlusCorner();
+	blueRightSoloAWP();
+	// redRight3RingPlusCorner();
 }
 
 /**
