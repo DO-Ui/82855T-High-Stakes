@@ -125,6 +125,56 @@ inline void skills(){
 }
 
 /**
+ * UNFINISHED Alliance stake and 4 ring (8pts)
+ */
+inline void redLeftAllianceStake4Ring(){
+	chassis.setPose(-54, 14.2, 0);
+	chassis.moveToPose(-54, 0, 0, 800, {.forwards = false}); // move to alliance stake
+	chassis.turnToHeading(90, 700); // turn toward alliance stake
+	chassis.moveToPoint(-60, 0, 700, {.forwards = false});
+	chassis.waitUntilDone();
+	conveyor.move(127);
+	delay(400);
+	chassis.moveToPoint(-55, 0, 600);
+	chassis.turnToPoint(-32.628, 18.083, 800, {.forwards=false}); // turn toward mogo flat side
+	chassis.moveToPoint(-32.628, 18.083, 800, {.forwards = false, .minSpeed = 60, .earlyExitRange = 8});
+	chassis.waitUntilDone();
+	chassis.tank(-75, -75);
+	delay(450);
+	chassis.tank(0, 0);
+	mogoclamp.extend(); //clamp left mogo
+	delay(100);
+	chassis.turnToPoint(-10.447, 40, 1000);
+	conveyor.move(127);
+	intake.move(-127);
+	chassis.moveToPoint(-10.447, 40, 1000, {.minSpeed = 50, .earlyExitRange = 7}); //go to first contested ring
+	chassis.moveToPoint(-10.447, 40, 500, {.maxSpeed= 35}); //go to first contested ring
+	chassis.moveToPoint(-23.957, 30.871, 750, {.forwards = false, .minSpeed=30, .earlyExitRange=3}); // back up
+	delay(300);
+	conveyor.move(0); // stop conveyor while reversing
+	chassis.turnToHeading(0, 800, {.minSpeed = 20, .earlyExitRange = 10});
+	chassis.moveToPoint(-23.957, 50.759, 1000); //get ring behind contested rings
+	conveyor.move(127);
+	chassis.turnToPoint(-9.303, 50.759, 550); 
+	chassis.moveToPoint(-9.303, 50.759, 750); //get final contested ring
+	chassis.moveToPoint(-20.303, 50.759, 750, {.forwards = false});
+	conveyor.move(120);
+	chassis.turnToPoint(-61, 61, 800);
+	chassis.moveToPose(-62, 59, 315, 1500, {.minSpeed=60, .earlyExitRange=3}); //move to left corner to grab lowest ring
+	chassis.waitUntilDone();
+	chassis.tank(90, 90);
+	intake.move(127);
+	delay(600);
+	chassis.tank(0, 0);
+	intake.move(-100);
+	delay(500);
+	chassis.moveToPoint(-42, 42, 1000, {.forwards = false});
+
+
+}
+
+
+/**
  * RED 5 RING ELIM
  * Grab mogo -> score 5 rings on it -> run to positive corner
  */
@@ -265,8 +315,8 @@ inline void redLeftSoloAWP(){
 	conveyor.move(127);
 	delay(400);
 	chassis.moveToPoint(-55, 0, 600);
-	chassis.turnToPoint(-32.628, 18.083, 1000, {.forwards=false});
-	chassis.moveToPose(-32.628, 18.083, 240, 800, {.forwards = false, .minSpeed = 60, .earlyExitRange = 8});
+	chassis.turnToPoint(-32.628, 18.083, 800, {.forwards=false}); // turn toward mogo flat side
+	chassis.moveToPoint(-32.628, 18.083, 800, {.forwards = false, .minSpeed = 60, .earlyExitRange = 8});
 	chassis.waitUntilDone();
 	chassis.tank(-60, -60);
 	delay(450);
