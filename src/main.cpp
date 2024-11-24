@@ -99,15 +99,15 @@ void autonomous() {
 
 
 	// These ones below work
-
+	//skills();
 	//RED SIDE 
-	//redLeft5RingElim();
+	redLeft5RingElim();
 	//redRightSoloAWP();
 	//redLeftSoloAWP();
 	//BLUE SIDE
 	//blueRightSoloAWP();
 	//blueLeftSoloAWP();
-	//blueRight5RingElim();
+	// blueRight5RingElim();
 
 
 	//NONFUNCTIONAL
