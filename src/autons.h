@@ -29,12 +29,13 @@ void approachAndClampMogo(){
  * by Grant
  */
 inline void skills(){
+	//The commments in this funtion relate to the jerryio field, so "bottom left" would be on the red positive side
 	//upper left corner
-	chassis.setPose(-61, 0, 90); 
+	chassis.setPose(-60, 0, 90); 
 	conveyor.move(127); //score on red alliance stake 
 	delay(450);
 	chassis.moveToPoint(-47, 0, 1000);	
-	chassis.turnToHeading(180, 1000); //turn towards mogo
+	chassis.turnToHeading(180, 600); //turn towards mogo
 	chassis.moveToPoint(-47, 18, 2000, {.forwards=false, .earlyExitRange=5}); //move to mogo
 	approachAndClampMogo();
 	intake.move(-127);
@@ -48,13 +49,14 @@ inline void skills(){
 	conveyor.move(127);
 	chassis.turnToHeading(270, 1000);
 	chassis.moveToPoint(-58.328, 47, 3000); //grab two corner rings
-	chassis.moveToPose(-47.496, 58.974, 70, 2000, {.horizontalDrift = 8, .lead = 0.5}); //grab last corner ring
+	chassis.turnToPoint(-47.733, 58.524, 700);
+	chassis.moveToPoint(-47.733, 58.524, 1000); //grab last corner ring
 	chassis.turnToHeading(110, 1000);
 	chassis.moveToPose(-59.52, 58.427, 140, 2000, {.forwards=false, .earlyExitRange=5}); //drive to corner
 	chassis.waitUntilDone();
 	mogoclamp.retract();
 	//lower left corner
-	chassis.moveToPose(-47, -18, 0, 3000, {.forwards = false}); //move to mogo in lower left corner
+	chassis.moveToPose(-47, -16.5, 0, 3000, {.forwards = false}); //move to mogo in lower left corner
 	approachAndClampMogo();
 	chassis.turnToPoint(-23.672, -23.714, 700);
 	chassis.moveToPoint(-23.672, -23.714, 1000);
@@ -305,7 +307,7 @@ inline void blueRight5RingElim(){
 
 
 /**
- * Grant's Solo AWP Red Left side v\ffffffffffffnbnbnnm
+ * Grant's Solo AWP Red Left side
  * Score on alliance stake -> score three rings on left mogo -> touch ladder
  * ON RING SIDE
  */
