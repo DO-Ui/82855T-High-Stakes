@@ -121,11 +121,11 @@ void autonomous() {
 	//redLeftElims();
 	//blueAllianceStake();
 	//redAllianceStake();
-	//skills();
+	skills();
 	// redLeftAllianceStake4Ring();
 
 
-	
+
 }
 
 /**
