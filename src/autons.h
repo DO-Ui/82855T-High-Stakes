@@ -7,7 +7,7 @@ using namespace pros;
 void approachAndClampMogo(int motorPower){
 	chassis.waitUntilDone();
 	chassis.tank(-motorPower, -motorPower);
-	delay(450);
+	delay(550);
 	chassis.tank(0, 0);
 	mogoclamp.extend(); //clamp mogo
 }
@@ -36,42 +36,48 @@ inline void skills(){
 	delay(450);
 	chassis.moveToPoint(-47, 0, 1000);	
 	chassis.turnToHeading(180, 600); //turn towards mogo
-	chassis.moveToPoint(-47, 18, 2000, {.forwards=false, .earlyExitRange=5}); //move to mogo
+	chassis.moveToPoint(-47, 11.5, 1000, {.forwards=false}); //move to mogo
 	approachAndClampMogo();
 	intake.move(-127);
 	conveyor.move(127);
-	delay(500);
+	delay(300);
 	chassis.moveToPoint(-24, 24, 2000); //move to first ring
-	chassis.moveToPose(-2.132, 56.514, 29, 3000, {.horizontalDrift = 8, .lead = 0.5}); //move to wall stake ring
+	chassis.moveToPose(-2.132, 56.514, 29, 3000, {.horizontalDrift = 8}); //move to wall stake ring
 	conveyor.move(0);
 	chassis.turnToPoint(-23.721, 47.496, 1000); //turn to next ring
 	chassis.moveToPoint(-23.721, 47.496, 2000); //move to next ring
 	conveyor.move(127);
 	chassis.turnToHeading(270, 1000);
-	chassis.moveToPoint(-58.328, 47, 3000); //grab two corner rings
+	chassis.moveToPoint(-58.328, 47, 3000, {.maxSpeed = 80}); //grab two corner rings
 	chassis.turnToPoint(-47.733, 58.524, 700);
 	chassis.moveToPoint(-47.733, 58.524, 1000); //grab last corner ring
 	chassis.turnToHeading(110, 1000);
-	chassis.moveToPose(-59.52, 58.427, 140, 2000, {.forwards=false, .earlyExitRange=5}); //drive to corner
+	chassis.moveToPose(-60, 60, 135, 1500, {.forwards=false, .earlyExitRange=3}); //drive to corner
+	conveyor.move(0);
 	chassis.waitUntilDone();
 	mogoclamp.retract();
+	chassis.waitUntilDone();
+	chassis.moveToPoint(-47, 47, 800);
 	//lower left corner
-	chassis.moveToPose(-47, -16.5, 0, 3000, {.forwards = false}); //move to mogo in lower left corner
+	chassis.moveToPose(-48, -11.5, 0, 2500, {.forwards = false}); //move to mogo in lower left corner
 	approachAndClampMogo();
+	intake.move(-127);
+	delay(100);
 	chassis.turnToPoint(-23.672, -23.714, 700);
-	chassis.moveToPoint(-23.672, -23.714, 1000);
-	chassis.moveToPose(0.811, -58.991, 180, 2000); //move to middle bottom ring
+	chassis.moveToPose(-23.672, -23.714, 90, 1000); //move to first ring lower left corner
+	chassis.moveToPose(0, -58.991, 180, 2000); //move to middle bottom ring
 
-	chassis.turnToPoint(-6.287, -47.15, 1000);
+	chassis.moveToPoint(-6.287, -50, 2000);
+	conveyor.move(127);
 	chassis.turnToHeading(270, 1000);
-	chassis.moveToPoint(-55.198, -47.15, 270); //pick up three horizontally aligned rings
+	chassis.moveToPoint(-55.198, -50, 3000); //pick up three horizontally aligned rings
 	// chassis.moveToPose(-17.435, -49.518, 295, 2000); using only moveToPose to grab the three horizontally aligned rings in lower left corner
 	// chassis.moveToPose(-59.738, -47.407, 270, 2000);
 
-	chassis.turnToPoint(-47.365, -58.991, 1000);
-	chassis.moveToPoint(-47.365, -58.991, 1000); //pick up last ring in corner
+	chassis.moveToPoint(-47.365, -58.991, 1500); //pick up last ring in corner
 	chassis.turnToHeading(70, 1000);
-	chassis.moveToPoint(-56.788, -61.543, 1000, {.forwards = false, .earlyExitRange = 5});
+	chassis.moveToPoint(-59.439, -61.721, 1000, {.forwards = false, .earlyExitRange = 5});
+	conveyor.move(0);
 	chassis.waitUntilDone();
 	mogoclamp.retract(); //drop off mogo in lower left corner
 	//lower right corner
@@ -331,21 +337,21 @@ inline void redLeftSoloAWP(){
 	chassis.turnToPoint(-10.219, 40.291, 1000);
 	conveyor.move(127);
 	intake.move(-127);
-	chassis.moveToPoint(-10.447, 39.294, 1000, {.minSpeed = 50, .earlyExitRange = 7}); //go to first contested ring
-	chassis.moveToPoint(-10.447, 39.294, 1000, {.maxSpeed= 35}); //go to first contested ring
-	chassis.moveToPoint(-23.957, 30.871, 750, {.forwards = false});
-	conveyor.move(0); // stop conveyor while reversing
-	chassis.turnToHeading(0, 800, {.minSpeed = 20, .earlyExitRange = 10});
-	chassis.moveToPoint(-23.957, 50.759, 1000); //get ring behind contested rings
-	conveyor.move(127);
-	chassis.turnToPoint(-9.303, 50.759, 750); 
-	conveyor.move(0);
-	chassis.moveToPoint(-9.303, 50.759, 750); //get final contested ring
+
+	chassis.moveToPoint(-11.423, 39, 1500, {.minSpeed = 50, .earlyExitRange = 7}); //go to first contested ring
+	chassis.moveToPoint(-11.423, 39, 1500, {.maxSpeed= 20}); //go to first contested ring
+	chassis.moveToPoint(-24, 30, 1000, {.forwards = false});
+	chassis.turnToHeading(0, 8000);
+	chassis.moveToPoint(-24, 51, 1000); //get ring behind contested rings
+	delay(200);
+	chassis.turnToPoint(-11.423, 51, 700);
+	chassis.moveToPoint(-11.423, 51, 1000); //get final contested ring
+	
 	conveyor.move(110);
 	chassis.moveToPoint(-20.303, 50.759, 1000, {.forwards = false});
 	conveyor.move(0);
 	chassis.turnToPoint(-24.605, 4.648, 1000);
-	chassis.moveToPose(-24.67, 11.623, 180, 1000);
+	chassis.moveToPose(-24.67, 11.623, 180, 1000); //touch ladder
 	conveyor.move(110);
 	chassis.waitUntilDone();
 	intake.move(0);

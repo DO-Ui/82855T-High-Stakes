@@ -99,11 +99,10 @@ void autonomous() {
 
 
 	// These ones below work
-	skills();
 	//RED SIDE 
-	// redLeft5RingElim();
+	//redLeft5RingElim();
 	//redRightSoloAWP();
-	//redLeftSoloAWP();
+	redLeftSoloAWP();
 	//BLUE SIDE
 	//blueRightSoloAWP();
 	//blueLeftSoloAWP();
@@ -121,7 +120,7 @@ void autonomous() {
 	//redLeftElims();
 	//blueAllianceStake();
 	//redAllianceStake();
-	skills();
+	// skills();
 	// redLeftAllianceStake4Ring();
 
 
