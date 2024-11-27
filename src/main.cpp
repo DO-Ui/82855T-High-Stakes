@@ -33,9 +33,9 @@ void initialize() {
 	lcd::initialize();
 
 	colour_sensor.set_led_pwm(100);
-	horizontal_tracker.set_data_rate(10);
-	vertical_tracker.set_data_rate(10);
-	imu.set_data_rate(10);
+	horizontal_tracker.set_data_rate(5);
+	vertical_tracker.set_data_rate(5);
+	imu.set_data_rate(5);
 	horizontal_tracker.set_position(0);
 	vertical_tracker.set_position(0);
 	horizontal_tracker.reset();
@@ -100,13 +100,14 @@ void autonomous() {
 
 	// These ones below work
 	//RED SIDE 
+	// skills();
 	//redLeft5RingElim();
 	//redRightSoloAWP();
-	redLeftSoloAWP();
+	//redLeftSoloAWP();
 	//BLUE SIDE
-	//blueRightSoloAWP();
+	// blueRightSoloAWP();
 	//blueLeftSoloAWP();
-	// blueRight5RingElim();
+	blueRight5RingElim();
 
 
 	//NONFUNCTIONAL
@@ -158,9 +159,12 @@ void opcontrol() {
 
 		chassis.arcade(leftY, rightX, false, 0.75);
 		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
+			// chassis.moveToPose(0, 24, 0, 3000);
+			chassis.turnToHeading(90, 1000);
 		}
 		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
-			chassis.moveToPose(0, 0, 0, 3000, {.forwards = false});
+			// chassis.moveToPose(0, 0, 0, 3000, {.forwards = false});
+			chassis.turnToHeading(0, 1000);
 		}
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {

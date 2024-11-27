@@ -7,7 +7,7 @@ using namespace pros;
 void approachAndClampMogo(int motorPower){
 	chassis.waitUntilDone();
 	chassis.tank(-motorPower, -motorPower);
-	delay(550);
+	delay(500);
 	chassis.tank(0, 0);
 	mogoclamp.extend(); //clamp mogo
 }
@@ -31,12 +31,12 @@ void approachAndClampMogo(){
 inline void skills(){
 	//The commments in this funtion relate to the jerryio field, so "bottom left" would be on the red positive side
 	//upper left corner
-	chassis.setPose(-60, 0, 90); 
+	chassis.setPose(-61, 0, 90); 
 	conveyor.move(127); //score on red alliance stake 
 	delay(450);
 	chassis.moveToPoint(-47, 0, 1000);	
 	chassis.turnToHeading(180, 600); //turn towards mogo
-	chassis.moveToPoint(-47, 11.5, 1000, {.forwards=false}); //move to mogo
+	chassis.moveToPose(-47, 11.5, 180, 2000, {.forwards=false}); //move to mogo
 	approachAndClampMogo();
 	intake.move(-127);
 	conveyor.move(127);
@@ -67,10 +67,10 @@ inline void skills(){
 	chassis.moveToPose(-23.672, -23.714, 90, 1000); //move to first ring lower left corner
 	chassis.moveToPose(0, -58.991, 180, 2000); //move to middle bottom ring
 
-	chassis.moveToPoint(-6.287, -50, 2000);
+	chassis.moveToPoint(-6.287, -52, 2000);
 	conveyor.move(127);
 	chassis.turnToHeading(270, 1000);
-	chassis.moveToPoint(-55.198, -50, 3000); //pick up three horizontally aligned rings
+	chassis.moveToPoint(-55.198, -52, 3000); //pick up three horizontally aligned rings
 	// chassis.moveToPose(-17.435, -49.518, 295, 2000); using only moveToPose to grab the three horizontally aligned rings in lower left corner
 	// chassis.moveToPose(-59.738, -47.407, 270, 2000);
 
@@ -280,8 +280,8 @@ inline void blueRight5RingElim(){
 	chassis.turnToHeading(0, 1000);
 	chassis.moveToPoint(24, 51, 1000); //get ring behind contested rings
 	delay(200);
-	chassis.turnToPoint(11.423, 51, 700);
-	chassis.moveToPoint(11.423, 51, 1000); //get final contested ring
+	chassis.turnToPoint(11.423, 52, 700);
+	chassis.moveToPoint(11.423, 52, 1000); //get final contested ring
 	chassis.moveToPoint(43.605, 42.498, 1500, {.forwards = false});
 	chassis.waitUntilDone();
 
@@ -365,9 +365,9 @@ inline void redLeftSoloAWP(){
  */
 inline void blueRightSoloAWP(){
 	chassis.setPose(54, 14.2, 0);
-	chassis.moveToPose(54, -0.3, 0, 800, {.forwards = false}); // move to alliance stake
+	chassis.moveToPose(54, 1, 0, 800, {.forwards = false}); // move to alliance stake
 	chassis.turnToHeading(270, 700); // turn toward alliance stake
-	chassis.moveToPoint(61.7, -0.3, 700, {.forwards = false});
+	chassis.moveToPoint(61.9, .4, 700, {.forwards = false});
 	chassis.waitUntilDone();
 	conveyor.move(127);
 	delay(400);
@@ -383,16 +383,14 @@ inline void blueRightSoloAWP(){
 	chassis.turnToPoint(10.219, 40.291, 1000);
 	conveyor.move(127);
 	intake.move(-127);
-	chassis.moveToPoint(10.447, 39.294, 1000, {.minSpeed = 50, .earlyExitRange = 7}); //go to first contested ring
-	chassis.moveToPoint(10.447, 39.294, 1000, {.maxSpeed= 35}); //go to first contested ring
-	chassis.moveToPoint(23.957, 30.871, 750, {.forwards = false});
-	conveyor.move(0); // stop conveyor while reversing
-	chassis.turnToHeading(0, 800, {.minSpeed = 20, .earlyExitRange = 10});
-	chassis.moveToPoint(23.957, 50.759, 1000); //get ring behind contested rings
-	conveyor.move(127);
-	chassis.turnToPoint(9.303, 50.759, 750); 
-	conveyor.move(0);
-	chassis.moveToPoint(9.303, 50.759, 750); //get final contested ring
+	chassis.moveToPoint(11, 37.5, 1500, {.minSpeed = 50, .earlyExitRange = 7}); //go to first contested ring
+	chassis.moveToPoint(11, 37.5, 1500, {.maxSpeed= 20}); //go to first contested ring
+	chassis.moveToPoint(24, 30, 1000, {.forwards = false});
+	delay(300);
+	chassis.turnToHeading(0, 800);
+	chassis.moveToPoint(24, 51, 1000); //get ring behind contested rings
+	chassis.turnToPoint(11.423, 51, 700);
+	chassis.moveToPoint(11.423, 51, 1000); //get final contested ring
 	conveyor.move(110);
 	chassis.moveToPoint(20.303, 50.759, 1000, {.forwards = false});
 	conveyor.move(0);
@@ -497,7 +495,7 @@ inline void blueLeftSoloAWP(){
 /**
  * CURRENTLY RAMS CORNER TOO HARD
  * If teammate has ring side Solo AWP, then run this
- * Grab mogo -> Score preload, safe ring, and corner ring
+ * Grab mogo -> Score preload, safe ring, and corner ring -> move to ladder
  * ON MOGO SIDE
  */
 inline void redRightTeammate3Ring(){
