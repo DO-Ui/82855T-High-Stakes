@@ -5,23 +5,27 @@ bool in_range(double value, double bottom, double top) {
 }
 
 bool sorter_active = true;
+bool auton_active = false;
 char current_sort = 'r';
 
-void driver_inputs() {
-    if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
-        conveyor.move(127);
-    } else if (master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)) {
-        conveyor.move(-127);
-    } else {
-        conveyor.move(0);
-    }
 
-    if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
-        intake.move(-127);
-    } else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
-        intake.move(127);
-    } else {
-        intake.move(0);
+void driver_inputs() {
+    if(!auton_active){
+        if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
+            conveyor.move(127);
+        } else if (master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)) {
+            conveyor.move(-127);
+        } else {
+            conveyor.move(0);
+        }
+
+        if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
+            intake.move(-127);
+        } else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
+            intake.move(127);
+        } else {
+            intake.move(0);
+        }
     }
 }
 
@@ -30,8 +34,7 @@ void colour_sorter_task() {
 
     char colour_detected = 'n'; // 'n' means empty
     int controller_print = 0;
-
-
+    
     while (true) {
 
         // 200-ish is blue

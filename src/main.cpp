@@ -56,6 +56,8 @@ void initialize() {
 		}
 	});
 
+	Task colour_task(colour_sorter_task);
+
 	// NOTE: colour_task has logging, remove if not needed
 
 }
@@ -93,15 +95,16 @@ void autonomous() {
 	//RELEASE INTAKE
 	intake.move(-127);
 
-	//sorter_active = false;
-
+	sorter_active = true;
+	auton_active = true;
+	current_sort = 'b';
 
 	// These ones below work
 	//RED SIDE 
 	// skills();
-	//redLeft5RingElim();
+	redLeft5RingElim(); //tuned for brampton on good field
 	//redRightSoloAWP();
-	redLeftSoloAWP(); //tuned for brampton on good field
+	// redLeftSoloAWP(); //tuned for brampton on good field
 	//BLUE SIDE
 	// blueRightSoloAWP(); //tuned for brampton on good field
 	//blueLeftSoloAWP();
@@ -123,7 +126,6 @@ void autonomous() {
 	// redLeftAllianceStake4Ring();
 
 
-
 }
 
 /**
@@ -140,13 +142,12 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-
-	Task colour_task(colour_sorter_task);
-
+	auton_active = false;
 	bool clampState = true;
 	bool isDoinkerOut = false;
+	bool hangExtended = false;
 
-	sorter_active = false;
+	sorter_active = true;
 
 	// int count = 0; //used for automatic PID tuning
 
@@ -163,6 +164,17 @@ void opcontrol() {
 		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
 			// chassis.moveToPose(0, 0, 0, 3000, {.forwards = false});
 			chassis.turnToHeading(0, 1000);
+		}
+
+
+		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
+			if (hangExtended) {
+				hang.extend();
+				hangExtended = !hangExtended;
+			} else {
+				hang.retract();
+				hangExtended = !hangExtended;
+			}
 		}
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
