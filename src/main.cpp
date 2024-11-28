@@ -92,8 +92,6 @@ void competition_initialize() {}
 void autonomous() {
 	//RELEASE INTAKE
 	intake.move(-127);
-	// delay(250);
-	// intake.move(0);
 
 	//sorter_active = false;
 
@@ -103,11 +101,11 @@ void autonomous() {
 	// skills();
 	//redLeft5RingElim();
 	//redRightSoloAWP();
-	//redLeftSoloAWP();
+	redLeftSoloAWP(); //tuned for brampton on good field
 	//BLUE SIDE
-	// blueRightSoloAWP();
+	// blueRightSoloAWP(); //tuned for brampton on good field
 	//blueLeftSoloAWP();
-	blueRight5RingElim();
+	// blueRight5RingElim(); //tuned for brampton on good field
 
 
 	//NONFUNCTIONAL

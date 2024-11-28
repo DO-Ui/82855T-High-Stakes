@@ -319,9 +319,9 @@ inline void blueRight5RingElim(){
  */
 inline void redLeftSoloAWP(){
 	chassis.setPose(-54, 14.2, 0);
-	chassis.moveToPose(-54, -0.2, 0, 800, {.forwards = false}); // move to alliance stake
+	chassis.moveToPose(-54, 1, 0, 800, {.forwards = false}); // move to alliance stake
 	chassis.turnToHeading(90, 700); // turn toward alliance stake
-	chassis.moveToPoint(-60, -0.2, 700, {.forwards = false});
+	chassis.moveToPoint(-61.9, -.1, 700, {.forwards = false});
 	chassis.waitUntilDone();
 	conveyor.move(127);
 	delay(400);
@@ -341,7 +341,7 @@ inline void redLeftSoloAWP(){
 	chassis.moveToPoint(-11.423, 39, 1500, {.minSpeed = 50, .earlyExitRange = 7}); //go to first contested ring
 	chassis.moveToPoint(-11.423, 39, 1500, {.maxSpeed= 20}); //go to first contested ring
 	chassis.moveToPoint(-24, 30, 1000, {.forwards = false});
-	chassis.turnToHeading(0, 8000);
+	chassis.turnToHeading(0, 1000);
 	chassis.moveToPoint(-24, 51, 1000); //get ring behind contested rings
 	delay(200);
 	chassis.turnToPoint(-11.423, 51, 700);
@@ -351,7 +351,7 @@ inline void redLeftSoloAWP(){
 	chassis.moveToPoint(-20.303, 50.759, 1000, {.forwards = false});
 	conveyor.move(0);
 	chassis.turnToPoint(-24.605, 4.648, 1000);
-	chassis.moveToPose(-24.67, 11.623, 180, 1000); //touch ladder
+	chassis.moveToPose(-24.67, 12, 180, 1000, {.maxSpeed = 80}); //touch ladder
 	conveyor.move(110);
 	chassis.waitUntilDone();
 	intake.move(0);
@@ -395,7 +395,7 @@ inline void blueRightSoloAWP(){
 	chassis.moveToPoint(20.303, 50.759, 1000, {.forwards = false});
 	conveyor.move(0);
 	chassis.turnToPoint(24.605, 4.648, 1000);
-	chassis.moveToPose(24.67, 11.623, 180, 1000);
+	chassis.moveToPose(24.67, 11.623, 180, 1000); //touch ladder 
 	conveyor.move(110);
 	chassis.waitUntilDone();
 	intake.move(0);
