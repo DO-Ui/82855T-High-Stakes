@@ -97,17 +97,18 @@ void autonomous() {
 
 	sorter_active = true;
 	auton_active = true;
-	current_sort = 'b';
+	current_sort = 'r';
 
+	blueLeftMogoRush();
 	// These ones below work
 	//RED SIDE 
 	// skills();
-	redLeft5RingElim(); //tuned for brampton on good field
+	// redLeft5RingElim(); //tuned for brampton on good field
 	//redRightSoloAWP();
 	// redLeftSoloAWP(); //tuned for brampton on good field
 	//BLUE SIDE
 	// blueRightSoloAWP(); //tuned for brampton on good field
-	//blueLeftSoloAWP();
+	// blueLeftSoloAWP();
 	// blueRight5RingElim(); //tuned for brampton on good field
 
 
