@@ -99,7 +99,7 @@ void autonomous() {
 	auton_active = true;
 	current_sort = 'r';
 
-	blueLeftMogoRush();
+	// blueLeftMogoRush();
 	// These ones below work
 	//RED SIDE 
 	// skills();
@@ -109,7 +109,7 @@ void autonomous() {
 	//BLUE SIDE
 	// blueRightSoloAWP(); //tuned for brampton on good field
 	// blueLeftSoloAWP();
-	// blueRight5RingElim(); //tuned for brampton on good field
+	blueRight5RingElim(); //tuned for brampton on good field
 
 
 	//NONFUNCTIONAL
@@ -143,10 +143,11 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	hang.retract();
+	
 	auton_active = false;
 	bool clampState = true;
 	bool isDoinkerOut = false;
-	bool hangExtended = false;
 
 	sorter_active = true;
 
@@ -158,24 +159,18 @@ void opcontrol() {
 		int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
 
 		chassis.arcade(leftY, rightX, false, 0.75);
-		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-			// chassis.moveToPose(0, 24, 0, 3000);
-			chassis.turnToHeading(90, 1000);
-		}
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
-			// chassis.moveToPose(0, 0, 0, 3000, {.forwards = false});
-			chassis.turnToHeading(0, 1000);
-		}
+		// if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
+		// 	// chassis.moveToPose(0, 24, 0, 3000);
+		// 	chassis.turnToHeading(90, 1000);
+		// }
+		// if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
+		// 	// chassis.moveToPose(0, 0, 0, 3000, {.forwards = false});
+		// 	chassis.turnToHeading(0, 1000);
+		// }
 
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
-			if (hangExtended) {
-				hang.extend();
-				hangExtended = !hangExtended;
-			} else {
-				hang.retract();
-				hangExtended = !hangExtended;
-			}
+			hang.toggle();
 		}
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
@@ -187,7 +182,6 @@ void opcontrol() {
 				clampState = !clampState;
 			}
 		}
-
 
 		if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
 			if (!isDoinkerOut) {

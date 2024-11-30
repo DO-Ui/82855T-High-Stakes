@@ -296,14 +296,14 @@ inline void blueRight5RingElim(){
 	intake.move(-100);
 	delay(500);
 
-	//MOVE TO POSITIVE CORNER
-	chassis.moveToPoint(51, -51, 1000, {.forwards = false});
-	chassis.turnToHeading(0, 1000);
-	chassis.moveToPoint(51, -9, 2000, {.forwards = false, .minSpeed=50, .earlyExitRange = 5});
+	// //MOVE TO POSITIVE CORNER
+	// chassis.moveToPoint(51, -51, 1000, {.forwards = false});
+	// chassis.turnToHeading(0, 1000);
+	// chassis.moveToPoint(51, -9, 2000, {.forwards = false, .minSpeed=50, .earlyExitRange = 5});
 
-	// //MOVE TO LADDER
-	// chassis.turnToPoint(-25.743, 5.138, 700);
-	// chassis.moveToPoint(-25.743, 5.138, 1500);
+	//MOVE TO LADDER
+	chassis.turnToPoint(-25.743, 5.138, 700);
+	chassis.moveToPoint(-25.743, 5.138, 1500);
 	
 	chassis.waitUntilDone();
 	conveyor.move(0);
@@ -351,9 +351,8 @@ inline void redLeftSoloAWP(){
 	chassis.moveToPoint(-20.303, 50.759, 1000, {.forwards = false});
 	conveyor.move(0);
 	chassis.turnToPoint(-24.605, 4.648, 1000);
-	chassis.moveToPose(-24.67, 12, 180, 1000, {.maxSpeed = 80}); //touch ladder
+	chassis.moveToPose(-28, 10, 180, 1000); //touch ladder
 	conveyor.move(110);
-	chassis.waitUntilDone();
 	intake.move(0);
 
 }
@@ -395,7 +394,7 @@ inline void blueRightSoloAWP(){
 	chassis.moveToPoint(20.303, 50.759, 1000, {.forwards = false});
 	conveyor.move(0);
 	chassis.turnToPoint(24.605, 4.648, 1000);
-	chassis.moveToPose(24.67, 11.623, 180, 1000); //touch ladder 
+	chassis.moveToPose(28, 10, 180, 1000); //touch ladder 
 	conveyor.move(110);
 	chassis.waitUntilDone();
 	intake.move(0);
@@ -453,9 +452,9 @@ inline void redRightSoloAWP(){
  */
 inline void blueLeftSoloAWP(){
 	chassis.setPose(54, -14.2, 180);
-	chassis.moveToPose(54, 0, 180, 800, {.forwards = false}); // move to alliance stake
+	chassis.moveToPose(54, -1, 0, 800, {.forwards = false}); // move to alliance stake
 	chassis.turnToHeading(270, 700); // turn toward alliance stake
-	chassis.moveToPoint(-61, 0, 700, {.forwards = false});
+	chassis.moveToPoint(61.9, -.4, 700, {.forwards = false});
 	chassis.waitUntilDone();
 	conveyor.move(127);
 	delay(400);
@@ -557,10 +556,12 @@ inline void blueLeftMogoRush(){
 	chassis.moveToPoint(47, 7, 2000); // intake the stack and toss the first ring
 	delay(780);
 	conveyor.move(0);
-	chassis.moveToPose(61, 0, 270, 2500, {.forwards = false});
+	chassis.moveToPose(58.053, 0, 180, 1000); //push ring in front of alliance stake out of the way
+	chassis.turnToHeading(270, 1000);
+	chassis.moveToPoint(61, 0, 1000);
 	chassis.waitUntilDone();
 	intake.move(0);
-	conveyor.move(127);
+	conveyor.move(127); //score on alliance stake
 	delay(1000);
 
 
