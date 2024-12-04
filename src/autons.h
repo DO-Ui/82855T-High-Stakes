@@ -128,14 +128,14 @@ inline void skills(){
 }
 
 /**
- * UNFINISHED Alliance stake and 4 ring (8pts)
+ * Alliance stake and 4 ring (8pts)
  * ON RING SIDE
  */
 inline void redLeftAllianceStake4Ring(){
 	chassis.setPose(-54, 14.2, 0);
-	chassis.moveToPose(-54, 0, 0, 800, {.forwards = false}); // move to alliance stake
+	chassis.moveToPose(-54, 1, 0, 800, {.forwards = false}); // move to alliance stake
 	chassis.turnToHeading(90, 700); // turn toward alliance stake
-	chassis.moveToPoint(-60, 0, 700, {.forwards = false});
+	chassis.moveToPoint(-61.9, -.1, 700, {.forwards = false});
 	chassis.waitUntilDone();
 	conveyor.move(127);
 	delay(400);
@@ -143,36 +143,84 @@ inline void redLeftAllianceStake4Ring(){
 	chassis.turnToPoint(-32.628, 18.083, 800, {.forwards=false}); // turn toward mogo flat side
 	chassis.moveToPoint(-32.628, 18.083, 800, {.forwards = false, .minSpeed = 60, .earlyExitRange = 8});
 	chassis.waitUntilDone();
-	chassis.tank(-75, -75);
+	chassis.tank(-60, -60);
 	delay(450);
 	chassis.tank(0, 0);
 	mogoclamp.extend(); //clamp left mogo
 	delay(100);
-	chassis.turnToPoint(-10.447, 40, 1000);
+	chassis.turnToPoint(-10.219, 40.291, 1000);
 	conveyor.move(127);
 	intake.move(-127);
-	chassis.moveToPoint(-10.447, 40, 1000, {.minSpeed = 50, .earlyExitRange = 7}); //go to first contested ring
-	chassis.moveToPoint(-10.447, 40, 500, {.maxSpeed= 35}); //go to first contested ring
-	chassis.moveToPoint(-23.957, 30.871, 750, {.forwards = false, .minSpeed=30, .earlyExitRange=3}); // back up
-	delay(300);
+	chassis.moveToPoint(-11.423, 39, 1000, {.minSpeed = 50, .earlyExitRange = 7}); //go to first contested ring
+	chassis.moveToPoint(-11.423, 39, 500, {.maxSpeed= 35}); //go to first contested ring
+	chassis.moveToPoint(-24, 30, 750, {.forwards = false, .minSpeed=30, .earlyExitRange=3}); // back up
 	conveyor.move(0); // stop conveyor while reversing
 	chassis.turnToHeading(0, 800, {.minSpeed = 20, .earlyExitRange = 10});
-	chassis.moveToPoint(-23.957, 50.759, 1000); //get ring behind contested rings
+	chassis.moveToPoint(-24, 51, 1000); //get ring behind contested rings
 	conveyor.move(127);
-	chassis.turnToPoint(-9.303, 50.759, 550); 
-	chassis.moveToPoint(-9.303, 50.759, 750); //get final contested ring
+	chassis.turnToPoint(-11.423, 51, 550); 
+	chassis.moveToPoint(-11.423, 51, 750); //get final contested ring
 	chassis.moveToPoint(-20.303, 50.759, 750, {.forwards = false});
-	conveyor.move(120);
+	conveyor.move(127);
 	chassis.turnToPoint(-61, 61, 800);
-	chassis.moveToPose(-62, 59, 315, 1500, {.minSpeed=60, .earlyExitRange=3}); //move to left corner to grab lowest ring
+	chassis.moveToPose(-61, 61, 315, 1500, {.minSpeed=60, .earlyExitRange=3}); //move to left corner to grab lowest ring
 	chassis.waitUntilDone();
-	chassis.tank(90, 90);
+	chassis.tank(100, 100);
 	intake.move(127);
-	delay(600);
+	delay(400);
 	chassis.tank(0, 0);
 	intake.move(-100);
 	delay(500);
 	chassis.moveToPoint(-42, 42, 1000, {.forwards = false});
+
+
+}
+
+/**
+ * Alliance stake and 4 ring (8pts)
+ * ON RING SIDE
+ */
+inline void blueRightAllianceStake4Ring(){
+	chassis.setPose(54, 14.2, 0);
+	chassis.moveToPose(54, 1, 0, 800, {.forwards = false}); // move to alliance stake
+	chassis.turnToHeading(270, 700); // turn toward alliance stake
+	chassis.moveToPoint(61.9, -.1, 700, {.forwards = false});
+	chassis.waitUntilDone();
+	conveyor.move(127);
+	delay(400);
+	chassis.moveToPoint(55, 0, 600);
+	chassis.turnToPoint(32.628, 18.083, 800, {.forwards=false}); // turn toward mogo flat side
+	chassis.moveToPoint(32.628, 18.083, 800, {.forwards = false, .minSpeed = 60, .earlyExitRange = 8});
+	chassis.waitUntilDone();
+	chassis.tank(-60, -60);
+	delay(450);
+	chassis.tank(0, 0);
+	mogoclamp.extend(); //clamp left mogo
+	delay(100);
+	chassis.turnToPoint(10.219, 40.291, 1000);
+	conveyor.move(127);
+	intake.move(-127);
+	chassis.moveToPoint(11.423, 39, 1000, {.minSpeed = 50, .earlyExitRange = 7}); //go to first contested ring
+	chassis.moveToPoint(11.423, 39, 500, {.maxSpeed= 35}); //go to first contested ring
+	chassis.moveToPoint(24, 30, 750, {.forwards = false, .minSpeed=30, .earlyExitRange=3}); // back up
+	conveyor.move(0); // stop conveyor while reversing
+	chassis.turnToHeading(0, 800, {.minSpeed = 20, .earlyExitRange = 10});
+	chassis.moveToPoint(24, 51, 1000); //get ring behind contested rings
+	conveyor.move(127);
+	chassis.turnToPoint(11.423, 51, 550); 
+	chassis.moveToPoint(11.423, 51, 750); //get final contested ring
+	chassis.moveToPoint(20.303, 50.759, 750, {.forwards = false});
+	conveyor.move(127);
+	chassis.turnToPoint(61, 61, 800);
+	chassis.moveToPose(61, 61, 45, 1500, {.minSpeed=60, .earlyExitRange=3}); //move to left corner to grab lowest ring
+	chassis.waitUntilDone();
+	chassis.tank(100, 100);
+	intake.move(127);
+	delay(400);
+	chassis.tank(0, 0);
+	intake.move(-100);
+	delay(500);
+	chassis.moveToPoint(42, 42, 1000, {.forwards = false});
 
 
 }
@@ -186,7 +234,7 @@ inline void redLeftAllianceStake4Ring(){
 inline void redLeft5RingElim(){
 	chassis.setPose(-57.5, 40.5, 270);
 	chassis.turnToPoint(-31, 28, 700, {.forwards=false, .minSpeed=5, .earlyExitRange=5}); // turn toward mogo flat side
-	chassis.moveToPose(-31, 28, 295, 700, {.forwards = false, .lead=0.3}); //move to left mogo
+	chassis.moveToPose(-31, 28, 300, 700, {.forwards = false, .lead=0.3}); //move to left mogo
 	// chassis.moveToPoint(-31, 28, 700, {.forwards = false, .minSpeed=5, .earlyExitRange=10}); //move to left mogo
 	chassis.waitUntilDone();
 	chassis.tank(-45, -45);
@@ -240,11 +288,11 @@ inline void redLeft5RingElim(){
 	//MOVE TO POSITIVE CORNER
 	chassis.moveToPoint(-51, -51, 1000, {.forwards = false});
 	chassis.turnToHeading(0, 1000);
-	chassis.moveToPoint(-51, -9, 2000, {.forwards = false, .minSpeed=50, .earlyExitRange = 5});
+	chassis.moveToPoint(-51, 0, 2000, {.forwards = false, .minSpeed=50, .earlyExitRange = 5});
 
 	// //MOVE TO LADDER
-	// chassis.turnToPoint(-25.743, 5.138, 700);
-	// chassis.moveToPoint(-25.743, 5.138, 1500);
+	// chassis.turnToPoint(25.743, 5.138, 700);
+	// chassis.moveToPoint(25.743, 5.138, 1500);
 	
 	chassis.waitUntilDone();
 	conveyor.move(0);
@@ -262,7 +310,7 @@ inline void redLeft5RingElim(){
 inline void blueRight5RingElim(){
 	chassis.setPose(57.5, 40.5, 90);
 	chassis.turnToPoint(31, 28, 700, {.forwards=false, .minSpeed=5, .earlyExitRange=5}); // turn toward mogo flat side
-	chassis.moveToPose(31, 28, 65, 700, {.forwards = false, .lead=0.3}); //move to right mogo
+	chassis.moveToPose(31, 28, 60, 700, {.forwards = false, .lead=0.3}); //move to right mogo
 	// chassis.moveToPoint(31, 28, 700, {.forwards = false, .minSpeed=5, .earlyExitRange=10}); //move to right mogo
 	chassis.waitUntilDone();
 	chassis.tank(-45, -45);
@@ -296,14 +344,14 @@ inline void blueRight5RingElim(){
 	intake.move(-100);
 	delay(500);
 
-	// //MOVE TO POSITIVE CORNER
-	// chassis.moveToPoint(51, -51, 1000, {.forwards = false});
-	// chassis.turnToHeading(0, 1000);
-	// chassis.moveToPoint(51, -9, 2000, {.forwards = false, .minSpeed=50, .earlyExitRange = 5});
+	//MOVE TO POSITIVE CORNER
+	chassis.moveToPoint(51, -51, 1000, {.forwards = false});
+	chassis.turnToHeading(0, 1000);
+	chassis.moveToPoint(51, -9, 2000, {.forwards = false, .minSpeed=50, .earlyExitRange = 5});
 
-	//MOVE TO LADDER
-	chassis.turnToPoint(-25.743, 5.138, 700);
-	chassis.moveToPoint(-25.743, 5.138, 1500);
+	// //MOVE TO LADDER
+	// chassis.turnToPoint(-25.743, 5.138, 700);
+	// chassis.moveToPoint(-25.743, 5.138, 1500);
 	
 	chassis.waitUntilDone();
 	conveyor.move(0);
@@ -347,12 +395,13 @@ inline void redLeftSoloAWP(){
 	chassis.turnToPoint(-11.423, 51, 700);
 	chassis.moveToPoint(-11.423, 51, 1000); //get final contested ring
 	
-	conveyor.move(110);
+	conveyor.move(127);
 	chassis.moveToPoint(-20.303, 50.759, 1000, {.forwards = false});
 	conveyor.move(0);
-	chassis.turnToPoint(-24.605, 4.648, 1000);
-	chassis.moveToPose(-28, 10, 180, 1000); //touch ladder
-	conveyor.move(110);
+	chassis.turnToPoint(-24, 10, 1000);
+	chassis.moveToPose(-24, 10, 180, 1500, {.minSpeed = 100, .earlyExitRange = 4}); //touch ladder
+	chassis.moveToPose(-24, 10.5, 180, 1500, {.maxSpeed = 30}); //touch ladder
+	conveyor.move(127);
 	intake.move(0);
 
 }
@@ -406,17 +455,15 @@ inline void blueRightSoloAWP(){
  * ON MOGO SIDE
  */
 inline void redRightSoloAWP(){
-	chassis.setPose(-54, -14.2, 180);
-	chassis.moveToPose(-54, 0, 180, 800, {.forwards = false}); // move to alliance stake
+	chassis.setPose(-54, -14.2, 0);
+	chassis.moveToPose(-54, -1, 0, 800, {.forwards = false}); // move to alliance stake
 	chassis.turnToHeading(90, 700); // turn toward alliance stake
-	chassis.moveToPoint(-61, 0, 700, {.forwards = false});
+	chassis.moveToPoint(-61.9, .1, 700, {.forwards = false});
 	chassis.waitUntilDone();
 	conveyor.move(127);
 	delay(400);
 	chassis.moveToPoint(-55, 0, 600); // move away from alliance
-	intake.move(0);
-	chassis.turnToPoint(-32.628, -18.083, 1000, {.forwards=false}); // turn to right safe mogo
-	conveyor.move(0);
+	chassis.turnToPoint(-32.628, -18.083, 800, {.forwards=false}); // turn to right safe mogo
 	chassis.moveToPoint(-32.628, -18.083, 800, {.forwards = false, .minSpeed = 60, .earlyExitRange = 8});
 	chassis.waitUntilDone();
 	chassis.tank(-60, -60);
@@ -534,9 +581,14 @@ inline void redRightTeammate3Ring(){
  */
 inline void blueLeftMogoRush(){
 	chassis.setPose(47.62, -60, 90);
-	chassis.moveToPoint(24, -60, 1000, {.forwards = false, .minSpeed = 127, .earlyExitRange = 3});
-	chassis.moveToPose(10.528, -52.068, 120, 1500, {.forwards = false, .lead = 0});
-	approachAndClampMogo(); //clamp contested mogo
+	chassis.moveToPoint(24, -60, 1000, {.forwards = false});
+	chassis.turnToHeading(120, 1000, { .minSpeed=20, .earlyExitRange=10});
+	chassis.moveToPoint(10.528, -52.068, 1500, {.forwards = false});
+	chassis.waitUntilDone();
+	chassis.tank(-60, -60);
+	delay(100);
+	mogoclamp.extend();
+	// approachAndClampMogo(); //clamp contested mogo
 	conveyor.move(127);
 	intake.move(-127);
 	chassis.moveToPoint(24, -47, 1000); //grab first ring

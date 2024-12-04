@@ -97,19 +97,20 @@ void autonomous() {
 
 	sorter_active = true;
 	auton_active = true;
-	current_sort = 'r';
+	current_sort = 'b';
 
+	// redLeftAllianceStake4Ring();
 	// blueLeftMogoRush();
 	// These ones below work
 	//RED SIDE 
 	// skills();
-	// redLeft5RingElim(); //tuned for brampton on good field
-	//redRightSoloAWP();
+	redLeft5RingElim(); //tuned for brampton on good field
+	// redRightSoloAWP();
 	// redLeftSoloAWP(); //tuned for brampton on good field
 	//BLUE SIDE
 	// blueRightSoloAWP(); //tuned for brampton on good field
 	// blueLeftSoloAWP();
-	blueRight5RingElim(); //tuned for brampton on good field
+	// blueRight5RingElim(); //tuned for brampton on good field
 
 
 	//NONFUNCTIONAL
@@ -174,14 +175,9 @@ void opcontrol() {
 		}
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
-			if (clampState) {
-				mogoclamp.extend();
-				clampState = !clampState;
-			} else {
-				mogoclamp.retract();
-				clampState = !clampState;
-			}
+			mogoclamp.toggle();
 		}
+
 
 		if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
 			if (!isDoinkerOut) {

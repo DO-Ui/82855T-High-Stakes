@@ -6,11 +6,11 @@ bool in_range(double value, double bottom, double top) {
 
 bool sorter_active = true;
 bool auton_active = false;
-char current_sort = 'r';
+char current_sort = 'b';
 
 
 void driver_inputs() {
-    if(!auton_active){
+    if(!auton_active){ //don't run driver inputs if auton is active
         if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
             conveyor.move(127);
         } else if (master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)) {
@@ -55,10 +55,11 @@ void colour_sorter_task() {
 
         if (sorter_active) {
             if (current_sort == colour_detected && distance_sensor.get() < 15) {
+                int voltageBeforeStop = conveyor.get_voltage();
                 delay(45);
                 conveyor.move(-127);
                 delay(250);
-                conveyor.move(0);
+                conveyor.move_voltage(voltageBeforeStop); //reset the voltage to what it was before reversing the conveyor
                 colour_detected = 'n';
             } else {
                 driver_inputs();
@@ -67,11 +68,11 @@ void colour_sorter_task() {
             driver_inputs();
         }
 
-        if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) {
+        if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) { //toggle whether color sort is active or not
             sorter_active = !sorter_active;
         }
 
-        if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
+        if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) { //toggle color sort setting
             if (current_sort == 'r') {
                 current_sort = 'b';
             } else {
