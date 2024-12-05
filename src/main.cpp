@@ -41,7 +41,11 @@ void initialize() {
 	horizontal_tracker.reset();
 	vertical_tracker.reset();
 	chassis.calibrate();
-	chassis.setPose(0, 0, 0); 
+	chassis.setPose(-54, 14.2, 0); 
+
+
+	gps_sensor.set_position(-1.3716, 0.36068, 0);
+	gps_sensor.set_offset(-0.125, -.16);
 
 	master.clear();
 
@@ -57,6 +61,7 @@ void initialize() {
 	});
 
 	Task colour_task(colour_sorter_task);
+	Task gps_task(gps_sensor_task);
 
 	// NOTE: colour_task has logging, remove if not needed
 
@@ -104,9 +109,9 @@ void autonomous() {
 	// These ones below work
 	//RED SIDE 
 	// skills();
-	redLeft5RingElim(); //tuned for brampton on good field
+	// redLeft5RingElim(); //tuned for brampton on good field
 	// redRightSoloAWP();
-	// redLeftSoloAWP(); //tuned for brampton on good field
+	redLeftSoloAWP(); //tuned for brampton on good field
 	//BLUE SIDE
 	// blueRightSoloAWP(); //tuned for brampton on good field
 	// blueLeftSoloAWP();
@@ -124,7 +129,6 @@ void autonomous() {
 	//redLeftElims();
 	//blueAllianceStake();
 	//redAllianceStake();
-	// skills();
 	// redLeftAllianceStake4Ring();
 
 
@@ -172,10 +176,6 @@ void opcontrol() {
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
 			hang.toggle();
-		}
-
-		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
-			mogoclamp.toggle();
 		}
 
 

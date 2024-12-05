@@ -95,6 +95,17 @@ void colour_sorter_task() {
     }
 }
 
+void gps_sensor_task(){
+    pros::gps_status_s_t gpsData;
+    while(true){
+        gpsData = gps_sensor.get_position_and_orientation();
+        lcd::print(2, "GPSx: %f", gpsData.x*39.3701);
+		lcd::print(3, "GPSy: %f", gpsData.y*39.3701);
+        lcd::print(4, "GPSorientation: %f", gpsData.yaw);
+        lcd::print(5, "orientation: %f", chassis.getPose().theta);
+        delay(5);
+    }
+}
 
 void conveyor_task() {
 
@@ -115,7 +126,6 @@ void conveyor_task() {
         } else {
             conveyor_overvolt_count = 0;
         }
-
 
         // If the conveyor is overvolted and its the first time, move it backwards for a bit
         if ((conveyor_overvolt_count > 100) && !overvolt_state) {

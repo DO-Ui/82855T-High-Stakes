@@ -16,6 +16,7 @@ Rotation vertical_tracker(15); // 1.25in to left
 
 Optical colour_sensor(16);
 Distance distance_sensor(11);
+GPS gps_sensor(13);
 
 
 adi::Pneumatics mogoclamp('a', false);
