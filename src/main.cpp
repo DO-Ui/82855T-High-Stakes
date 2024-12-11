@@ -7,6 +7,7 @@
 #include <cmath>
 #include <string>
 #include "./tasks.h"
+#include "macros.h"
 #include "autons.h"
 
 using json = nlohmann::json;
