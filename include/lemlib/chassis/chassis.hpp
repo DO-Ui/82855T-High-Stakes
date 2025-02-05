@@ -347,7 +347,7 @@ class Chassis {
                 OdomSensors sensors, DriveCurve* throttleCurve = &defaultDriveCurve,
                 DriveCurve* steerCurve = &defaultDriveCurve);
         /**
-         * @brief Calibrate the chassis sensors. THis should be called in the initialize function
+         * @brief Calibrate the chassis sensors. This should be called in the initialize function
          *
          * @param calibrateIMU whether the IMU should be calibrated. true by default
          *

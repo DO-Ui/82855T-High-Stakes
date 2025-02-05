@@ -9,6 +9,8 @@
 #include "./tasks.h"
 #include "macros.h"
 #include "autons.h"
+#include "particle.hpp"
+#include "MCL.hpp"
 
 using json = nlohmann::json;
 
@@ -20,6 +22,21 @@ using json = nlohmann::json;
  */
 float round2dp(float num) {
 	return std::ceil(num * 100.0) / 100.0;
+}
+
+void extendMogoClamp(){
+	mogoclamp1.extend();
+	mogoclamp2.extend();
+}
+
+void retractMogoClamp(){
+	mogoclamp1.retract();
+	mogoclamp2.retract();
+}
+
+void toggleMogoClamp(){
+	mogoclamp1.toggle();
+	mogoclamp2.toggle();
 }
 
 /**
@@ -42,11 +59,6 @@ void initialize() {
 	horizontal_tracker.reset();
 	vertical_tracker.reset();
 	chassis.calibrate();
-	chassis.setPose(-54, 14.2, 0); 
-
-
-	gps_sensor.set_position(-1.3716, 0.36068, 0);
-	gps_sensor.set_offset(-0.125, -.16);
 
 	master.clear();
 
@@ -62,7 +74,7 @@ void initialize() {
 	});
 
 	Task colour_task(colour_sorter_task);
-	Task gps_task(gps_sensor_task);
+	// Task gps_task(gps_sensor_task);
 
 	// NOTE: colour_task has logging, remove if not needed
 
@@ -110,13 +122,13 @@ void autonomous() {
 	// These ones below work
 	//RED SIDE 
 	// skills();
-	// redLeft5RingElim(); //tuned for brampton on good field
+	// redLeft5RingElim()
 	// redRightSoloAWP();
-	redLeftSoloAWP(); //tuned for brampton on good field
+	redLeftSoloAWP();
 	//BLUE SIDE
-	// blueRightSoloAWP(); //tuned for brampton on good field
+	// blueRightSoloAWP()
 	// blueLeftSoloAWP();
-	// blueRight5RingElim(); //tuned for brampton on good field
+	// blueRight5RingElim();
 
 
 	//NONFUNCTIONAL
@@ -131,7 +143,6 @@ void autonomous() {
 	//blueAllianceStake();
 	//redAllianceStake();
 	// redLeftAllianceStake4Ring();
-
 
 }
 
@@ -149,12 +160,10 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	
 	hang.retract();
 	
 	auton_active = false;
-	bool clampState = true;
-	bool isDoinkerOut = false;
-
 	sorter_active = true;
 
 	// int count = 0; //used for automatic PID tuning
@@ -181,22 +190,15 @@ void opcontrol() {
 
 
 		if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
-			if (!isDoinkerOut) {
-				doinker.extend();
-				isDoinkerOut = true;
-			}
-		}
-		else if(isDoinkerOut){
-			doinker.retract();
-			isDoinkerOut = false;
+			doinker.toggle();
 		}
 
 		// // print to brain screen
 		lcd::print(0, "x: %f", chassis.getPose().x);
 		lcd::print(1, "y: %f", chassis.getPose().y);
-		// lcd::print(2, "theta: %f", imu.get_heading());
-		// lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);
-		// lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position()/100);
+		lcd::print(2, "theta: %f", imu.get_heading());
+		lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);
+		lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position()/100);
 
 		// if (master.get_digital(E_CONTROLLER_DIGITAL_LEFT)) {
 		// 	if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)) {

@@ -19,14 +19,15 @@ Distance distance_sensor(11);
 GPS gps_sensor(13);
 
 
-adi::Pneumatics mogoclamp('a', false);
-adi::Pneumatics doinker('b', false);
-adi::Pneumatics hang('c', false);
+adi::Pneumatics mogoclamp1('a', false);
+adi::Pneumatics mogoclamp2('b', false);
+adi::Pneumatics doinker('c', false);
+adi::Pneumatics hang('d', false);
 
 lemlib::Drivetrain drivetrain(&left, &right, 11.5, lemlib::Omniwheel::NEW_325, 450, 8);
 
-lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_tracker, lemlib::Omniwheel::OLD_275_HALF, -3.75);
-lemlib::TrackingWheel vertical_tracking_wheel(&vertical_tracker, lemlib::Omniwheel::OLD_275_HALF, -1.25);
+lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_tracker, lemlib::Omniwheel::NEW_2, -3.75);
+lemlib::TrackingWheel vertical_tracking_wheel(&vertical_tracker, lemlib::Omniwheel::NEW_2, -1.25);
 
 lemlib::OdomSensors sensors(&vertical_tracking_wheel, nullptr, &horizontal_tracking_wheel, nullptr, &imu);
 
