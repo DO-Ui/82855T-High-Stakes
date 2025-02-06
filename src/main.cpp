@@ -12,6 +12,19 @@
 #include "particle.hpp"
 #include "MCL.hpp"
 
+//controller mappings (all should be done now):
+//R1: intake + conveyor 
+//R2: reverse intake 
+//L1: mogoclamp 
+//L2: doinker 
+//y (right paddle): ladybrown up macro
+//right arrow (left paddle): ladybrown down macro
+//down arrow: reverse conveyor
+//up arrow: conveyor
+//left arrow: intake 
+//X: ladybrown up manual 
+//B: ladybrown down manual 
+
 using json = nlohmann::json;
 
 /**
@@ -53,12 +66,14 @@ void initialize() {
 	colour_sensor.set_led_pwm(100);
 	horizontal_tracker.set_data_rate(5);
 	vertical_tracker.set_data_rate(5);
+	ladybrownSensor.set_data_rate(5);
 	imu.set_data_rate(5);
 	horizontal_tracker.set_position(0);
 	vertical_tracker.set_position(0);
 	horizontal_tracker.reset();
 	vertical_tracker.reset();
 	chassis.calibrate();
+	ladybrownSensor.set_position(0);
 
 	master.clear();
 
@@ -73,7 +88,7 @@ void initialize() {
 		}
 	});
 
-	Task colour_task(colour_sorter_task);
+	Task ladybrown_and_color_task(ladybrown_and_color_task);
 	// Task gps_task(gps_sensor_task);
 
 	// NOTE: colour_task has logging, remove if not needed
@@ -110,8 +125,6 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	//RELEASE INTAKE
-	intake.move(-127);
 
 	sorter_active = true;
 	auton_active = true;
@@ -160,7 +173,7 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	
+
 	hang.retract();
 	
 	auton_active = false;
@@ -183,11 +196,21 @@ void opcontrol() {
 		// 	chassis.turnToHeading(0, 1000);
 		// }
 
+		if (master.get_digital(E_CONTROLLER_DIGITAL_R1) || master.get_digital(E_CONTROLLER_DIGITAL_LEFT)) {
+            intake.move(-127);
+        } else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
+            intake.move(127);
+        } else {
+            intake.move(0);
+        }
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
 			hang.toggle();
 		}
 
+		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
+			toggleMogoClamp();
+		}
 
 		if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
 			doinker.toggle();

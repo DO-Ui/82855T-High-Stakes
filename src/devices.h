@@ -9,10 +9,12 @@ MotorGroup left({-1, -8, -10}, v5::MotorGears::blue, v5::MotorUnits::rotations);
 
 Motor intake(20, v5::MotorGears::green);
 Motor conveyor(6, v5::MotorGears::green);
+Motor ladybrownMotor(0, v5::MotorGears::green); //UPDATE MOTOR GEAR SET TO CORRECT ONE
 Imu imu(12);
 
 Rotation horizontal_tracker(-14); // 3.75 inches back
 Rotation vertical_tracker(15); // 1.25in to left
+Rotation ladybrownSensor(1); 
 
 Optical colour_sensor(16);
 Distance distance_sensor(11);
@@ -24,7 +26,13 @@ adi::Pneumatics mogoclamp2('b', false);
 adi::Pneumatics doinker('c', false);
 adi::Pneumatics hang('d', false);
 
-lemlib::Drivetrain drivetrain(&left, &right, 11.5, lemlib::Omniwheel::NEW_325, 450, 8);
+lemlib::PID ladybrownPID(5, // kP
+                0, // kI
+                20, // kD
+                5, // integral anti windup range
+                false); // don't reset integral when sign of error flips
+
+lemlib::Drivetrain drivetrain(&left, &right, 11.5, lemlib::Omniwheel::NEW_325, 450, 2);
 
 lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_tracker, lemlib::Omniwheel::NEW_2, -3.75);
 lemlib::TrackingWheel vertical_tracking_wheel(&vertical_tracker, lemlib::Omniwheel::NEW_2, -1.25);

@@ -1,5 +1,7 @@
 #pragma once
 
+//DON'T COMMUNICATE WITH MAIN THREAD. Reading is fine, never write
+
 bool in_range(double value, double bottom, double top) {
     return (value >= bottom) && (value <= top);
 }
@@ -11,26 +13,30 @@ char current_sort = 'b';
 
 void driver_inputs() {
     if(!auton_active){ //don't run driver inputs if auton is active
-        if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
+        if (master.get_digital(E_CONTROLLER_DIGITAL_R1) || master.get_digital(E_CONTROLLER_DIGITAL_UP)) {
             conveyor.move(127);
-        } else if (master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)) {
+        } else if (master.get_digital(E_CONTROLLER_DIGITAL_DOWN)) {
             conveyor.move(-127);
         } else {
             conveyor.move(0);
-        }
-
-        if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
-            intake.move(-127);
-        } else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
-            intake.move(127);
-        } else {
-            intake.move(0);
         }
     }
 }
 
 
-void colour_sorter_task() {
+void ladybrown_and_color_task() {
+    
+    bool ringHeld = false;
+
+    enum LadybrownPositions { //possible ladybrown positions in degrees
+        REST = 0,
+        CAPTURE = 25,
+        WALLSTAKE_PREP = 100,
+        WALLSTAKE = 140,
+        ALLIANCE = 190,
+    };
+    int lbTarget = 0;
+    LadybrownPositions positions[5] = {REST, CAPTURE, WALLSTAKE_PREP, WALLSTAKE, ALLIANCE};
 
     char colour_detected = 'n'; // 'n' means empty
     int controller_print = 0;
@@ -53,20 +59,7 @@ void colour_sorter_task() {
             colour_detected = 'n';
         }
 
-        if (sorter_active) {
-            if (current_sort == colour_detected && distance_sensor.get() < 15) {
-                int voltageBeforeStop = conveyor.get_voltage();
-                delay(45);
-                conveyor.move(-127);
-                delay(250);
-                conveyor.move_voltage(voltageBeforeStop); //reset the voltage to what it was before reversing the conveyor
-                colour_detected = 'n';
-            } else {
-                driver_inputs();
-            }
-        } else {
-            driver_inputs();
-        }
+        
 
         if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) { //toggle whether color sort is active or not
             sorter_active = !sorter_active;
@@ -78,6 +71,39 @@ void colour_sorter_task() {
             } else {
                 current_sort = 'r';
             }
+        }
+
+        //LADYBROWN CODE BELOW
+
+        if(master.get_digital(E_CONTROLLER_DIGITAL_X)){
+            ladybrownMotor.move(127);
+        }
+        else if(master.get_digital(E_CONTROLLER_DIGITAL_B)){
+            ladybrownMotor.move(-127);
+        }
+        else{ //no manual overrides have been given, move on to macros
+            ladybrownMotor.move(ladybrownPID.update(positions[lbTarget] - ladybrownSensor.get_angle()/100)); //update PID and motor voltage
+            if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y) && lbTarget < 4){ //moves the arm up in positions in the wallstake chain of action
+                lbTarget++;
+            }
+            else if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT) && lbTarget > 0){ //arm recovery
+                lbTarget--;
+            }
+        }
+        
+        if (sorter_active && current_sort == colour_detected && distance_sensor.get() < 15) {
+            int voltageBeforeStop = conveyor.get_voltage();
+            delay(45);
+            conveyor.move(-127);
+            delay(250);
+            conveyor.move_voltage(voltageBeforeStop); //reset the voltage to what it was before reversing the conveyor
+            colour_detected = 'n';
+        } 
+        else if(positions[lbTarget] == CAPTURE && master.get_digital(E_CONTROLLER_DIGITAL_R1) || master.get_digital(E_CONTROLLER_DIGITAL_UP) && abs(ladybrownMotor.get_voltage()) > 3000){
+            conveyor.move(0);
+        }
+        else {
+            driver_inputs();
         }
 
         if (controller_print == 0) {
@@ -95,57 +121,58 @@ void colour_sorter_task() {
     }
 }
 
-void gps_sensor_task(){
-    pros::gps_status_s_t gpsData;
-    while(true){
-        gpsData = gps_sensor.get_position_and_orientation();
-        lcd::print(2, "GPSx: %f", gpsData.x*39.3701);
-		lcd::print(3, "GPSy: %f", gpsData.y*39.3701);
-        lcd::print(4, "GPSorientation: %f", gpsData.yaw);
-        lcd::print(5, "orientation: %f", chassis.getPose().theta);
-        delay(5);
-    }
-}
+
+// void gps_sensor_task(){
+//     pros::gps_status_s_t gpsData;
+//     while(true){
+//         gpsData = gps_sensor.get_position_and_orientation();
+//         lcd::print(2, "GPSx: %f", gpsData.x*39.3701);
+// 		lcd::print(3, "GPSy: %f", gpsData.y*39.3701);
+//         lcd::print(4, "GPSorientation: %f", gpsData.yaw);
+//         lcd::print(5, "orientation: %f", chassis.getPose().theta);
+//         delay(5);
+//     }
+// }
 
 
-void conveyor_task() {
+// void conveyor_task() {
 
-    bool conveyor_held;
-    bool conveyor_overvolt;
+//     bool conveyor_held;
+//     bool conveyor_overvolt;
 
-    bool overvolt_state = false;
+//     bool overvolt_state = false;
 
-    int conveyor_overvolt_count = 0;
+//     int conveyor_overvolt_count = 0;
 
-    while (true) {
-        conveyor_held = master.get_digital(E_CONTROLLER_DIGITAL_R2);
+//     while (true) {
+//         conveyor_held = master.get_digital(E_CONTROLLER_DIGITAL_R2);
 
-        conveyor_overvolt = conveyor.get_current_draw() > 2500;
+//         conveyor_overvolt = conveyor.get_current_draw() > 2500;
 
-        if (conveyor_overvolt) {
-            conveyor_overvolt_count++;
-        } else {
-            conveyor_overvolt_count = 0;
-        }
+//         if (conveyor_overvolt) {
+//             conveyor_overvolt_count++;
+//         } else {
+//             conveyor_overvolt_count = 0;
+//         }
 
-        // If the conveyor is overvolted and its the first time, move it backwards for a bit
-        if ((conveyor_overvolt_count > 100) && !overvolt_state) {
-            overvolt_state = true;
-            conveyor.move(-100);
-            delay(250);
-            conveyor.move(0);
-        } else if (!conveyor_overvolt && !conveyor_held) { // If the conveyor is no longer overvolted and not held, reset state
-            overvolt_state = false;
-        }
+//         // If the conveyor is overvolted and its the first time, move it backwards for a bit
+//         if ((conveyor_overvolt_count > 100) && !overvolt_state) {
+//             overvolt_state = true;
+//             conveyor.move(-100);
+//             delay(250);
+//             conveyor.move(0);
+//         } else if (!conveyor_overvolt && !conveyor_held) { // If the conveyor is no longer overvolted and not held, reset state
+//             overvolt_state = false;
+//         }
 
-        if (!overvolt_state) {
-            if (conveyor_held) {
-                conveyor.move(100);
-            } else {
-                conveyor.move(0);
-            }
-        }
+//         if (!overvolt_state) {
+//             if (conveyor_held) {
+//                 conveyor.move(100);
+//             } else {
+//                 conveyor.move(0);
+//             }
+//         }
 
-        delay(10);
-    }
-}
+//         delay(10);
+//     }
+// }
