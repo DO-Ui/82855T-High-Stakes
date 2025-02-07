@@ -1,5 +1,4 @@
 #pragma once
-using namespace pros;
 
 /**
  * Slowly backs up and clamps onto mogo using chassis.tank();

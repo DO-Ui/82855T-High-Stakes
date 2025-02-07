@@ -2,13 +2,13 @@
 
 Controller master(E_CONTROLLER_MASTER);
 
-MotorGroup right({3, 4, 5}, v5::MotorGears::blue, v5::MotorUnits::rotations);
-MotorGroup left({-1, -8, -10}, v5::MotorGears::blue, v5::MotorUnits::rotations);
+MotorGroup right({14, -15, 16}, v5::MotorGears::blue, v5::MotorUnits::rotations);
+MotorGroup left({11, -12, 13}, v5::MotorGears::blue, v5::MotorUnits::rotations);
 
 
 
-Motor intake(20, v5::MotorGears::green);
-Motor conveyor(6, v5::MotorGears::green);
+Motor intake(10, v5::MotorGears::green);
+Motor conveyor(-9, v5::MotorGears::green);
 Motor ladybrownMotor(0, v5::MotorGears::green); //UPDATE MOTOR GEAR SET TO CORRECT ONE
 Imu imu(12);
 

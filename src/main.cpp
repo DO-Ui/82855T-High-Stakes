@@ -37,20 +37,6 @@ float round2dp(float num) {
 	return std::ceil(num * 100.0) / 100.0;
 }
 
-void extendMogoClamp(){
-	mogoclamp1.extend();
-	mogoclamp2.extend();
-}
-
-void retractMogoClamp(){
-	mogoclamp1.retract();
-	mogoclamp2.retract();
-}
-
-void toggleMogoClamp(){
-	mogoclamp1.toggle();
-	mogoclamp2.toggle();
-}
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -60,7 +46,7 @@ void toggleMogoClamp(){
  */
 void initialize() {
 
-	std::cout << "foxglove" << std::endl;
+	// std::cout << "foxglove" << std::endl;
 	lcd::initialize();
 
 	colour_sensor.set_led_pwm(100);
@@ -88,7 +74,7 @@ void initialize() {
 		}
 	});
 
-	Task ladybrown_and_color_task(ladybrown_and_color_task);
+	Task lbtask(ladybrown_and_color_task);
 	// Task gps_task(gps_sensor_task);
 
 	// NOTE: colour_task has logging, remove if not needed
@@ -137,7 +123,7 @@ void autonomous() {
 	// skills();
 	// redLeft5RingElim()
 	// redRightSoloAWP();
-	redLeftSoloAWP();
+	// redLeftSoloAWP();
 	//BLUE SIDE
 	// blueRightSoloAWP()
 	// blueLeftSoloAWP();

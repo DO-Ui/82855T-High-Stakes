@@ -2,13 +2,30 @@
 
 //DON'T COMMUNICATE WITH MAIN THREAD. Reading is fine, never write
 
-bool in_range(double value, double bottom, double top) {
-    return (value >= bottom) && (value <= top);
-}
 
 bool sorter_active = true;
 bool auton_active = false;
 char current_sort = 'b';
+
+void extendMogoClamp(){
+	mogoclamp1.extend();
+	mogoclamp2.extend();
+}
+
+void retractMogoClamp(){
+	mogoclamp1.retract();
+	mogoclamp2.retract();
+}
+
+void toggleMogoClamp(){
+	mogoclamp1.toggle();
+	mogoclamp2.toggle();
+}
+
+bool in_range(double value, double bottom, double top) {
+    return (value >= bottom) && (value <= top);
+}
+
 
 
 void driver_inputs() {
@@ -47,8 +64,8 @@ void ladybrown_and_color_task() {
         // 10-ish is red
         double hue = colour_sensor.get_hue();
 
-        Message colour_message = { "colour", {{"hue", hue}, {"colours", colour_detected}, {"sees", (distance_sensor.get() < 15)}} };
-        std::cout << static_cast<json>(colour_message) << std::flush;
+        // Message colour_message = { "colour", {{"hue", hue}, {"colours", colour_detected}, {"sees", (distance_sensor.get() < 15)}} };
+        // std::cout << static_cast<json>(colour_message) << std::flush;
 
 
         if (in_range(hue, 215, 219)) {
@@ -99,7 +116,7 @@ void ladybrown_and_color_task() {
             conveyor.move_voltage(voltageBeforeStop); //reset the voltage to what it was before reversing the conveyor
             colour_detected = 'n';
         } 
-        else if(positions[lbTarget] == CAPTURE && master.get_digital(E_CONTROLLER_DIGITAL_R1) || master.get_digital(E_CONTROLLER_DIGITAL_UP) && abs(ladybrownMotor.get_voltage()) > 3000){
+        else if(positions[lbTarget] == CAPTURE && master.get_digital(E_CONTROLLER_DIGITAL_R1) || master.get_digital(E_CONTROLLER_DIGITAL_UP) && abs(ladybrownMotor.get_voltage()) > 8000){
             conveyor.move(0);
         }
         else {
