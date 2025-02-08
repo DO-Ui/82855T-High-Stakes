@@ -59,7 +59,7 @@ void initialize() {
 	horizontal_tracker.reset();
 	vertical_tracker.reset();
 	chassis.calibrate();
-	ladybrownSensor.set_position(0);
+	ladybrownSensor.reset();
 
 	master.clear();
 
@@ -112,7 +112,7 @@ void competition_initialize() {}
  */
 void autonomous() {
 
-	sorter_active = true;
+	sorter_active = false;
 	auton_active = true;
 	current_sort = 'b';
 
@@ -163,7 +163,7 @@ void opcontrol() {
 	hang.retract();
 	
 	auton_active = false;
-	sorter_active = true;
+	sorter_active = false;
 
 	// int count = 0; //used for automatic PID tuning
 
@@ -173,32 +173,26 @@ void opcontrol() {
 		int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
 
 		chassis.arcade(leftY, rightX, false, 0.75);
-		// if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-		// 	// chassis.moveToPose(0, 24, 0, 3000);
-		// 	chassis.turnToHeading(90, 1000);
-		// }
-		// if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
-		// 	// chassis.moveToPose(0, 0, 0, 3000, {.forwards = false});
-		// 	chassis.turnToHeading(0, 1000);
-		// }
+		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
+			chassis.moveToPose(0, 24, 0, 3000);
+			// chassis.turnToHeading(90, 1000);
+		}
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
+			chassis.moveToPose(0, 0, 0, 3000, {.forwards = false});
+			// chassis.turnToHeading(0, 1000);
+		}
 
-		if (master.get_digital(E_CONTROLLER_DIGITAL_R1) || master.get_digital(E_CONTROLLER_DIGITAL_LEFT)) {
-            intake.move(-127);
-        } else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
-            intake.move(127);
-        } else {
-            intake.move(0);
-        }
+		
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
 			hang.toggle();
 		}
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
-			toggleMogoClamp();
+			mogoclamp.toggle();
 		}
 
-		if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
+		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L2)) {
 			doinker.toggle();
 		}
 
@@ -206,8 +200,9 @@ void opcontrol() {
 		lcd::print(0, "x: %f", chassis.getPose().x);
 		lcd::print(1, "y: %f", chassis.getPose().y);
 		lcd::print(2, "theta: %f", imu.get_heading());
-		lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);
-		lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position()/100);
+		lcd::print(3, "LBRotation: %f", ((float)ladybrownSensor.get_angle())/100);
+		// lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);
+		// lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position()/100);
 
 		// if (master.get_digital(E_CONTROLLER_DIGITAL_LEFT)) {
 		// 	if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)) {
