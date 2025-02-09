@@ -342,43 +342,46 @@ inline void blueRight5RingElim(){
  * ON RING SIDE
  */
 inline void redLeftSoloAWP(){
-	chassis.setPose(-54, 14.2, 0);
-	chassis.moveToPose(-54, 1, 0, 800, {.forwards = false}); // move to alliance stake
+	chassis.setPose(-55.05, 14.25, 0);
+	chassis.moveToPose(-55.05, -1, 0, 800, {.forwards = false}); // move to alliance stake
 	chassis.turnToHeading(90, 700); // turn toward alliance stake
-	chassis.moveToPoint(-61.9, -.1, 700, {.forwards = false});
+	chassis.moveToPoint(-61, 0, 700, {.forwards = false});
 	chassis.waitUntilDone();
 	conveyor.move(127);
 	delay(400);
 	chassis.moveToPoint(-55, 0, 600);
-	chassis.turnToPoint(-32.628, 18.083, 800, {.forwards=false}); // turn toward mogo flat side
-	chassis.moveToPoint(-32.628, 18.083, 800, {.forwards = false, .minSpeed = 60, .earlyExitRange = 8});
+	chassis.turnToPoint(-31.204, 18.5, 800, {.forwards=false}); // turn toward mogo flat side
+	chassis.moveToPoint(-31.204, 18.5, 800, {.forwards = false, .minSpeed = 60, .earlyExitRange = 8});
 	chassis.waitUntilDone();
 	chassis.tank(-60, -60);
 	delay(450);
 	chassis.tank(0, 0);
-	mogoclamp.extend(); //clamp left mogo
+	mogoclamp.toggle(); //clamp left mogo
 	delay(100);
 	chassis.turnToPoint(-10.219, 40.291, 1000);
 	conveyor.move(127);
 	intake.move(-127);
 
-	chassis.moveToPoint(-11.423, 39, 1500, {.minSpeed = 50, .earlyExitRange = 7}); //go to first contested ring
-	chassis.moveToPoint(-11.423, 39, 1500, {.maxSpeed= 20}); //go to first contested ring
+	chassis.moveToPoint(-11.676, 38.024, 1500, {.minSpeed = 50, .earlyExitRange = 7}); //go to first contested ring
+	chassis.moveToPoint(-11.676, 38.024, 1500, {.maxSpeed= 20}); //go to first contested ring
 	chassis.moveToPoint(-24, 30, 1000, {.forwards = false});
 	chassis.turnToHeading(0, 1000);
-	chassis.moveToPoint(-24, 51, 1000); //get ring behind contested rings
+	chassis.moveToPoint(-24.8, 51, 1000); //get ring behind contested rings
 	delay(200);
-	chassis.turnToPoint(-11.423, 51, 700);
-	chassis.moveToPoint(-11.423, 51, 1000); //get final contested ring
+	chassis.turnToPoint(-9.093, 51, 700);
+	chassis.moveToPoint(-9.093, 51, 1000); //get final contested ring
 	
 	conveyor.move(127);
 	chassis.moveToPoint(-20.303, 50.759, 1000, {.forwards = false});
 	conveyor.move(0);
 	chassis.turnToPoint(-24, 10, 1000);
+	ladybrownMotor.move(127);
 	chassis.moveToPose(-24, 10, 180, 1500, {.minSpeed = 100, .earlyExitRange = 4}); //touch ladder
 	chassis.moveToPose(-24, 10.5, 180, 1500, {.maxSpeed = 30}); //touch ladder
 	conveyor.move(127);
 	intake.move(0);
+	delay(1000);
+	ladybrownMotor.move(0);
 
 }
 
@@ -388,27 +391,27 @@ inline void redLeftSoloAWP(){
  * ON RING SIDE
  */
 inline void blueRightSoloAWP(){
-	chassis.setPose(54, 14.2, 0);
-	chassis.moveToPose(54, 1, 0, 800, {.forwards = false}); // move to alliance stake
+	chassis.setPose(55.05, 14.25, 0);
+	chassis.moveToPose(55.05, -1, 0, 800, {.forwards = false}); // move to alliance stake
 	chassis.turnToHeading(270, 700); // turn toward alliance stake
-	chassis.moveToPoint(61.9, .4, 700, {.forwards = false});
+	chassis.moveToPoint(59, .4, 700, {.forwards = false});
 	chassis.waitUntilDone();
 	conveyor.move(127);
 	delay(400);
 	chassis.moveToPoint(55, 0, 600);
-	chassis.turnToPoint(32.628, 18.083, 1000, {.forwards=false});
-	chassis.moveToPose(32.628, 18.083, 120, 800, {.forwards = false, .minSpeed = 60, .earlyExitRange = 8});
+	chassis.turnToPoint(32.628, 18.983, 1000, {.forwards=false});
+	chassis.moveToPose(32.628, 18.983, 120, 800, {.forwards = false, .minSpeed = 60, .earlyExitRange = 8});
 	chassis.waitUntilDone();
 	chassis.tank(-60, -60);
 	delay(450);
 	chassis.tank(0, 0);
-	mogoclamp.extend(); //clamp right mogo
+	mogoclamp.toggle(); //clamp right mogo
 	delay(100);
 	chassis.turnToPoint(10.219, 40.291, 1000);
 	conveyor.move(127);
 	intake.move(-127);
-	chassis.moveToPoint(11, 37.5, 1500, {.minSpeed = 50, .earlyExitRange = 7}); //go to first contested ring
-	chassis.moveToPoint(11, 37.5, 1500, {.maxSpeed= 20}); //go to first contested ring
+	chassis.moveToPoint(11, 39, 1500, {.minSpeed = 50, .earlyExitRange = 7}); //go to first contested ring
+	chassis.moveToPoint(11, 39, 1500, {.maxSpeed= 20}); //go to first contested ring
 	chassis.moveToPoint(24, 30, 1000, {.forwards = false});
 	delay(300);
 	chassis.turnToHeading(0, 800);
@@ -419,10 +422,13 @@ inline void blueRightSoloAWP(){
 	chassis.moveToPoint(20.303, 50.759, 1000, {.forwards = false});
 	conveyor.move(0);
 	chassis.turnToPoint(24.605, 4.648, 1000);
+	ladybrownMotor.move(127);
 	chassis.moveToPose(28, 10, 180, 1000); //touch ladder 
 	conveyor.move(110);
 	chassis.waitUntilDone();
 	intake.move(0);
+	delay(1000);
+	ladybrownMotor.move(0);
 }
 
 /**
@@ -431,16 +437,16 @@ inline void blueRightSoloAWP(){
  * ON MOGO SIDE
  */
 inline void redRightSoloAWP(){
-	chassis.setPose(-54, -14.2, 0);
-	chassis.moveToPose(-54, -1, 0, 800, {.forwards = false}); // move to alliance stake
+	chassis.setPose(-55.05, -14.5, 180);
+	chassis.moveToPose(-55.05, 1.4, 180, 800, {.forwards = false}); // move to alliance stake
 	chassis.turnToHeading(90, 700); // turn toward alliance stake
-	chassis.moveToPoint(-61.9, .1, 700, {.forwards = false});
+	chassis.moveToPoint(-62, 0, 700, {.forwards = false});
 	chassis.waitUntilDone();
 	conveyor.move(127);
 	delay(400);
 	chassis.moveToPoint(-55, 0, 600); // move away from alliance
-	chassis.turnToPoint(-32.628, -18.083, 800, {.forwards=false}); // turn to right safe mogo
-	chassis.moveToPoint(-32.628, -18.083, 800, {.forwards = false, .minSpeed = 60, .earlyExitRange = 8});
+	chassis.turnToPoint(-31.204, -18.5, 800, {.forwards=false}); // turn to right safe mogo
+	chassis.moveToPoint(-31.204, -18.5, 800, {.forwards = false, .minSpeed = 60, .earlyExitRange = 8});
 	chassis.waitUntilDone();
 	chassis.tank(-60, -60);
 	delay(450);
@@ -449,19 +455,29 @@ inline void redRightSoloAWP(){
 	delay(100);
 	chassis.turnToPoint(-23, -50, 1000);
 	chassis.moveToPoint(-23, -50, 1500); //grab safe ring
-	intake.move(-127);
-	chassis.turnToPoint(-62.029, -63.693, 1000);
-	conveyor.move(127);
-	chassis.moveToPoint(-62.029, -63.693, 1100); //move to right corner to grab lowest ring
-	chassis.waitUntilDone();
-	chassis.tank(80, 80);
-	intake.move(127);
-	delay(1000);
-	conveyor.move(0);
-	chassis.tank(0, 0);
-	intake.move(-100);
+	// // intake.move(-127);
+	// chassis.turnToPoint(-62.029, -63.693, 1000);
+	// conveyor.move(127);
+	// chassis.moveToPoint(-62.029, -63.693, 1100); //move to right corner to grab lowest ring
+	// chassis.waitUntilDone();
+	// chassis.tank(80, 80);
+	// // intake.move(127);
+	// delay(1000);
+	// conveyor.move(0);
+	// chassis.tank(0, 0);
+
+	delay(2000);
+	intake.move(0);
+
+	mogoclamp.toggle();//REMOVE IN FUTURE
+
+	// intake.move(-100);
 	delay(500);
-	chassis.moveToPose(-28.913, -7.98, 29.667, 3000); //move to ladder
+	// chassis.moveToPose(-28.913, -7.98, 29.667, 3000); //move to ladder
+
+	chassis.turnToPoint(-22.008, -47.478, 800, {.forwards = false}); //THIS CODE IS FOR RUSH SETUP
+	chassis.moveToPose(-22.008, -47.478, 270, 2000, {.forwards = false});
+
 	conveyor.move(127);
 	chassis.waitUntilDone();
 	intake.move(0);
@@ -474,43 +490,57 @@ inline void redRightSoloAWP(){
  * ON MOGO SIDE
  */
 inline void blueLeftSoloAWP(){
-	chassis.setPose(54, -14.2, 180);
-	chassis.moveToPose(54, -1, 0, 800, {.forwards = false}); // move to alliance stake
-	chassis.turnToHeading(270, 700); // turn toward alliance stake
-	chassis.moveToPoint(61.9, -.4, 700, {.forwards = false});
+	chassis.setPose(55.05, -14.25, 180);
+	chassis.moveToPose(55.05, .5, 180, 800, {.forwards = false}); // move to alliance stake
+	chassis.turnToHeading(270, 700, {.direction = lemlib::AngularDirection::CW_CLOCKWISE}); // turn toward alliance stake
+	chassis.moveToPoint(63.4, 0, 700, {.forwards = false});
 	chassis.waitUntilDone();
 	conveyor.move(127);
 	delay(400);
+
 	chassis.moveToPoint(55, 0, 600); // move away from alliance stake
 	intake.move(0);
-	chassis.turnToPoint(32.628, -18.083, 1000, {.forwards=false}); // turn to left safe mogo
+	chassis.turnToPoint(31.204, -18.5, 1000, {.forwards=false}); // turn to left safe mogo
 	conveyor.move(0);
-	chassis.moveToPoint(32.628, -18.083, 800, {.forwards = false, .minSpeed = 60, .earlyExitRange = 8});
+	chassis.moveToPoint(31.204, -18.5, 800, {.forwards = false, .minSpeed = 60, .earlyExitRange = 8});
 	chassis.waitUntilDone();
 	chassis.tank(-60, -60);
 	delay(450);
 	chassis.tank(0, 0);
-	mogoclamp.extend(); //clamp left safe mogo
+	mogoclamp.toggle(); //clamp left safe mogo
 	delay(100);
 	chassis.turnToPoint(23, -50, 1000);
 	chassis.moveToPoint(23, -50, 1500); //grab safe ring
+
 	intake.move(-127);
-	chassis.turnToPoint(62.029, -63.693, 1000);
-	conveyor.move(127);
-	chassis.moveToPoint(62.029, -63.693, 1100); //move to left corner to grab lowest ring
-	chassis.waitUntilDone();
-	chassis.tank(80, 80);
-	intake.move(127);
-	delay(1000);
-	conveyor.move(0);
-	chassis.tank(0, 0);
-	intake.move(-100);
-	delay(500);
-	chassis.moveToPose(28.913, -7.98, 330.333, 3000); //move to ladder
+
+	//CORNER CODE FOLLOWING
+	// intake.move(-127);
+	// chassis.turnToPoint(62.029, -63.693, 1000);
+	// conveyor.move(127);
+	// chassis.moveToPoint(62.029, -63.693, 1100); //move to left corner to grab lowest ring
+	// chassis.waitUntilDone();
+	// chassis.tank(80, 80);
+	// intake.move(127);
+	// delay(1000);
+	// conveyor.move(0);
+	// chassis.tank(0, 0);
+	// intake.move(-100);
+	// delay(500);
+
+	delay(4000);
+	intake.move(0);
+	mogoclamp.toggle();
+
+	// chassis.moveToPose(23.455, -12.864, 330.333, 3000); //move to ladder
+	chassis.turnToPoint(22.008, -47.478, 800, {.forwards = false}); //THIS CODE IS FOR RUSH SETUP
+	chassis.moveToPose(22.008, -47.478, 90, 2000, {.forwards = false});
+	// ladybrownMotor.move(127);
 	conveyor.move(127);
 	chassis.waitUntilDone();
 	intake.move(0);
 	conveyor.move(0);
+
 
 }
 

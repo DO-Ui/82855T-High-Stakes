@@ -53,7 +53,7 @@ void ladybrown_and_color_task() {
     bool ringHeld = false;
     bool manualLBMode = false;
     const float REST = 0;
-    const float CAPTURE = 32;
+    const float CAPTURE = 35;
     const float WALLSTAKE_PREP = 100;
     const float WALLSTAKE = 140;
     // const float ALLIANCE = 190;
@@ -123,11 +123,11 @@ void ladybrown_and_color_task() {
             }
             manualLBMode = false;
         }
-        else if(manualLBMode){
+        else if(manualLBMode && !auton_active){
             ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
             ladybrownMotor.brake();
         }
-        if(!manualLBMode){ //no manual overrides have been given, move on to macros
+        if(!manualLBMode && !auton_active){ //no manual overrides have been given, move on to macros
             ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_COAST);
             float lbAngle = ((float)ladybrownSensor.get_angle())/100;
             if(lbAngle > 300) lbAngle = lbAngle - 360;

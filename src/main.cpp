@@ -60,6 +60,7 @@ void initialize() {
 	vertical_tracker.reset();
 	chassis.calibrate();
 	ladybrownSensor.reset();
+	chassis.setPose(-55.05, -14.5, 180); //TODO REMOVE
 
 	master.clear();
 
@@ -125,10 +126,9 @@ void autonomous() {
 	// redRightSoloAWP();
 	// redLeftSoloAWP();
 	//BLUE SIDE
-	// blueRightSoloAWP()
-	// blueLeftSoloAWP();
+	// blueRightSoloAWP();
+	blueLeftSoloAWP();
 	// blueRight5RingElim();
-
 
 	//NONFUNCTIONAL
 	//blueDoubleMogoAWP();
@@ -160,7 +160,7 @@ void autonomous() {
  */
 void opcontrol() {
 
-	hang.retract();
+	// hang.retract();
 	
 	auton_active = false;
 	sorter_active = false;
@@ -174,11 +174,11 @@ void opcontrol() {
 
 		chassis.arcade(leftY, rightX, false, 0.75);
 		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-			chassis.moveToPose(0, 24, 0, 3000);
+			// chassis.moveToPose(0, 24, 0, 3000);
 			// chassis.turnToHeading(90, 1000);
 		}
 		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
-			chassis.moveToPose(0, 0, 0, 3000, {.forwards = false});
+			// chassis.moveToPose(0, 0, 0, 3000, {.forwards = false});
 			// chassis.turnToHeading(0, 1000);
 		}
 
@@ -192,8 +192,14 @@ void opcontrol() {
 			mogoclamp.toggle();
 		}
 
-		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L2)) {
-			doinker.toggle();
+		if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
+			if(!doinker.is_extended()){
+				doinker.extend();
+			}
+			
+		}
+		else if(doinker.is_extended()){
+			doinker.retract();
 		}
 
 		// // print to brain screen
