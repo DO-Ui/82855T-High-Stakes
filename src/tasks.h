@@ -1,6 +1,11 @@
 #pragma once
 
 //DON'T COMMUNICATE WITH MAIN THREAD. Reading is fine, never write
+const float REST = 0;
+const float CAPTURE = 35;
+const float WALLSTAKE_PREP = 100;
+const float WALLSTAKE = 140;
+int lbTarget = 0;
 
 
 bool sorter_active = true;
@@ -12,17 +17,22 @@ bool in_range(double value, double bottom, double top) {
     return (value >= bottom) && (value <= top);
 }
 
-int find_closest_LBPosition(float lbArmAngle, float positions[4], bool isBehind){
-    float closestPositionDiff = 9999;
-    float closestPositionIndex = 0;
-    if(lbArmAngle > 300) lbArmAngle = lbArmAngle - 360;
-    for(int i = 0; i < sizeof(positions)/sizeof(positions[0]); i++){
-        if(abs(lbArmAngle - positions[i]) < closestPositionDiff && (isBehind && abs(lbArmAngle) >= positions[i]) || (!isBehind && abs(lbArmAngle) <= positions[i])) {
-            closestPositionDiff = abs(lbArmAngle - positions[i]);
-            closestPositionIndex = i;
+void set_LBPosition(float angle){
+    lbTarget = angle;
+}
+
+int find_closest_LBPosition(float lbArmAngle, float positions[4], bool findPositionBehind){
+    if(lbArmAngle > 300) lbArmAngle = 0; //if the angle is slightly past hard stop, making it do a full rotation over to 359.99 degrees, this accounts for that case
+    if(lbArmAngle > positions[sizeof(positions)/sizeof(positions[0])-1]) return sizeof(positions)/sizeof(positions[0])-1;
+    for(int i = 0; i < sizeof(positions)/sizeof(positions[0])-1; i++){
+        float lowerBound = positions[i];
+        float upperBound = positions[i+1];
+        if(lowerBound <= lbArmAngle && lbArmAngle < upperBound){
+            if(findPositionBehind) return i;
+            else return i+1;
         }
     }
-    return closestPositionIndex;
+    return -1;
 }
 
 
@@ -52,13 +62,9 @@ void ladybrown_and_color_task() {
     
     bool ringHeld = false;
     bool manualLBMode = false;
-    const float REST = 0;
-    const float CAPTURE = 35;
-    const float WALLSTAKE_PREP = 100;
-    const float WALLSTAKE = 140;
+
     // const float ALLIANCE = 190;
 
-    int lbTarget = 0;
     float positions[4] = {REST, CAPTURE, WALLSTAKE_PREP, WALLSTAKE};
 
     char colour_detected = 'n'; // 'n' means empty

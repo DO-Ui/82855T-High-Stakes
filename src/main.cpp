@@ -173,14 +173,14 @@ void opcontrol() {
 		int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
 
 		chassis.arcade(leftY, rightX, false, 0.75);
-		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-			// chassis.moveToPose(0, 24, 0, 3000);
-			// chassis.turnToHeading(90, 1000);
-		}
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
-			// chassis.moveToPose(0, 0, 0, 3000, {.forwards = false});
-			// chassis.turnToHeading(0, 1000);
-		}
+		// if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
+		// 	// chassis.moveToPose(0, 24, 0, 3000);
+		// 	// chassis.turnToHeading(90, 1000);
+		// }
+		// if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
+		// 	// chassis.moveToPose(0, 0, 0, 3000, {.forwards = false});
+		// 	// chassis.turnToHeading(0, 1000);
+		// }
 
 		
 
