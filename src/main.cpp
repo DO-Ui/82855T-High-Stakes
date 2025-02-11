@@ -14,13 +14,13 @@
 
 //controller mappings (all should be done now):
 //R1: intake + conveyor 
-//R2: reverse intake 
+//R2: reverse intake & conveyor
 //L1: mogoclamp 
 //L2: doinker 
 //y (right paddle): ladybrown up macro
 //right arrow (left paddle): ladybrown down macro
-//down arrow: reverse conveyor
-//up arrow: conveyor
+//down arrow: intake lower
+//up arrow: intake riser
 //left arrow: intake 
 //X: ladybrown up manual 
 //B: ladybrown down manual 
@@ -60,7 +60,7 @@ void initialize() {
 	vertical_tracker.reset();
 	chassis.calibrate();
 	ladybrownSensor.reset();
-	chassis.setPose(-55.05, -14.5, 180); //TODO REMOVE
+	chassis.setPose(0, 0, 0); //TODO REMOVE
 
 	master.clear();
 
@@ -126,8 +126,8 @@ void autonomous() {
 	// redRightSoloAWP();
 	// redLeftSoloAWP();
 	//BLUE SIDE
-	// blueRightSoloAWP();
-	blueLeftSoloAWP();
+	blueRightSoloAWP();
+	// blueLeftSoloAWP();
 	// blueRight5RingElim();
 
 	//NONFUNCTIONAL
@@ -173,14 +173,14 @@ void opcontrol() {
 		int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
 
 		chassis.arcade(leftY, rightX, false, 0.75);
-		// if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-		// 	// chassis.moveToPose(0, 24, 0, 3000);
-		// 	// chassis.turnToHeading(90, 1000);
-		// }
-		// if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
-		// 	// chassis.moveToPose(0, 0, 0, 3000, {.forwards = false});
-		// 	// chassis.turnToHeading(0, 1000);
-		// }
+		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
+			chassis.moveToPoint(0, 24, 3000);
+			// chassis.turnToHeading(90, 1000);
+		}
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
+			chassis.moveToPoint(0, 0, 3000, {.forwards = false});
+			// chassis.turnToHeading(0, 1000);
+		}
 
 		
 
@@ -197,10 +197,14 @@ void opcontrol() {
 				doinker.extend();
 			}
 			
-		}
-		else if(doinker.is_extended()){
+		} else if(doinker.is_extended()){
 			doinker.retract();
 		}
+
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_DOWN)){
+			intakeRiser.toggle();
+		}
+
 
 		// // print to brain screen
 		lcd::print(0, "x: %f", chassis.getPose().x);

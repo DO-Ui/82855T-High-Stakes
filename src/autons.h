@@ -391,13 +391,21 @@ inline void redLeftSoloAWP(){
  * ON RING SIDE
  */
 inline void blueRightSoloAWP(){
-	chassis.setPose(55.05, 14.25, 0);
-	chassis.moveToPose(55.05, -1, 0, 800, {.forwards = false}); // move to alliance stake
-	chassis.turnToHeading(270, 700); // turn toward alliance stake
-	chassis.moveToPoint(59, .4, 700, {.forwards = false});
+	chassis.setPose(58.586, 18, 180);
+	chassis.moveToPoint(58.586, -.2, 1000); //knock ring out of the way
+	chassis.moveToPoint(58.586, 11.934, 1000, {.forwards = false}); //move back to make space for turn
+	intakeRiser.extend();
+	intake.move(-127);
+	chassis.turnToPoint(47.22, -0.207, 600);
+	chassis.moveToPoint(47.22, -0.207, 1000); //move to two ring stack at middle
+	// chassis.moveToPose(55.05, -1.3, 0, 800, {.forwards = false}); // move to alliance stake
+	chassis.turnToPoint(61, 0, 700, {.forwards = false}); // turn toward alliance stake
+	intakeRiser.retract();
+	chassis.moveToPoint(61, 0, 700, {.forwards = false});
 	chassis.waitUntilDone();
 	conveyor.move(127);
-	delay(400);
+	delay(300);
+	conveyor.move(0);
 	chassis.moveToPoint(55, 0, 600);
 	chassis.turnToPoint(32.628, 18.983, 1000, {.forwards=false});
 	chassis.moveToPose(32.628, 18.983, 120, 800, {.forwards = false, .minSpeed = 60, .earlyExitRange = 8});
