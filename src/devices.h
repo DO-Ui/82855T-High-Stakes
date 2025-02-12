@@ -16,8 +16,8 @@ Rotation horizontal_tracker(-11);
 Rotation vertical_tracker(17);
 Rotation ladybrownSensor(9);
 
-Optical colour_sensor(16);
-Distance distance_sensor(11);
+Optical colour_sensor(7);
+Distance distance_sensor(3);
 GPS gps_sensor(13);
 
 
@@ -26,9 +26,9 @@ adi::Pneumatics doinker('b', false);
 adi::Pneumatics intakeRiser('c', false);
 adi::Pneumatics hang('d', false);
 
-lemlib::PID ladybrownPID(3, // kP
+lemlib::PID ladybrownPID(4, // kP
                 0, // kI
-                4.5, // kD
+                8, // kD`
                 5, // integral anti windup range
                 false); // don't reset integral when sign of error flips    
 
@@ -44,7 +44,7 @@ lemlib::ControllerSettings lateral_controller(20, 0, 92, 4, 1, 500, 3, 750, 0);
 
 
 // lemlib::ControllerSettings angular_controller(4.1, 0.35, 42, 3, 1, 100, 3, 500, 25);
-lemlib::ControllerSettings angular_controller(6.3, 0, 64, 3, 1, 100, 3, 500, 0);
+lemlib::ControllerSettings angular_controller(5.9, 0, 60, 3, 1, 100, 3, 500, 0);
 
 
 

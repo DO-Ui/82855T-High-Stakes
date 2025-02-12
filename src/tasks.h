@@ -12,6 +12,8 @@ bool sorter_active = true;
 bool auton_active = false;
 char current_sort = 'b';
 float conveyor_speed = 127;
+float conveyor_start_time = 0;
+bool conveyor_powered = false;
 
 bool in_range(double value, double bottom, double top) {
     return (value >= bottom) && (value <= top);
@@ -21,7 +23,7 @@ void set_LBPosition(float angle){
     lbTarget = angle;
 }
 
-int find_closest_LBPosition(float lbArmAngle, float positions[4], bool findPositionBehind){
+int find_closest_LBPosition(float lbArmAngle, float positions[3], bool findPositionBehind){
     if(lbArmAngle > 300) lbArmAngle = 0; //if the angle is slightly past hard stop, making it do a full rotation over to 359.99 degrees, this accounts for that case
     if(lbArmAngle > positions[sizeof(positions)/sizeof(positions[0])-1]) return sizeof(positions)/sizeof(positions[0])-1;
     for(int i = 0; i < sizeof(positions)/sizeof(positions[0])-1; i++){
@@ -40,10 +42,19 @@ void driver_inputs() {
     if(!auton_active){ //don't run driver inputs if auton is active
         if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
             conveyor.move(conveyor_speed);
-        } 
+            // if(!conveyor_powered) {
+            //     conveyor_powered = true;
+            //     conveyor_start_time = CLOCK_REALTIME;
+            // }
+            // else if(CLOCK_REALTIME - conveyor_start_time > 5 && conveyor.get_actual_velocity() < 150){
+            //     conveyor.move(-127);
+            // }
+        }
         else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
+            conveyor_powered = false;
             conveyor.move(-127);
         } else {
+            conveyor_powered = false;
             conveyor.move(0);
         }
 
@@ -65,7 +76,7 @@ void ladybrown_and_color_task() {
 
     // const float ALLIANCE = 190;
 
-    float positions[4] = {REST, CAPTURE, WALLSTAKE_PREP, WALLSTAKE};
+    float positions[3] = {REST, CAPTURE, WALLSTAKE};
 
     char colour_detected = 'n'; // 'n' means empty
     int controller_print = 0;
@@ -90,25 +101,25 @@ void ladybrown_and_color_task() {
 
         
 
-        // if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) { //toggle whether color sort is active or not
-        //     sorter_active = !sorter_active;
-        // }
+        if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) { //toggle whether color sort is active or not
+            sorter_active = !sorter_active;
+        }
 
-        // if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) { //toggle color sort setting
-        //     if (current_sort == 'r') {
-        //         current_sort = 'b';
-        //     } else {
-        //         current_sort = 'r';
-        //     }
-        // }
+        if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) { //toggle color sort setting
+            if (current_sort == 'r') {
+                current_sort = 'b';
+            } else {
+                current_sort = 'r';
+            }
+        }
         float currAngle = ((float)ladybrownSensor.get_angle())/100;
         if(currAngle > 300) currAngle = currAngle - 360;
         //LADYBROWN CODE BELOW
-        if(master.get_digital(E_CONTROLLER_DIGITAL_X) && currAngle <= 150){
+        if(master.get_digital(E_CONTROLLER_DIGITAL_UP) && currAngle <= 150){
             ladybrownMotor.move(127);
             manualLBMode = true;
         }
-        else if(master.get_digital(E_CONTROLLER_DIGITAL_B)){
+        else if(master.get_digital(E_CONTROLLER_DIGITAL_DOWN)){
             ladybrownMotor.move(-127);
             manualLBMode = true;
         }
@@ -156,12 +167,12 @@ void ladybrown_and_color_task() {
             driver_inputs();
         }
 
-        // if (controller_print == 0) {
-        //     master.print(0, 0, "Sorter State: %s", sorter_active ? "Active" : "Inactive");
-        //     controller_print = 10;
-        // } else if (controller_print == 5) {
-        //     master.print(1, 0, "Current Sort: %s", current_sort == 'r' ? "Red" : "Blue");
-        // }
+        if (controller_print == 0) {
+            master.print(0, 0, "Sorter State: %s", sorter_active ? "Active" : "Inactive");
+            controller_print = 10;
+        } else if (controller_print == 5) {
+            master.print(1, 0, "Current Sort: %s", current_sort == 'r' ? "Red" : "Blue");
+        }
 
         if (controller_print > 0) {
             controller_print--;

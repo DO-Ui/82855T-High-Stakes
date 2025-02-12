@@ -113,9 +113,9 @@ void competition_initialize() {}
  */
 void autonomous() {
 
-	sorter_active = false;
+	sorter_active = true;
 	auton_active = true;
-	current_sort = 'b';
+	current_sort = 'r'; //SORT OUT THIS COLOR
 
 	// redLeftAllianceStake4Ring();
 	// blueLeftMogoRush();
@@ -163,7 +163,7 @@ void opcontrol() {
 	// hang.retract();
 	
 	auton_active = false;
-	sorter_active = false;
+	sorter_active = true;
 
 	// int count = 0; //used for automatic PID tuning
 
@@ -174,12 +174,12 @@ void opcontrol() {
 
 		chassis.arcade(leftY, rightX, false, 0.75);
 		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-			chassis.moveToPoint(0, 24, 3000);
-			// chassis.turnToHeading(90, 1000);
+			// chassis.moveToPoint(0, 24, 3000);
+			chassis.turnToHeading(90, 1000);
 		}
 		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
-			chassis.moveToPoint(0, 0, 3000, {.forwards = false});
-			// chassis.turnToHeading(0, 1000);
+			// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
+			chassis.turnToHeading(0, 1000);
 		}
 
 		
@@ -201,7 +201,7 @@ void opcontrol() {
 			doinker.retract();
 		}
 
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_DOWN)){
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
 			intakeRiser.toggle();
 		}
 
