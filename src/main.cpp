@@ -115,7 +115,7 @@ void autonomous() {
 
 	sorter_active = true;
 	auton_active = true;
-	current_sort = 'r'; //SORT OUT THIS COLOR
+	current_sort = 'b'; //SORT OUT THIS COLOR
 
 	// redLeftAllianceStake4Ring();
 	// blueLeftMogoRush();
@@ -124,9 +124,9 @@ void autonomous() {
 	// skills();
 	// redLeft5RingElim()
 	// redRightSoloAWP();
-	// redLeftSoloAWP();
+	redLeftSoloAWP();
 	//BLUE SIDE
-	blueRightSoloAWP();
+	// blueRightSoloAWP();
 	// blueLeftSoloAWP();
 	// blueRight5RingElim();
 

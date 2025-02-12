@@ -5,7 +5,8 @@ const float REST = 0;
 const float CAPTURE = 35;
 const float WALLSTAKE_PREP = 100;
 const float WALLSTAKE = 140;
-int lbTarget = 0;
+float positions[3] = {REST, CAPTURE, WALLSTAKE};
+int lbTarget = CAPTURE;
 
 
 bool sorter_active = true;
@@ -19,11 +20,11 @@ bool in_range(double value, double bottom, double top) {
     return (value >= bottom) && (value <= top);
 }
 
-void set_LBPosition(float angle){
-    lbTarget = angle;
+void set_LBPosition(int target){
+    lbTarget = target;
 }
 
-int find_closest_LBPosition(float lbArmAngle, float positions[3], bool findPositionBehind){
+int find_closest_LBPosition(float lbArmAngle, bool findPositionBehind){
     if(lbArmAngle > 300) lbArmAngle = 0; //if the angle is slightly past hard stop, making it do a full rotation over to 359.99 degrees, this accounts for that case
     if(lbArmAngle > positions[sizeof(positions)/sizeof(positions[0])-1]) return sizeof(positions)/sizeof(positions[0])-1;
     for(int i = 0; i < sizeof(positions)/sizeof(positions[0])-1; i++){
@@ -76,7 +77,6 @@ void ladybrown_and_color_task() {
 
     // const float ALLIANCE = 190;
 
-    float positions[3] = {REST, CAPTURE, WALLSTAKE};
 
     char colour_detected = 'n'; // 'n' means empty
     bool wrong_color_detected = false;
@@ -127,7 +127,7 @@ void ladybrown_and_color_task() {
         }
         else if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)){ //moves the arm up in positions in the wallstake chain of action
             if(manualLBMode){
-                lbTarget = find_closest_LBPosition(currAngle, positions, false);
+                lbTarget = find_closest_LBPosition(currAngle, false);
             }
             else if(lbTarget < sizeof(positions) / sizeof(positions[0])-1){
                 lbTarget++;
@@ -136,7 +136,7 @@ void ladybrown_and_color_task() {
         }
         else if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)){ //arm recovery
             if(manualLBMode){
-                lbTarget = find_closest_LBPosition(currAngle, positions, true);
+                lbTarget = find_closest_LBPosition(currAngle, true);
             }
             else if(lbTarget > 0){
                 lbTarget--;
@@ -147,7 +147,7 @@ void ladybrown_and_color_task() {
             ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
             ladybrownMotor.brake();
         }
-        if(!manualLBMode && !auton_active){ //no manual overrides have been given, move on to macros
+        if(!manualLBMode){ //no manual overrides have been given, move on to macros
             ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_COAST);
             float lbAngle = currAngle;
             float powerGiven = ladybrownPID.update(positions[lbTarget] - lbAngle);
