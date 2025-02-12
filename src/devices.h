@@ -18,6 +18,7 @@ Rotation ladybrownSensor(9);
 
 Optical colour_sensor(7);
 Distance distance_sensor(3);
+Distance final_distance_sensor(2);
 GPS gps_sensor(13);
 
 

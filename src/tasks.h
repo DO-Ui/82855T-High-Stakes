@@ -79,6 +79,8 @@ void ladybrown_and_color_task() {
     float positions[3] = {REST, CAPTURE, WALLSTAKE};
 
     char colour_detected = 'n'; // 'n' means empty
+    bool wrong_color_detected = false;
+    float wrong_color_detected_time = 0;
     int controller_print = 0;
     
     while (true) {
@@ -91,7 +93,7 @@ void ladybrown_and_color_task() {
         // std::cout << static_cast<json>(colour_message) << std::flush;
 
 
-        if (in_range(hue, 215, 219)) {
+        if (in_range(hue, 205, 219)) {
             colour_detected = 'b';
         } else if (in_range(hue, 5, 13.5)) {
             colour_detected = 'r';
@@ -155,14 +157,19 @@ void ladybrown_and_color_task() {
             // lcd::print(2, "power given: %f", powerGiven);
         }
         
-        if ((sorter_active && current_sort == colour_detected) && distance_sensor.get() < 15) {
+        if (!wrong_color_detected && (sorter_active && current_sort == colour_detected) && distance_sensor.get() < 45) {
+            wrong_color_detected = true;
+            driver_inputs();
+        } 
+        else if(wrong_color_detected && final_distance_sensor.get() < 25){
+            wrong_color_detected = false;
             int voltageBeforeStop = conveyor.get_voltage();
             delay(45);
             conveyor.move(-127);
             delay(250);
             conveyor.move_voltage(voltageBeforeStop); //reset the voltage to what it was before reversing the conveyor
             colour_detected = 'n';
-        } 
+        }
         else{
             driver_inputs();
         }
