@@ -6,20 +6,23 @@ const float CAPTURE = 35;
 const float WALLSTAKE_PREP = 100;
 const float WALLSTAKE = 140;
 float positions[3] = {REST, CAPTURE, WALLSTAKE};
-int lbTarget = CAPTURE;
+int lbTarget = CAPTURE; //NUMBER FROM 0-SIZE OF POSITIONS ARRAY, NOT THE ACTUAL ANGLE
 
 
 bool sorter_active = true;
-// bool auton_active = false;
+bool auton_active = false;
 char current_sort = 'b';
 float conveyor_speed = 127;
-float conveyor_start_time = 0;
-bool conveyor_powered = false;
+// float conveyor_start_time = 0;
+// bool conveyor_powered = false;
 
 bool in_range(double value, double bottom, double top) {
     return (value >= bottom) && (value <= top);
 }
 
+/**
+ * 0 REST, 1 CAPTURE, 2 WALLSTAKE
+ */
 void set_LBPosition(int target){
     lbTarget = target;
 }
@@ -52,10 +55,10 @@ void driver_inputs() {
             // }
         }
         else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
-            conveyor_powered = false;
+            // conveyor_powered = false;
             conveyor.move(-127);
         } else {
-            conveyor_powered = false;
+            // conveyor_powered = false;
             conveyor.move(0);
         }
 
@@ -72,7 +75,6 @@ void driver_inputs() {
 
 void ladybrown_and_color_task() {
     
-    bool ringHeld = false;
     bool manualLBMode = false;
 
     // const float ALLIANCE = 190;
@@ -118,7 +120,7 @@ void ladybrown_and_color_task() {
         if(currAngle > 300) currAngle = currAngle - 360;
         //LADYBROWN CODE BELOW
         if(master.get_digital(E_CONTROLLER_DIGITAL_UP) && currAngle <= 140){
-            ladybrownMotor.move(95);
+            ladybrownMotor.move(127);
             manualLBMode = true;
         }
         else if(master.get_digital(E_CONTROLLER_DIGITAL_DOWN)){
@@ -149,8 +151,7 @@ void ladybrown_and_color_task() {
         }
         if(!manualLBMode){ //no manual overrides have been given, move on to macros
             ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_COAST);
-            float lbAngle = currAngle;
-            float powerGiven = ladybrownPID.update(positions[lbTarget] - lbAngle);
+            float powerGiven = ladybrownPID.update(positions[lbTarget] - currAngle);
             if(!manualLBMode) ladybrownMotor.move(powerGiven); //update PID and motor voltage
             // lcd::print(0, "targetAngle: %f", positions[lbTarget]);
             // lcd::print(1, "lbAngleAdjusted: %f", lbAngle);
@@ -160,7 +161,7 @@ void ladybrown_and_color_task() {
         if (!wrong_color_detected && (sorter_active && current_sort == colour_detected) && distance_sensor.get() < 45) {
             wrong_color_detected = true;
             driver_inputs();
-        } 
+        }
         else if(wrong_color_detected && final_distance_sensor.get() < 25){
             wrong_color_detected = false;
             int voltageBeforeStop = conveyor.get_voltage();

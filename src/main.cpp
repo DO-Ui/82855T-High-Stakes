@@ -60,7 +60,7 @@ void initialize() {
 	vertical_tracker.reset();
 	chassis.calibrate();
 	ladybrownSensor.reset();
-	chassis.setPose(0, 0, 0); //TODO REMOVE
+	chassis.setPose(-62.8, 15.5, 180); //REMOVEL ATER
 
 	master.clear();
 
@@ -117,6 +117,7 @@ void autonomous() {
 	auton_active = true;
 	current_sort = 'b'; //SORT OUT THIS COLOR
 
+
 	// redLeftAllianceStake4Ring();
 	// blueLeftMogoRush();
 	// These ones below work
@@ -139,9 +140,8 @@ void autonomous() {
 	//redRightTeammateAWP();
 	//blueLeftTeammateAWP();
 	//redLeftElims();
-	//blueAllianceStake();
-	//redAllianceStake();
 	// redLeftAllianceStake4Ring();
+
 
 }
 
@@ -174,16 +174,16 @@ void opcontrol() {
 		int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
 
 		chassis.arcade(leftY, rightX, false, 0.75);
-		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-			// chassis.moveToPoint(0, 48, 3000);
-			// chassis.moveToPose(0, 48, 0, 2000);
-			chassis.turnToHeading(90, 1000);
-		}
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
-			// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
-			// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
-			chassis.turnToHeading(0, 1000);
-		}
+		// if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
+		// 	// chassis.moveToPoint(0, 48, 3000);
+		// 	// chassis.moveToPose(0, 48, 0, 2000);
+		// 	chassis.turnToHeading(90, 1000);
+		// }
+		// if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
+		// 	// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
+		// 	// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
+		// 	chassis.turnToHeading(0, 1000);
+		// }
 
 		
 

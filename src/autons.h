@@ -338,30 +338,54 @@ inline void blueRight5RingElim(){
 
 /**
  * Grant's Solo AWP Red Left side
- * Score on alliance stake -> score three rings on left mogo -> touch ladder
+ * Score on alliance stake -> score 5 rings on left mogo -> touch ladder
+ * Gear touching wall, 2 inches to outeroutermost boundary of tile from back high strength
  * ON RING SIDE
  */
 inline void redLeftSoloAWP(){
-	chassis.setPose(-68.8661, 16.15, 180);
+	chassis.setPose(-62.8, 15.5, 180);
 	set_LBPosition(2);
-	delay(1500);
-	// intakeRiser.retract();
-	// intake.move(-127);
-	// chassis.turnToPoint(-53.006, 4.443, 1000);
-	// chassis.moveToPoint(-53.006, 4.443, 1000); //move to two stacked ring
-	// intakeRiser.extend();
-	// intake.move(0);
-	// chassis.moveToPoint(-32.341, 18.392, 1000, {.forwards = false}); //move to mogo
-	// chassis.waitUntilDone();
-	// chassis.tank(-60, -60);
-	// delay(450);
-	// chassis.tank(0, 0);
-	// mogoclamp.toggle(); //clamp mogo
-	// delay(100);
-	// chassis.turnToPoint(-8.318, 38.799, 1000);
-	// conveyor.move(127);
-	// chassis.moveToPose(-8.318, 38.799, 31.334, 2000, {.minSpeed = 30, .earlyExitRange = 2}); //move to contested rings
-	// chassis.moveToPose(-6.768, 46.031, 13, 1000);
+	delay(800);
+	intakeRiser.toggle();
+	intake.move(-127);
+	chassis.turnToPoint(-50.939, 3.926, 1000);
+	chassis.moveToPoint(-50.939, 3.926, 1000); //move to reversed ring stack
+	chassis.turnToPoint(-28, 20, 1000, {.forwards = false}); //move to mogo
+	intakeRiser.toggle();
+	chassis.moveToPose(-28, 20, 231, 1000, {.forwards = false}); //move to mogo
+	chassis.waitUntilDone();
+	chassis.tank(-100, -100);
+	delay(250);
+	chassis.tank(0, 0);
+	mogoclamp.toggle(); //clamp mogo
+	delay(300);
+	chassis.turnToPoint(-8.318, 38.799, 1000, {.minSpeed = 50, .earlyExitRange = 5});
+	chassis.waitUntilDone();
+	conveyor.move(127);
+	intake.move(-127);
+	chassis.moveToPoint(-6.768, 39.315, 1500); //move to contested rings
+	chassis.moveToPoint(-4.5, 50.165, 1000);
+	chassis.moveToPoint(-9.868, 31.566, 1000, {.forwards = false});
+	chassis.turnToPoint(-20.458, 47.84, 1000);
+	chassis.moveToPoint(-20.458, 47.84, 1000); //get safe ring
+	chassis.turnToHeading(270, 1000, {.minSpeed = 50, .earlyExitRange = 30});
+	chassis.moveToPose(-60, 62, 315, 2000, {.minSpeed = 70});
+	chassis.waitUntilDone();
+	chassis.tank(127, 127);
+	delay(400);
+	intake.move(127);
+	chassis.tank(127, 127);
+	delay(700);
+	chassis.tank(0, 0);
+	delay(200);
+	chassis.tank(90, 90);
+	intake.move(-127);
+	delay(800);
+	chassis.moveToPoint(-11.676, 11.676, 2000, {.forwards = false, .minSpeed = 30, .earlyExitRange = 3}); //move underneath ladder
+	chassis.waitUntilDone();
+	delay(500);
+	set_LBPosition(0);
+
 
 
 	// chassis.moveToPose(-55.05, -1, 0, 800, {.forwards = false}); // move to alliance stake
@@ -915,23 +939,23 @@ inline void blueLeftMogoRush(){
 //  * SAFE TWO MOGOS AWP
 //  */
 // inline void redTwoMogosAWP(){
-// 	chassis.setPose(-58, -35, 270);
-// 	chassis.moveToPoint(-41.258, -35, 1000, {.forwards=false, .earlyExitRange=5}); // Move to intermediate point
-// 	chassis.turnToPoint(-30, -28.5, 800, {.forwards=false}); // turn toward mogo flat side
-// 	chassis.moveToPose(-30, -28.5, 240, 2000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5, .earlyExitRange=3}); // move to mogo
-// 	chassis.waitUntilDone();
-// 	delay(100);
-// 	mogoclamp.extend(); // clamp mogo
-// 	delay(400);
-// 	conveyor.move(127);
-// 	chassis.turnToPoint(-23.6, -47.6, 1000, {.earlyExitRange=10}); // turn toward ring stack
-// 	chassis.moveToPose(-23.6, -47.6, 180, 2000, {.horizontalDrift = 8, .lead = 0.5}); // move into ring stack
-// 	intake.move(-127); // start intaking bottom ring of stack
-// 	delay(1800); // TODO change delay
-// 	intake.move(0); // stop intake to ensure conveyor grabs
-// 	chassis.waitUntilDone();
-// 	intake.move(0);
-// 	conveyor.move(0);
+	// 	chassis.setPose(-58, -35, 270);
+	// 	chassis.moveToPoint(-41.258, -35, 1000, {.forwards=false, .earlyExitRange=5}); // Move to intermediate point
+	// 	chassis.turnToPoint(-30, -28.5, 800, {.forwards=false}); // turn toward mogo flat side
+	// 	chassis.moveToPose(-30, -28.5, 240, 2000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5, .earlyExitRange=3}); // move to mogo
+	// 	chassis.waitUntilDone();
+	// 	delay(100);
+	// 	mogoclamp.extend(); // clamp mogo
+	// 	delay(400);
+	// 	conveyor.move(127);
+	// 	chassis.turnToPoint(-23.6, -47.6, 1000, {.earlyExitRange=10}); // turn toward ring stack
+	// 	chassis.moveToPose(-23.6, -47.6, 180, 2000, {.horizontalDrift = 8, .lead = 0.5}); // move into ring stack
+	// 	intake.move(-127); // start intaking bottom ring of stack
+	// 	delay(1800); // TODO change delay
+	// 	intake.move(0); // stop intake to ensure conveyor grabs
+	// 	chassis.waitUntilDone();
+	// 	intake.move(0);
+	// 	conveyor.move(0);
 
 	// chassis.turnToPoint(-45, -10.5, 1000, {.earlyExitRange=10}); // turn toward reversed stack intermediate point
 	// delay(500);
@@ -984,100 +1008,4 @@ inline void blueLeftMogoRush(){
 // 	chassis.tank(30, 30);
 // 	delay(2000);
 // 	chassis.tank(0, 0);
-// }
-
-
-// /**
-//  * TEAMMATE AWP LEFT SIDE BLUE
-//  */
-// inline void blueLeftTeammateAWP(){
-// 	chassis.setPose(58, -35, 90); // setPose modified
-// 	chassis.moveToPoint(41.258, -35, 1000, {.forwards=false, .earlyExitRange=5}); // Move to intermediate point
-// 	chassis.turnToPoint(30, -28.5, 800, {.forwards=false}); // turn toward mogo flat side
-// 	chassis.moveToPose(30, -28.5, 120, 2000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5, .earlyExitRange=3}); // move to mogo
-// 	chassis.waitUntilDone();
-// 	delay(100);
-// 	mogoclamp.extend(); // clamp mogo
-// 	delay(400);
-// 	conveyor.move(127);
-// 	chassis.turnToPoint(23.6, -47.6, 1000, {.earlyExitRange=10}); // turn toward ring stack
-// 	chassis.moveToPose(23.6, -47.6, 180, 2000, {.horizontalDrift = 8, .lead = 0.5}); // move into ring stack
-// 	intake.move(-127); // start intaking bottom ring of stack
-// 	delay(1800);
-// 	intake.move(0); // stop intake to ensure conveyor grabs
-// 	chassis.waitUntilDone();
-// 	mogoclamp.retract(); // release mogo
-// 	chassis.moveToPoint(23.6, -2.5, 10000, {.maxSpeed=80}); // Move to ladder
-// 	chassis.waitUntilDone();
-// 	conveyor.move(0);
-// 	intake.move(0);
-// 	chassis.tank(30, 30);
-// 	delay(2000);
-// 	chassis.tank(0, 0);
-// }
-
-// /**
-//  * ELIMS RED LEFT SIDE (Unfinished)
-//  */
-// inline void redLeftElims(){
-// 	chassis.setPose(-58.5, 48, 270);
-// 	chassis.turnToPoint(-32, 28.7, 1500, {.forwards=false, .earlyExitRange=5}); // turn toward mogo flat side
-// 	chassis.moveToPose(-32, 28.7, 300, 2000, {.forwards=false, .horizontalDrift = 8, .lead = 0.5}); // move to mogo
-// 	chassis.waitUntilDone();
-// 	delay(100);
-// 	mogoclamp.extend(); // clamp mogo
-// 	delay(400);
-// 	conveyor.move(127);
-// 	chassis.turnToPoint(-23.5, 47, 1000, {.earlyExitRange=10}); // turn toward ring stack
-// 	chassis.moveToPose(-23.5, 47, 43, 2000, {.horizontalDrift = 8, .lead = 0.5}); // move into ring stack
-// 	intake.move(-127); // start intaking bottom ring of stack
-// 	delay(1100);
-// 	intake.move(127); // ensure the blue isn't intaken
-// 	chassis.moveToPoint(-9, 60, 1000, {.earlyExitRange=5}); // move to intermediate point
-// 	chassis.moveToPose(-4, 37, 180, 2000, {.horizontalDrift = 8, .lead = 0.5, .maxSpeed=80}); // move into double ring stack
-// 	intake.move(-127); // start intaking double ring stack
-// 	chassis.waitUntilDone();
-// 	intake.move(0); // stop intake to ensure conveyor grabs
-// 	chassis.moveToPose(-47, 37, 90, 2000, {.horizontalDrift = 8, .lead = 0.2}); // move back
-// 	chassis.waitUntilDone();
-// 	conveyor.move(0);
-// }
-
-// /**
-//  * SAFE ALLIANCE STAKE BLUE (Unfinished?)
-//  */
-// inline void blueAllianceStake(){
-// 	chassis.setPose(55, -15.65, 0);
-// 	chassis.moveToPose(55, 0, 0, 1000); // move to alliance stake
-// 	intake.move(127);
-// 	chassis.turnToHeading(270, 1200); // turn toward alliance stake
-// 	chassis.waitUntilDone();
-// 	chassis.setPose(55, 0, 270);
-// 	intake.move(0);
-
-// 	chassis.moveToPose(62, 0, 270, 1000, {.forwards=false, .maxSpeed=60}); // move to alliance stake
-// 	chassis.waitUntilDone();
-// 	conveyor.move(127);
-// 	delay(1000);
-// 	conveyor.move(0);
-// 	chassis.moveToPose(22, 0, 270, 1000, {.maxSpeed=60}); // move to ladder
-// }
-
-// /**
-//  * SAFE ALLIANCE STAKE RED (Unfinished?)
-//  */
-// inline void redAllianceStake(){
-// 	chassis.setPose(-55, -15.65, 0);
-// 	chassis.moveToPose(-55, 0, 0, 1000); // move to alliance stake
-// 	intake.move(127);
-// 	chassis.turnToHeading(90, 1200); // turn toward alliance stake
-// 	chassis.waitUntilDone();
-// 	chassis.setPose(-55, 0, 90);
-// 	intake.move(0);
-
-// 	chassis.moveToPose(-62, 0, 90, 1000, {.forwards=false, .maxSpeed=60}); // move to alliance stake
-// 	chassis.waitUntilDone();
-// 	conveyor.move(127);
-// 	delay(1000);
-// 	conveyor.move(0);
 // }
