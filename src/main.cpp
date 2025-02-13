@@ -46,7 +46,7 @@ float round2dp(float num) {
  */
 void initialize() {
 
-	// std::cout << "foxglove" << std::endl;
+	std::cout << "foxglove" << std::endl;
 	lcd::initialize();
 
 	colour_sensor.set_led_pwm(100);
@@ -174,11 +174,13 @@ void opcontrol() {
 
 		chassis.arcade(leftY, rightX, false, 0.75);
 		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-			// chassis.moveToPoint(0, 24, 3000);
+			// chassis.moveToPoint(0, 48, 3000);
+			// chassis.moveToPose(0, 48, 0, 2000);
 			chassis.turnToHeading(90, 1000);
 		}
 		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
 			// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
+			// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
 			chassis.turnToHeading(0, 1000);
 		}
 

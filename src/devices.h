@@ -41,11 +41,11 @@ lemlib::TrackingWheel vertical_tracking_wheel(&vertical_tracker, lemlib::Omniwhe
 lemlib::OdomSensors sensors(&vertical_tracking_wheel, nullptr, &horizontal_tracking_wheel, nullptr, &imu);
 
 // lemlib::ControllerSettings lateral_controller(10, 0, 60, 3, 1, 500, 3, 750, 15);
-lemlib::ControllerSettings lateral_controller(20, 0, 92, 4, 1, 500, 3, 750, 0);
+lemlib::ControllerSettings lateral_controller(18.5, 0, 250, 3, 1, 100, 3, 500, 25);
 
 
 // lemlib::ControllerSettings angular_controller(4.1, 0.35, 42, 3, 1, 100, 3, 500, 25);
-lemlib::ControllerSettings angular_controller(5.9, 0, 60, 3, 1, 100, 3, 500, 0);
+lemlib::ControllerSettings angular_controller(7.2, 0, 71.3, 0, 2, 65, 3, 115, 30);
 
 
 
