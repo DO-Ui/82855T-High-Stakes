@@ -345,23 +345,23 @@ inline void redLeftSoloAWP(){
 	chassis.setPose(-68.8661, 16.15, 180);
 	set_LBPosition(2);
 	delay(1500);
-	intakeRiser.retract();
-	intake.move(-127);
-	chassis.turnToPoint(-53.006, 4.443, 1000);
-	chassis.moveToPoint(-53.006, 4.443, 1000); //move to two stacked ring
-	intakeRiser.extend();
-	intake.move(0);
-	chassis.moveToPoint(-32.341, 18.392, 1000, {.forwards = false}); //move to mogo
-	chassis.waitUntilDone();
-	chassis.tank(-60, -60);
-	delay(450);
-	chassis.tank(0, 0);
-	mogoclamp.toggle(); //clamp mogo
-	delay(100);
-	chassis.turnToPoint(-8.318, 38.799, 1000);
-	conveyor.move(127);
-	chassis.moveToPose(-8.318, 38.799, 31.334, 2000, {.minSpeed = 30, .earlyExitRange = 2}); //move to contested rings
-	chassis.moveToPose(-6.768, 46.031, 13, 1000);
+	// intakeRiser.retract();
+	// intake.move(-127);
+	// chassis.turnToPoint(-53.006, 4.443, 1000);
+	// chassis.moveToPoint(-53.006, 4.443, 1000); //move to two stacked ring
+	// intakeRiser.extend();
+	// intake.move(0);
+	// chassis.moveToPoint(-32.341, 18.392, 1000, {.forwards = false}); //move to mogo
+	// chassis.waitUntilDone();
+	// chassis.tank(-60, -60);
+	// delay(450);
+	// chassis.tank(0, 0);
+	// mogoclamp.toggle(); //clamp mogo
+	// delay(100);
+	// chassis.turnToPoint(-8.318, 38.799, 1000);
+	// conveyor.move(127);
+	// chassis.moveToPose(-8.318, 38.799, 31.334, 2000, {.minSpeed = 30, .earlyExitRange = 2}); //move to contested rings
+	// chassis.moveToPose(-6.768, 46.031, 13, 1000);
 
 
 	// chassis.moveToPose(-55.05, -1, 0, 800, {.forwards = false}); // move to alliance stake

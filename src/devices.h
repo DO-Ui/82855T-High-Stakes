@@ -51,3 +51,5 @@ lemlib::ControllerSettings angular_controller(7.2, 0, 71.3, 0, 2, 65, 3, 115, 30
 
 lemlib::ExpoDriveCurve throttle_curve(1, 10, 1.025);
 lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller, sensors, &throttle_curve);
+
+bool auton_active = false;

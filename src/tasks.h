@@ -10,7 +10,7 @@ int lbTarget = CAPTURE;
 
 
 bool sorter_active = true;
-bool auton_active = false;
+// bool auton_active = false;
 char current_sort = 'b';
 float conveyor_speed = 127;
 float conveyor_start_time = 0;
@@ -117,8 +117,8 @@ void ladybrown_and_color_task() {
         float currAngle = ((float)ladybrownSensor.get_angle())/100;
         if(currAngle > 300) currAngle = currAngle - 360;
         //LADYBROWN CODE BELOW
-        if(master.get_digital(E_CONTROLLER_DIGITAL_UP) && currAngle <= 150){
-            ladybrownMotor.move(127);
+        if(master.get_digital(E_CONTROLLER_DIGITAL_UP) && currAngle <= 140){
+            ladybrownMotor.move(95);
             manualLBMode = true;
         }
         else if(master.get_digital(E_CONTROLLER_DIGITAL_DOWN)){
@@ -143,7 +143,7 @@ void ladybrown_and_color_task() {
             }
             manualLBMode = false;
         }
-        else if(manualLBMode && !auton_active){
+        else if(manualLBMode && (!auton_active)){
             ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
             ladybrownMotor.brake();
         }

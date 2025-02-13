@@ -164,6 +164,7 @@ void opcontrol() {
 	
 	auton_active = false;
 	sorter_active = true;
+	
 
 	// int count = 0; //used for automatic PID tuning
 
