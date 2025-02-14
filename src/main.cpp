@@ -123,9 +123,10 @@ void autonomous() {
 	// skills();
 	//RED SIDE 
 	// redRightSoloAWP();
-	redLeftSoloAWP();
+	// redLeftSoloAWP(); //should work
+	redMogoRush();
 	//BLUE SIDE
-	// blueRightSoloAWP();
+	// blueRightSoloAWP(); //should work
 	// redOrblueRightSoloAWPSAFE();
 	// blueLeftSoloAWP();
 
