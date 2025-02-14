@@ -118,32 +118,28 @@ void autonomous() {
 	current_sort = 'r'; //SORT OUT THIS COLOR
 
 
-	// redLeftAllianceStake4Ring();
 	// blueLeftMogoRush();
 	// These ones below work
-	//RED SIDE 
 	// skills();
-	// redLeft5RingElim()
+	//RED SIDE 
 	// redRightSoloAWP();
 	// redLeftSoloAWP();
 	//BLUE SIDE
-	// blueRightSoloAWP();
-	redOrblueRightSoloAWPSAFE();
-
+	blueRightSoloAWP();
+	// redOrblueRightSoloAWPSAFE();
 	// blueLeftSoloAWP();
-	// blueRight5RingElim();
+
+
 
 	//NONFUNCTIONAL
-	//blueDoubleMogoAWP();
-	//redDoubleMogoAWP();
+	// redLeftAllianceStake4Ring();
+	// blueRight5RingElim();
+	// redLeft5RingElim()
 	//redMogoRushSoloAWP();
 	//blueMogoRushSoloAWP();
 	//redTwoMogosAWP();
 	//redRightTeammateAWP();
 	//blueLeftTeammateAWP();
-	//redLeftElims();
-	// redLeftAllianceStake4Ring();
-
 
 }
 

@@ -6,7 +6,7 @@ const float CAPTURE = 35;
 const float WALLSTAKE_PREP = 100;
 const float WALLSTAKE = 140;
 float positions[3] = {REST, CAPTURE, WALLSTAKE};
-int lbTarget = CAPTURE; //NUMBER FROM 0-SIZE OF POSITIONS ARRAY, NOT THE ACTUAL ANGLE
+int lbTarget = 0; //NUMBER FROM 0-SIZE OF POSITIONS ARRAY, DO NOT PUT THE ACTUAL ANGLE
 
 
 bool sorter_active = true;
@@ -131,7 +131,7 @@ void ladybrown_and_color_task() {
             if(manualLBMode){
                 lbTarget = find_closest_LBPosition(currAngle, false);
             }
-            else if(lbTarget < sizeof(positions) / sizeof(positions[0])-1){
+            else if(lbTarget < (sizeof(positions) / sizeof(positions[0]))-1){
                 lbTarget++;
             }
             manualLBMode = false;
