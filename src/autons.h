@@ -430,6 +430,40 @@ inline void redLeftSoloAWP(){
 
 }
 
+inline void redOrblueRightSoloAWPSAFE(){
+	chassis.setPose(62.8, 15.5, 180);
+	set_LBPosition(2);
+	delay(800);
+	intakeRiser.toggle();
+	intake.move(-127);
+	chassis.turnToPoint(50.939, 3.926, 800, {.minSpeed=80, .earlyExitRange=10});
+	chassis.moveToPoint(50.939, 3.926, 600); //move to reversed ring stack
+	chassis.turnToPoint(28, 20, 1000, {.forwards = false, .minSpeed=80, .earlyExitRange=5}); //move to mogo
+	intakeRiser.toggle();
+	chassis.moveToPose(28, 20, 131, 1000, {.forwards = false}); //move to mogo
+	chassis.waitUntilDone();
+	chassis.tank(-100, -100);
+	delay(250);
+	chassis.tank(0, 0);
+	mogoclamp.toggle(); //clamp mogo
+	delay(250);
+	chassis.turnToPoint(25, 47, 800, {.earlyExitRange=10});
+	chassis.waitUntilDone();
+	conveyor.move(127);
+	intake.move(-127);
+	delay(800);
+	chassis.moveToPoint(23, 47, 900, {.minSpeed=90}); //get safe ring
+	chassis.turnToPoint(11.676, 11.676, 1000, {.forwards = false});
+	chassis.moveToPoint(11.676, 11.676, 2000, {.forwards = false, .minSpeed = 30, .earlyExitRange = 3}); //move underneath ladder
+	conveyor.move(0);
+	intake.move(0);
+	chassis.waitUntilDone();
+	set_LBPosition(0);
+
+
+}
+
+
 /**
  * Grant's Solo AWP Blue Right Side (Mirrored from red side)
  * Score on alliance stake -> score three rings on right mogo -> touch ladder

@@ -127,7 +127,9 @@ void autonomous() {
 	// redRightSoloAWP();
 	// redLeftSoloAWP();
 	//BLUE SIDE
-	blueRightSoloAWP();
+	// blueRightSoloAWP();
+	redOrblueRightSoloAWPSAFE();
+
 	// blueLeftSoloAWP();
 	// blueRight5RingElim();
 
