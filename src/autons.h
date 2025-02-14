@@ -312,8 +312,9 @@ inline void blueRightSoloAWP(){
 
 
 inline void redMogoRush(){
-	chassis.setPose(-50.423, -60, 90);
-	chassis.moveToPose(-13.972, -57.466, 55.167, 1500, {.lead = 1, .minSpeed = 100, .earlyExitRange = 2}); //rush mogo
+	chassis.setPose(-54, -64.75, 90);
+	chassis.moveToPoint(-16.74, -64.5, 1000, {.minSpeed = 127, .earlyExitRange = 9});
+	chassis.moveToPose(-13.972, -57.466, 55.167, 1500, {.minSpeed = 100, .earlyExitRange = 2}); //rush mogo
 	chassis.waitUntilDone();
 	doinker.extend();
 	chassis.moveToPoint(-20.573, -60.049, 700, {.forwards = false}); //bring mogo back
