@@ -60,7 +60,7 @@ void initialize() {
 	vertical_tracker.reset();
 	chassis.calibrate();
 	ladybrownSensor.reset();
-	chassis.setPose(-62.8, 15.5, 180); //REMOVEL ATER
+	chassis.setPose(-53.5, -64.75, 90); //remove later
 
 	master.clear();
 
@@ -115,22 +115,21 @@ void autonomous() {
 
 	sorter_active = true;
 	auton_active = true;
-	current_sort = 'b'; //SORT OUT THIS COLOR
+	current_sort = 'r'; //SORT OUT THIS COLOR
 
 
 	// blueLeftMogoRush();
 	// These ones below work
 	// skills();
-	//RED SIDE 
+	//RED SIDE
 	// redRightSoloAWP();
 	// redLeftSoloAWP(); //should work
-	redMogoRush();
+	// redMogoRush();
+	// globalRightsideSoloAWPSAFE(); //should also work
 	//BLUE SIDE
-	// blueRightSoloAWP(); //should work
-	// redOrblueRightSoloAWPSAFE();
+	blueRightSoloAWP(); //should work
+	// globalLeftsideSoloAWPSAFE(); //should also work
 	// blueLeftSoloAWP();
-
-
 
 	//NONFUNCTIONAL
 	// redLeftAllianceStake4Ring();
