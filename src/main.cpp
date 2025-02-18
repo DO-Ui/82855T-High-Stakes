@@ -60,7 +60,7 @@ void initialize() {
 	vertical_tracker.reset();
 	chassis.calibrate();
 	ladybrownSensor.reset();
-	chassis.setPose(-53.5, -64.75, 90); //remove later
+	chassis.setPose(-62.8, -15.5, 0);
 
 	master.clear();
 
@@ -120,11 +120,11 @@ void autonomous() {
 
 	// blueLeftMogoRush();
 	// These ones below work
-	// skills();
+	skills();
 	//RED SIDE
 	// redRightSoloAWP();
 	// redLeftSoloAWP(); //should work
-	redMogoRush();
+	// redMogoRush();
 	// globalRightsideSoloAWPSAFE(); //should also work
 	//BLUE SIDE
 	// blueRightSoloAWP(); //should work
