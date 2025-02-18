@@ -339,57 +339,78 @@ inline void blueRightSoloAWP(){
 
 
 inline void redMogoRush(){
-	chassis.setPose(-53.5, -64.75, 90);
-	chassis.moveToPoint(-22, -64.75, 1000, {.minSpeed = 60, .earlyExitRange = 10});
-	chassis.moveToPose(-10.79, -59.5, 33, 800, {.minSpeed = 80}); //rush mogo
+	chassis.setPose(-50, -60, 90);
+	chassis.moveToPoint(-22, -60, 1000, {.minSpeed = 60, .earlyExitRange=6});
+	chassis.moveToPoint(-7, -58, 600, {.earlyExitRange=1}); //rush mogo
+	chassis.turnToHeading(69, 300, {.earlyExitRange=5});
+	// chassis.moveToPose(-10.7, -59.5, 33, 900); //rush mogo
+	doinker.toggle(); // doinker down
+	// chassis.turnToPoint(-18.7, -62, 700, {.forwards = false});
+	chassis.moveToPose(-32, -60, 90, 1000, {.forwards = false, .earlyExitRange=5}); //bring mogo back
 	chassis.waitUntilDone();
-	doinker.toggle();
-	delay(800);
-	chassis.turnToPoint(-18.7, -62, 700, {.forwards = false});
-	chassis.moveToPoint(-18.7, -62, 1600, {.forwards = false}); //bring mogo back
-	delay(500);
-	doinker.toggle();
-	chassis.turnToHeading(230, 1000);
-	chassis.waitUntilDone();
-	chassis.tank(-100, -100);
+	doinker.toggle(); // doinker up
+	chassis.tank(50, 50);
 	delay(250);
+	chassis.tank(0, 0);
+	chassis.turnToHeading(270, 500); // turn around to face mogo clamp to mogo
+	// delay(500);
+	// chassis.turnToHeading(230, 1000);
+	chassis.waitUntilDone();
+	chassis.moveToPose(-9, -52, 250, 800, {.forwards=false, .lead=0.2}, false); // move to clamp mogo
+	chassis.tank(-60, -60);
+	delay(90);
 	chassis.tank(0, 0);
 	mogoclamp.toggle(); //clamp mogo
 	delay(250);
 	conveyor.move(127);
+	chassis.moveToPose(-32, -55, 270, 1000, { .earlyExitRange=5 }, false); //bring mogo back
+	mogoclamp.toggle(); // drop mogo
+	chassis.turnToPoint(-15, -44, 900);
+	chassis.moveToPoint(-14, -44, 1000);
 	intake.move(-127);
-	chassis.moveToPoint(-60.181, -61.054, 1500, {.minSpeed = 40, .earlyExitRange = 1});
-	chassis.turnToHeading(225, 700);
-	chassis.waitUntilDone(); //grab corner ring
-	chassis.tank(40, 40);
-	intake.move(127);
-	delay(400);
-	chassis.tank(127, 127);
-	delay(700);
-	chassis.tank(0, 0);
+	conveyor.move(0);
+
+	delay(10000); // TEMPORARY, REMOVE THIS LATER
+	chassis.turnToHeading(180, 800);
+	chassis.moveToPoint(-18, -18, 1000, {.forwards=false}, false); // move backwards into safe mogo
+	chassis.tank(-60, -60);
 	delay(200);
-	chassis.tank(90, 90);
-	intake.move(-127);
-	delay(800);
-	chassis.moveToPoint(-52.719, -52.156, 1000, {.forwards = false}); //do a little turn to release the first mogo
-	chassis.turnToPoint(-30.906, -30.917, 1000);
-	delay(1000);
-	chassis.turnToPoint(-30.906, -30.917, 1000, {.forwards = false});
-	mogoclamp.toggle(); //release first mogo
-	chassis.moveToPoint(-30.906, -30.917, 1000, {.forwards = false});
-	chassis.waitUntilDone();
-	chassis.tank(-100, -100);
-	delay(250);
 	chassis.tank(0, 0);
-	mogoclamp.toggle(); //clamp second mogo
-	delay(250);
-	chassis.turnToPoint(-22.869, -47.564, 1000);
-	chassis.moveToPoint(-22.869, -47.564, 1000); //grab safe ring
-	set_LBPosition(2);
-	delay(300);
-	chassis.moveToPoint(-12.824, -15.418, 1500, {.forwards = false, .minSpeed = 80, .earlyExitRange = 3}); //move to ladder
-	chassis.waitUntilDone();
-	set_LBPosition(0); //touch ladder
+	mogoclamp.toggle(); //clamp mogo
+	conveyor.move(127);
+
+	// chassis.moveToPoint(-60.181, -61.054, 1500, {.minSpeed = 40, .earlyExitRange = 1});
+	// chassis.turnToHeading(225, 700);
+	// chassis.waitUntilDone(); //grab corner ring
+	// chassis.tank(40, 40);
+	// intake.move(127);
+	// delay(400);
+	// chassis.tank(127, 127);
+	// delay(700);
+	// chassis.tank(0, 0);
+	// delay(200);
+	// chassis.tank(90, 90);
+	// intake.move(-127);
+	// delay(800);
+	// chassis.moveToPoint(-52.719, -52.156, 1000, {.forwards = false}); //do a little turn to release the first mogo
+	// chassis.turnToPoint(-30.906, -30.917, 1000);
+	// delay(1000); 
+	// chassis.turnToPoint(-30.906, -30.917, 1000, {.forwards = false});
+	// mogoclamp.toggle(); //release first mogo
+	// chassis.moveToPoint(-30.906, -30.917, 1000, {.forwards = false});
+	// chassis.waitUntilDone();
+	// chassis.tank(-100, -100);
+	// delay(250);
+	// chassis.tank(0, 0);
+	// mogoclamp.toggle(); //clamp second mogo
+	// delay(250);
+	// chassis.turnToPoint(-22.869, -47.564, 1000);
+	// chassis.moveToPoint(-22.869, -47.564, 1000); //grab safe ring
+	// set_LBPosition(2);
+	// delay(300);
+	// chassis.moveToPoint(-12.824, -15.418, 1500, {.forwards = false, .minSpeed = 80, .earlyExitRange = 3}); //move to ladder
+	// chassis.waitUntilDone();
+	// set_LBPosition(0); //touch ladder
 
 }
 /**
