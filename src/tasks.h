@@ -5,7 +5,7 @@ const float REST = 0;
 const float CAPTURE = 35;
 const float WALLSTAKE_PREP = 100;
 const float WALLSTAKE = 140;
-float positions[3] = {REST, CAPTURE, WALLSTAKE};
+float positions[4] = {REST, CAPTURE, WALLSTAKE_PREP, WALLSTAKE};
 int lbTarget = 0; //NUMBER FROM 0-SIZE OF POSITIONS ARRAY, DO NOT PUT THE ACTUAL ANGLE
 
 
@@ -21,7 +21,7 @@ bool in_range(double value, double bottom, double top) {
 }
 
 /**
- * 0 REST, 1 CAPTURE, 2 WALLSTAKE
+ * 0 REST, 1 CAPTURE, 2 WALLSTAKE_PREP, 3 WALLSTAKE
  */
 void set_LBPosition(int target){
     lbTarget = target;
