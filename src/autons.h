@@ -340,12 +340,11 @@ inline void blueRightSoloAWP(){
 
 inline void redMogoRush(){
 	chassis.setPose(-50, -60, 90);
-	chassis.moveToPoint(-22, -60, 1000, {.minSpeed = 60, .earlyExitRange=6});
+	chassis.moveToPoint(-22, -60, 1000, {.minSpeed = 120, .earlyExitRange=6});
 	chassis.moveToPoint(-7, -58, 600, {.earlyExitRange=1}); //rush mogo
-	chassis.turnToHeading(69, 300, {.earlyExitRange=5});
-	// chassis.moveToPose(-10.7, -59.5, 33, 900); //rush mogo
+	// chassis.turnToHeading(69, 300, {.earlyExitRange=5});
+	chassis.waitUntil(13); // TUNE THIS VALUE
 	doinker.toggle(); // doinker down
-	// chassis.turnToPoint(-18.7, -62, 700, {.forwards = false});
 	chassis.moveToPose(-32, -60, 90, 1000, {.forwards = false, .earlyExitRange=5}); //bring mogo back
 	chassis.waitUntilDone();
 	doinker.toggle(); // doinker up
@@ -366,11 +365,9 @@ inline void redMogoRush(){
 	chassis.moveToPose(-32, -55, 270, 1000, { .earlyExitRange=5 }, false); //bring mogo back
 	mogoclamp.toggle(); // drop mogo
 	chassis.turnToPoint(-15, -44, 900);
-	chassis.moveToPoint(-14, -44, 1000);
+	chassis.moveToPoint(-						14, -44, 1000);
 	intake.move(-127);
 	conveyor.move(0);
-
-	delay(10000); // TEMPORARY, REMOVE THIS LATER
 	chassis.turnToHeading(180, 800);
 	chassis.moveToPoint(-18, -18, 1000, {.forwards=false}, false); // move backwards into safe mogo
 	chassis.tank(-60, -60);
