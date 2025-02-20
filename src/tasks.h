@@ -206,6 +206,8 @@ void gps_sensor_task(){
 		lcd::print(3, "GPSy: %f", gpsData.y);
         lcd::print(4, "GPSorientation: %f", gpsData.yaw);
         lcd::print(5, "orientation: %f", chassis.getPose().theta);
+        lcd::print(6, "error: %f", gps_sensor.get_error());
+
         if(abs(gpsData.x - chassis.getPose().x) <= 1.5 && abs(gpsData.y - chassis.getPose().y) <= 1.5){
             chassis.setPose(gpsData.x, gpsData.y, gpsData.yaw);
         }

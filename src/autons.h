@@ -7,7 +7,8 @@ using namespace pros;
 inline void skills(){
 	//The commments in this funtion relate to the jerryio field, so "bottom left" would be on the red positive side
 	//upper left corner
-	chassis.setPose(-62.2343, 0, 90); 
+	chassis.setPose(-62.2343, 0, 90);
+	gps_sensor.set_position(-1.581, 0, 90); // NOTE: IN METERS
 	conveyor.move(127); //score on red alliance stake 
 	delay(450);
 	chassis.moveToPoint(-47, 0, 1000);	
