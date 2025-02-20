@@ -31,7 +31,12 @@ lemlib::PID ladybrownPID(2.5, // kP
                 0, // kI
                 12, // kD
                 5, // integral anti windup range
-                false); // don't reset integral when sign of error flips    
+                false); // don't reset integral when sign of error flips
+
+ArmController ladybrownController(
+    0.5, // Kcos
+    ladybrownPID
+);
 
 lemlib::Drivetrain drivetrain(&left, &right, 12, lemlib::Omniwheel::NEW_275, 450, 2);
 
