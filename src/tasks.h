@@ -193,7 +193,7 @@ void ladybrown_and_color_task() {
 
 void gps_sensor_task(){
     pros::gps_status_s_t gpsData;
-    while(true){
+    while(true) {
         gpsData = gps_sensor.get_position_and_orientation();
         gpsData.x *= 39.3701;
         gpsData.y *= 39.3701;
@@ -211,7 +211,7 @@ void gps_sensor_task(){
         if(abs(gpsData.x - chassis.getPose().x) <= 1.5 && abs(gpsData.y - chassis.getPose().y) <= 1.5){
             chassis.setPose(gpsData.x, gpsData.y, gpsData.yaw);
         }
-        delay(5);
+        delay(10);
         
     }
 }
