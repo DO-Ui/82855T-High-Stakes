@@ -1,5 +1,4 @@
 #include <math.h>
-#include "lemlib/api.hpp"
 
 /// @brief A PIDF Controller for an armf
 class ArmController {
