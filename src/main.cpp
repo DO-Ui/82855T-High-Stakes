@@ -124,15 +124,15 @@ void autonomous() {
 
 	// blueLeftMogoRush();
 	// These ones below work
-	// skills();
+	// skills(); // FOR PROVS
 	//RED SIDE
-	// redRightSoloAWP();
-	// redLeftSoloAWP(); //should work
-	redMogoRush();
-	// globalRightsideSoloAWPSAFE(); //should also work
+	// redRightSoloAWP(); // NOT WOKRING
+	// redLeftSoloAWP(); //should work FOR PROVS
+	redMogoRush(); // FOR PROVS
+	// globalRightsideSoloAWPSAFE(); //should also work FOR PROVS
 	//BLUE SIDE
-	// blueRightSoloAWP(); //should work
-	// globalLeftsideSoloAWPSAFE(); //should also work
+	// blueRightSoloAWP(); //should work FOR PROVS
+	// globalLeftsideSoloAWPSAFE(); //should also work FOR PROVS
 	// blueLeftSoloAWP();
 
 	//NONFUNCTIONAL

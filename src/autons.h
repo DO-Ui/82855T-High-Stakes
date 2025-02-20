@@ -1,7 +1,7 @@
 #pragma once
 using namespace pros;
 /**
- * SKILLS ROUTE
+ * SKILLS ROUTE FOR PROVS
  * by Grant
  */
 inline void skills(){
@@ -113,7 +113,7 @@ inline void skills(){
 
 
 /**
- * Grant's Solo AWP Red Left side
+ * Grant's Solo AWP Red Left side FOR PROVS
  * Score on alliance stake -> score 5 rings on left mogo -> touch ladder
  * Gear touching wall, 2 inches to outeroutermost boundary of tile from back high strength
  * ON RING SIDE
@@ -187,7 +187,10 @@ inline void redLeftSoloAWP(){
 
 }
 
-
+/*
+	Setup HS 2 inches from tile edge, same as solo awp red left
+	FOR PROVS
+*/
 inline void globalRightsideSoloAWPSAFE(){
 	chassis.setPose(62.8, 15.5, 180);
 	set_LBPosition(3);
@@ -221,9 +224,9 @@ inline void globalRightsideSoloAWPSAFE(){
 }
 
 /**
- * 
+ * Setup the same as all other AWPs
+ * FOR PROVS
  */
-
  inline void globalLeftsideSoloAWPSAFE(){
 	chassis.setPose(-62.8, 15.5, 180);
 	set_LBPosition(3);
@@ -268,7 +271,7 @@ inline void globalRightsideSoloAWPSAFE(){
 }
 
 /**
- * Grant's Solo AWP Blue Right Side (Mirrored from red side)
+ * Grant's Solo AWP Blue Right Side (Mirrored from red side) FOR PROVS
  * Score on alliance stake -> score five rings on right mogo -> touch ladder / rush positive
  * ON RING SIDE
  */
@@ -341,6 +344,10 @@ inline void blueRightSoloAWP(){
 }
 
 
+/**
+ * Setup center tile, right of blue ring, hs far forward, on the start line
+ * FOR PROVS
+ */
 inline void redMogoRush(){
 	chassis.setPose(-50, -60, 90);
 	chassis.moveToPoint(-22, -60, 1000, {.minSpeed = 120, .earlyExitRange=6});
@@ -417,6 +424,7 @@ inline void redMogoRush(){
  * RED RIGHT 3 RING PLUS CORNER
  * Score on alliance stake -> score 2 rings on right mogo -> touch ladder
  * ON MOGO SIDE
+ * NOT WORKING
  */
 inline void redRightSoloAWP(){
 	chassis.setPose(-55.05, -14.5, 180);
