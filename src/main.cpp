@@ -1,5 +1,6 @@
 #include "main.h"
 #include "lemlib/api.hpp"
+#include <ArmController.cpp>
 #include "./devices.h"
 #include "logging.hpp"
 #include "json.hpp"

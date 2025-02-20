@@ -151,7 +151,9 @@ void ladybrown_and_color_task() {
         }
         if(!manualLBMode){ //no manual overrides have been given, move on to macros
             ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_COAST);
-            float powerGiven = ladybrownPID.update(positions[lbTarget] - currAngle);
+            // float powerGiven = ladybrownPID.update(positions[lbTarget] - currAngle);
+            float powerGiven = ladybrownController.update(positions[lbTarget], (positions[lbTarget] - currAngle));
+
             if(!manualLBMode) ladybrownMotor.move(powerGiven); //update PID and motor voltage
             // lcd::print(0, "targetAngle: %f", positions[lbTarget]);
             // lcd::print(1, "lbAngleAdjusted: %f", lbAngle);
