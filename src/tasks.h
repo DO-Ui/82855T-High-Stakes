@@ -2,7 +2,7 @@
 
 //DON'T COMMUNICATE WITH MAIN THREAD. Reading is fine, never write
 const float REST = 0;
-const float CAPTURE = 35;
+const float CAPTURE = 32;
 const float WALLSTAKE_PREP = 100;
 const float WALLSTAKE = 140;
 float positions[4] = {REST, CAPTURE, WALLSTAKE_PREP, WALLSTAKE};
@@ -27,8 +27,8 @@ void set_LBPosition(int target){
 }
 
 int find_closest_LBPosition(float lbArmAngle, bool findPositionBehind){
-    if(lbArmAngle > 300) lbArmAngle = 0; //if the angle is slightly past hard stop, making it do a full rotation over to 359.99 degrees, this accounts for that case
-    if(lbArmAngle > positions[sizeof(positions)/sizeof(positions[0])-1]) return sizeof(positions)/sizeof(positions[0])-1;
+    if(lbArmAngle > 300) lbArmAngle = 1; //if the angle is slightly past hard stop, making it do a full rotation over to 359.99 degrees, this accounts for that case
+    if(lbArmAngle > positions[sizeof(positions)/sizeof(positions[0])-1]) return sizeof(positions)/sizeof(positions[0])-1; //arm is greater than the maximum target angle, so return the max target angle
     for(int i = 0; i < sizeof(positions)/sizeof(positions[0])-1; i++){
         float lowerBound = positions[i];
         float upperBound = positions[i+1];
@@ -93,7 +93,7 @@ void ladybrown_and_color_task() {
         // std::cout << static_cast<json>(colour_message) << std::flush;
 
 
-        if (in_range(hue, 195, 215)) {
+        if (in_range(hue, 190, 215)) {
             colour_detected = 'b';
         } else if (in_range(hue, 5, 13.5)) {
             colour_detected = 'r';
@@ -150,7 +150,7 @@ void ladybrown_and_color_task() {
         if(!manualLBMode){ //no manual overrides have been given, move on to macros
             ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_COAST);
             // float powerGiven = ladybrownPID.update(positions[lbTarget] - currAngle);
-            float powerGiven = ladybrownController.update(positions[lbTarget], (positions[lbTarget] - currAngle));
+            float powerGiven = ladybrownController.update(currAngle, (positions[lbTarget] - currAngle));
 
             if(!manualLBMode) ladybrownMotor.move(powerGiven); //update PID and motor voltage
             // lcd::print(0, "targetAngle: %f", positions[lbTarget]);
@@ -162,7 +162,7 @@ void ladybrown_and_color_task() {
             wrong_color_detected = true;
             driver_inputs();
         }
-        else if(wrong_color_detected && final_distance_sensor.get() < 25){
+        else if(wrong_color_detected && final_distance_sensor.get() < 15){
             wrong_color_detected = false;
             int voltageBeforeStop = conveyor.get_voltage();
             delay(45);
@@ -197,6 +197,11 @@ void gps_sensor_task(){
         gpsData = gps_sensor.get_position_and_orientation();
         gpsData.x *= 39.3701;
         gpsData.y *= 39.3701;
+        if(gpsData.yaw < 0) gpsData.yaw = 360 - gpsData.yaw;
+        gpsData.yaw += 90;
+        if(gpsData.yaw > 360) {
+            gpsData.yaw -= 360;
+        }
         lcd::print(2, "GPSx: %f", gpsData.x);
 		lcd::print(3, "GPSy: %f", gpsData.y);
         lcd::print(4, "GPSorientation: %f", gpsData.yaw);

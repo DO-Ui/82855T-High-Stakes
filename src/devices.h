@@ -27,14 +27,14 @@ adi::Pneumatics doinker('b', false);
 adi::Pneumatics intakeRiser('c', false);
 adi::Pneumatics hang('d', false);
 
-lemlib::PID ladybrownPID(2.5, // kP
+lemlib::PID ladybrownPID(2, // kP
                 0, // kI
-                12, // kD
+                3, // kD
                 5, // integral anti windup range
                 false); // don't reset integral when sign of error flips
 
 ArmController ladybrownController(
-    0.5, // Kcos
+    14, // Kcos
     ladybrownPID
 );
 

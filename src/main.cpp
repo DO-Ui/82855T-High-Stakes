@@ -1,6 +1,6 @@
 #include "main.h"
 #include "lemlib/api.hpp"
-#include <ArmController.cpp>
+#include "ArmController.h"
 #include "./devices.h"
 #include "logging.hpp"
 #include "json.hpp"
@@ -63,7 +63,7 @@ void initialize() {
 	ladybrownSensor.reset();
 	gps_sensor.set_data_rate(5);
 	gps_sensor.set_offset(-5.25*0.0254, 0);
-	gps_sensor.set_position(-62.2343, 0, 90);
+	gps_sensor.set_position(0, 0, 0);
 	chassis.setPose(-62.2343, 0, 90); 
 
 	master.clear();
@@ -80,7 +80,7 @@ void initialize() {
 	});
 
 	Task lbtask(ladybrown_and_color_task);
-	Task gps_task(gps_sensor_task);
+	// Task gps_task(gps_sensor_task);
 
 	// NOTE: colour_task has logging, remove if not needed
 
@@ -124,11 +124,11 @@ void autonomous() {
 
 	// blueLeftMogoRush();
 	// These ones below work
-	skills();
+	// skills();
 	//RED SIDE
 	// redRightSoloAWP();
 	// redLeftSoloAWP(); //should work
-	// redMogoRush();
+	redMogoRush();
 	// globalRightsideSoloAWPSAFE(); //should also work
 	//BLUE SIDE
 	// blueRightSoloAWP(); //should work
