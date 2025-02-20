@@ -12,22 +12,22 @@ inline void skills(){
 	delay(450);
 	chassis.moveToPoint(-47, 0, 1000);	
 	chassis.turnToHeading(0, 600); //turn towards mogo
-	chassis.moveToPose(-47, -13, 0, 2000, {.forwards=false}); //move to mogo
+	chassis.moveToPose(-47, -13, 0, 1000, {.forwards=false, .minSpeed = 80, .earlyExitRange = 2}); //move to mogo
 	approachAndClampMogo();
 	intake.move(-127);
 	conveyor.move(127);
 	delay(300);
 	chassis.moveToPoint(-24, -24, 2000); //move to first ring
+	chassis.moveToPoint(23.455, -46.961, 2000); //move to far ring
 	chassis.waitUntilDone();
 	set_LBPosition(1);
-	chassis.moveToPoint(23.455, -46.961, 2000); //move to far ring
 	chassis.moveToPoint(0, -46.961, 1000, {.forwards = false});
 	chassis.turnToHeading(180, 1000);
 	set_LBPosition(2);
 	chassis.moveToPoint(0, -57.036, 1500);
 	chassis.waitUntilDone();
 	set_LBPosition(3); //score wallstake
-	delay(1000);
+	delay(1500);
 	set_LBPosition(0);
 	chassis.moveToPoint(0, -46.961, 1000, {.forwards = false}); //move back from wallstake
 	chassis.turnToHeading(270, 1000);

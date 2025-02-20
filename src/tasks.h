@@ -8,7 +8,6 @@ const float WALLSTAKE = 140;
 float positions[4] = {REST, CAPTURE, WALLSTAKE_PREP, WALLSTAKE};
 int lbTarget = 0; //NUMBER FROM 0-SIZE OF POSITIONS ARRAY, DO NOT PUT THE ACTUAL ANGLE
 
-
 bool sorter_active = true;
 bool auton_active = false;
 char current_sort = 'b';
@@ -77,7 +76,6 @@ void ladybrown_and_color_task() {
     
     bool manualLBMode = false;
 
-    // const float ALLIANCE = 190;
 
 
     char colour_detected = 'n'; // 'n' means empty
@@ -95,7 +93,7 @@ void ladybrown_and_color_task() {
         // std::cout << static_cast<json>(colour_message) << std::flush;
 
 
-        if (in_range(hue, 205, 219)) {
+        if (in_range(hue, 195, 215)) {
             colour_detected = 'b';
         } else if (in_range(hue, 5, 13.5)) {
             colour_detected = 'r';
@@ -158,7 +156,7 @@ void ladybrown_and_color_task() {
             // lcd::print(2, "power given: %f", powerGiven);
         }
         
-        if (!wrong_color_detected && (sorter_active && current_sort == colour_detected) && distance_sensor.get() < 45) {
+        if (!wrong_color_detected && (sorter_active && current_sort == colour_detected) && distance_sensor.get() < 79) {
             wrong_color_detected = true;
             driver_inputs();
         }
@@ -191,17 +189,23 @@ void ladybrown_and_color_task() {
 }
 
 
-// void gps_sensor_task(){
-//     pros::gps_status_s_t gpsData;
-//     while(true){
-//         gpsData = gps_sensor.get_position_and_orientation();
-//         lcd::print(2, "GPSx: %f", gpsData.x*39.3701);
-// 		lcd::print(3, "GPSy: %f", gpsData.y*39.3701);
-//         lcd::print(4, "GPSorientation: %f", gpsData.yaw);
-//         lcd::print(5, "orientation: %f", chassis.getPose().theta);
-//         delay(5);
-//     }
-// }
+void gps_sensor_task(){
+    pros::gps_status_s_t gpsData;
+    while(true){
+        gpsData = gps_sensor.get_position_and_orientation();
+        gpsData.x *= 39.3701;
+        gpsData.y *= 39.3701;
+        lcd::print(2, "GPSx: %f", gpsData.x);
+		lcd::print(3, "GPSy: %f", gpsData.y);
+        lcd::print(4, "GPSorientation: %f", gpsData.yaw);
+        lcd::print(5, "orientation: %f", chassis.getPose().theta);
+        if(abs(gpsData.x - chassis.getPose().x) <= 1.5 && abs(gpsData.y - chassis.getPose().y) <= 1.5){
+            chassis.setPose(gpsData.x, gpsData.y, gpsData.yaw);
+        }
+        delay(5);
+        
+    }
+}
 
 
 // void conveyor_task() {

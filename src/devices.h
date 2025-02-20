@@ -19,7 +19,7 @@ Rotation ladybrownSensor(19);
 Optical colour_sensor(20);
 Distance distance_sensor(18);
 Distance final_distance_sensor(21);
-// GPS gps_sensor(13);
+GPS gps_sensor(10);
 
 
 adi::Pneumatics mogoclamp('a', false);
@@ -27,9 +27,9 @@ adi::Pneumatics doinker('b', false);
 adi::Pneumatics intakeRiser('c', false);
 adi::Pneumatics hang('d', false);
 
-lemlib::PID ladybrownPID(4, // kP
+lemlib::PID ladybrownPID(2.5, // kP
                 0, // kI
-                8, // kD`
+                12, // kD
                 5, // integral anti windup range
                 false); // don't reset integral when sign of error flips    
 
