@@ -1,7 +1,6 @@
 #include "main.h"
 #include "lemlib/api.hpp"
 #include "ArmController.h"
-#include "ArmController.h"
 #include "./devices.h"
 #include "logging.hpp"
 #include "json.hpp"
@@ -63,8 +62,7 @@ void initialize() {
 	chassis.calibrate();
 	ladybrownSensor.reset();
 	gps_sensor.set_data_rate(5);
-	gps_sensor.set_offset(-5.25*0.0254, 0);
-	gps_sensor.set_position(-1.581, 0, 90); // NOTE: IN METERS
+	gps_sensor.set_offset(-5.25*0.0254, -0.25*0.0254);
 	chassis.setPose(-62.2343, 0, 90);
 	master.clear();
 
@@ -80,7 +78,7 @@ void initialize() {
 	// });
 
 	Task lbtask(ladybrown_and_color_task);
-	// Task gps_task(gps_sensor_task);
+	Task gps_task(gps_sensor_task);
 
 	// NOTE: colour_task has logging, remove if not needed
 
@@ -124,11 +122,11 @@ void autonomous() {
 
 	// blueLeftMogoRush();
 	// These ones below work
-	// skills(); // FOR PROVS
+	skills(); // FOR PROVS
 	//RED SIDE
 	// redRightSoloAWP(); // NOT WOKRING
 	// redLeftSoloAWP(); //should work FOR PROVS
-	redMogoRush(); // FOR PROVS
+	// redMogoRush(); // FOR PROVS
 	// globalRightsideSoloAWPSAFE(); //should also work FOR PROVS
 	//BLUE SIDE
 	// blueRightSoloAWP(); //should work FOR PROVS
@@ -212,9 +210,9 @@ void opcontrol() {
 
 
 		// // print to brain screen
-		// lcd::print(0, "x: %f", chassis.getPose().x);
-		// lcd::print(1, "y: %f", chassis.getPose().y);
-		// lcd::print(2, "theta: %f", imu.get_heading());
+		lcd::print(0, "x: %f", chassis.getPose().x);
+		lcd::print(1, "y: %f", chassis.getPose().y);
+		lcd::print(2, "theta: %f", imu.get_heading());
 		// lcd::print(3, "LBRotation: %f", ((float)ladybrownSensor.get_angle())/100);
 		// lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);
 		// lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position()/100);
