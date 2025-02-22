@@ -9,10 +9,10 @@ inline void skills(){
 	//upper left corner
 	chassis.setPose(-62.2343, 0, 90);
 	conveyor.move(127); //score on red alliance stake 
-	delay(450);
+	delay(450);	
 	chassis.moveToPoint(-49.5, 0, 1000);	
-	chassis.turnToPoint(-48, -14, 1000, {.forwards = false});
-	chassis.moveToPose(-48, -14, 0, 800, {.forwards=false, .minSpeed = 80, .earlyExitRange = 2}); //move to mogo
+	chassis.turnToHeading(0, 700);
+	chassis.moveToPoint(-48, -16, 800, {.forwards=false, .minSpeed = 50, .earlyExitRange = 2}); //move to mogo
 	approachAndClampMogo();
 	delay(300);
 	intake.move(-127);
@@ -52,7 +52,7 @@ inline void skills(){
 	chassis.turnToPoint(-25.108, -47.219, 700);
 	chassis.moveToPoint(-25.108, -47.219, 1000);
 	intake.move(127);
-	chassis.moveToPoint(44.378, -47.478, 2500); //move to lower right corner first ring
+	chassis.moveToPoint(44.378, -47.478, 2800, {.minSpeed = 60, .earlyExitRange = 2}); //move to lower right corner first ring
 	delay(500);
 	chassis.turnToPoint(54.711, -30.429, 600, {.forwards = false});
 	chassis.moveToPoint(54.711, -30.429, 1000, {.forwards = false}); //move to bottom blue mogo

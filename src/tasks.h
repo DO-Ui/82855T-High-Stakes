@@ -4,7 +4,7 @@
 const float REST = 0;
 const float CAPTURE = 32;
 const float WALLSTAKE_PREP = 100;
-const float WALLSTAKE = 142;
+const float WALLSTAKE = 141;
 float positions[3] = {REST, CAPTURE, WALLSTAKE};
 int lbTarget = 0; //NUMBER FROM 0-SIZE OF POSITIONS ARRAY, DO NOT PUT THE ACTUAL ANGLE
 
@@ -21,14 +21,14 @@ bool in_range(double value, double bottom, double top) {
 
 /**
  * Sets the position of the ladybrown arm to the given index
- * 0 REST, 1 CAPTURE, 2 WALLSTAKE_PREP, 3 WALLSTAKE
+ * 0 REST, 1 CAPTURE, 2 WALLSTAKE
  */
 void set_LBPosition(int target){
     lbTarget = target;
 }
 
 int find_closest_LBPosition(float lbArmAngle, bool findPositionBehind){
-    if(lbArmAngle > 300) lbArmAngle = 1; //if the angle is slightly past hard stop, making it do a full rotation over to 359.99 degrees, this accounts for that case
+    if(lbArmAngle > 300 || lbArmAngle < 0) lbArmAngle = 1; //if the angle is slightly past hard stop, making it do a full rotation over to 359.99 degrees, this accounts for that case
     if(lbArmAngle > positions[sizeof(positions)/sizeof(positions[0])-1]) return sizeof(positions)/sizeof(positions[0])-1; //arm is greater than the maximum target angle, so return the max target angle
     for(int i = 0; i < sizeof(positions)/sizeof(positions[0])-1; i++){
         float lowerBound = positions[i];
@@ -148,15 +148,19 @@ void ladybrown_and_color_task() {
             ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
             ladybrownMotor.brake();
         }
-        if(lbTarget < 0 || lbTarget > 3){
-            master.print(0, 0, "LB BROKEN");
-        }
+
         if(!manualLBMode){ //no manual overrides have been given, move on to macros
-            ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_COAST);
             // float powerGiven = ladybrownPID.update(positions[lbTarget] - currAngle);
             float powerGiven = ladybrownController.update(currAngle, (positions[lbTarget] - currAngle));
-
-            if(!manualLBMode) ladybrownMotor.move(powerGiven); //update PID and motor voltage
+            if(positions[lbTarget] == WALLSTAKE) powerGiven = 127;
+            if(currAngle <= 142 || positions[lbTarget] < WALLSTAKE) {
+                ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_COAST);
+                ladybrownMotor.move(powerGiven); //update PID and motor voltage
+            }
+            else {
+                ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+                ladybrownMotor.brake();
+            }
             // lcd::print(0, "targetAngle: %f", positions[lbTarget]);
             // lcd::print(1, "lbAngleAdjusted: %f", lbAngle);
             // lcd::print(2, "power given: %f", powerGiven);
@@ -196,24 +200,25 @@ void ladybrown_and_color_task() {
 
 
 void gps_sensor_task(){
-    pros::gps_status_s_t gpsData;
     while(true) {
-        gpsData = gps_sensor.get_position_and_orientation();
-        gpsData.x *= 39.3701;
-        gpsData.y *= 39.3701;
-        if(gpsData.yaw < 0) gpsData.yaw = 360 - gpsData.yaw;
-        gpsData.yaw += 90;
-        if(gpsData.yaw > 360) {
-            gpsData.yaw -= 360;
+        float gpsX = gps_sensor.get_position_x();
+        float gpsY = gps_sensor.get_position_y();
+        float gpsYaw = gps_sensor.get_yaw();
+        gpsX *= 39.3701;
+        gpsY *= 39.3701;
+        if(gpsYaw < 0) gpsYaw = 360 - gpsYaw;
+        gpsYaw += 90;
+        if(gpsYaw > 360) {
+            gpsYaw -= 360;
         }
-        lcd::print(2, "GPSx: %f", gpsData.x);
-		lcd::print(3, "GPSy: %f", gpsData.y);
-        lcd::print(4, "GPSorientation: %f", gpsData.yaw);
+        lcd::print(2, "GPSx: %f", gpsX);
+		lcd::print(3, "GPSy: %f", gpsY);
+        lcd::print(4, "GPSorientation: %f", gpsYaw);
         lcd::print(5, "orientation: %f", chassis.getPose().theta);
         lcd::print(6, "error: %f", gps_sensor.get_error());
 
-        if(abs(gpsData.x - chassis.getPose().x) <= 0.5 && abs(gpsData.y - chassis.getPose().y) <= 0.5 && lemlib::angleError(chassis.getPose().theta, gpsData.yaw) <= 5){
-            chassis.setPose(gpsData.x, gpsData.y, gpsData.yaw);
+        if(gps_sensor.get_error() <= 0.01016 && right.get_actual_velocity() < 5 && abs(gpsX - chassis.getPose().x) <= 0.5 && abs(gpsY - chassis.getPose().y) <= 0.5 && lemlib::angleError(chassis.getPose().theta, gpsYaw) <= 5){
+            chassis.setPose(gpsX, gpsY, gpsYaw);
         }
         delay(10);
         

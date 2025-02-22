@@ -63,6 +63,7 @@ void initialize() {
 	ladybrownSensor.reset();
 	gps_sensor.set_data_rate(5);
 	gps_sensor.set_offset(-5.25*0.0254, -0.25*0.0254);
+	gps_sensor.set_position(-62.2343, 0, 90);
 	chassis.setPose(-62.2343, 0, 90);
 	master.clear();
 
