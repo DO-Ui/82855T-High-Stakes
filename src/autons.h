@@ -10,50 +10,48 @@ inline void skills(){
 	chassis.setPose(-62.7, 0, 90);
 	conveyor.move(127); //score on red alliance stake 
 	delay(450);	
-	chassis.moveToPoint(-48, 0, 1000);
+	chassis.moveToPoint(-48, 0, 600, {.earlyExitRange=2});
 	chassis.turnToHeading(0, 700, {.earlyExitRange=15}); // turn to mogo clamp
-	chassis.moveToPoint(-46, -17, 800, {.forwards=false}); //move to mogo
+	chassis.moveToPoint(-46, -17, 700, {.forwards=false}); //move to mogo
 	approachAndClampMogo();
+	delay(100);
 	intake.move(-127);
 	conveyor.move(127);
 	delay(150);
-	chassis.turnToPoint(-24.075, -24.75, 700, {.earlyExitRange=15}); //move to first ring
-	chassis.moveToPoint(-24.075, -24.75, 1000); //move to first ring
-	delay(150);
-	chassis.turnToPoint(26, -46, 700); // score far ring
+	chassis.turnToPoint(-24.075, -24.75, 600, {.earlyExitRange=15}); // turn to first ring
+	chassis.moveToPoint(-24.075, -24.75, 600); //move to first ring
+	chassis.turnToPoint(26, -46, 700, {.earlyExitRange=10}); // score far ring
 	chassis.moveToPoint(0, -40, 500, {.minSpeed=127, .earlyExitRange=7}); // motion chain to avoid ladder
 	chassis.moveToPoint(24, -48, 1000); //move to far ring
 	set_LBPosition(1);
 	chassis.waitUntilDone();
-	// chassis.moveToPoint(2, -48, 300, {.forwards = false}); //move back to wallstake intermediate
-	chassis.moveToPoint(6.25, -43, 1000, {.forwards = false}); // move backwards to wallstake
-	chassis.turnToHeading(180, 1000);
+	chassis.moveToPoint(6.25, -43, 800, {.forwards = false, .earlyExitRange=2}); // move backwards to wallstake
+	chassis.turnToHeading(180, 900, {.earlyExitRange=8});
 	conveyor.move(0); // stop conveyor to unjam LB, also so second ring doesn't jam things
 	chassis.waitUntilDone();
 	chassis.moveToPoint(6.25, -65, 1000, {.maxSpeed=70});
-	chassis.waitUntilDone();
-	chassis.tank(20, 20);
+	chassis.waitUntil(3);
 	set_LBPosition(2); //score wallstake
-	delay(800);
+	chassis.tank(20, 20);
+	delay(650);
 	chassis.tank(-50, -50);
-	delay(400);
+	delay(350);
 	set_LBPosition(0);
-	delay(200);
 	conveyor.move(127);
-	chassis.moveToPoint(0, -50, 1000, {.forwards = false}); //move back from wallstake
-	chassis.turnToHeading(270, 1000);
-	chassis.moveToPoint(-24, -50, 1000, {.minSpeed=85, .earlyExitRange=5}); // grab freestanding ring
-	chassis.moveToPoint(-60, -50, 3000, {.maxSpeed = 60}); //grab 2 rings in a line
-	chassis.turnToPoint(-47.5, -58.5, 700);
-	chassis.moveToPoint(-47.5, -58.5, 1000); //grab last corner ring
+	chassis.moveToPoint(0, -50, 800, {.forwards = false, .minSpeed=60, .earlyExitRange=3}); //move back from wallstake
+	chassis.turnToHeading(270, 800, {.earlyExitRange=5});
+	chassis.moveToPoint(-24, -50, 800, {.minSpeed=85, .earlyExitRange=5}); // grab freestanding ring
+	chassis.moveToPoint(-60, -50, 800, {.maxSpeed = 60}); //grab 2 rings in a line
+	chassis.turnToPoint(-46, -60, 700, {.earlyExitRange=5});
+	chassis.moveToPoint(-46, -60, 1000); //grab last corner ring
 	// chassis.turnToPoint(-59, -62, 700, {.forwards = false});
-	chassis.turnToHeading(45, 700);
-	chassis.moveToPoint(-59, -64.5, 1000, {.forwards=false}); //drive to corner
+	chassis.turnToHeading(45, 700, {.earlyExitRange=5});
+	chassis.moveToPoint(-59, -64.5, 500, {.forwards=false, .earlyExitRange=3}); //drive to corner
 	chassis.waitUntilDone();
 	mogoclamp.retract();
 	conveyor.move(-127); //reverse conveyor to unjam it
 	intake.move(0);
-	delay(300);
+	delay(250);
 	chassis.moveToPoint(0, -48, 1000, {.minSpeed=110, .earlyExitRange=5}); // drive to intermediate point to grab alliance stake ring
 	intake.move(-127); // NOTE: if this causes problems, slow intake speed later
 	chassis.moveToPoint(35, -53, 2800, {.minSpeed = 60, .earlyExitRange = 2}); //move to intermediate point
@@ -65,10 +63,11 @@ inline void skills(){
 	conveyor.move(0);
 	chassis.setPose(chassis.getPose().x - 8, chassis.getPose().y, chassis.getPose().theta);
 	chassis.turnToHeading(210, 800);
+	intake.move(0);
 	chassis.moveToPoint(60, -30.5, 1000, {.forwards = false, .maxSpeed=60}); //move to bottom blue mogo
 	chassis.waitUntilDone();
 	approachAndClampMogo();
-	delay(300);
+	delay(100);
 	chassis.turnToPoint(65, -59.0, 900, {.direction=lemlib::AngularDirection::CCW_COUNTERCLOCKWISE}); //move back to three ring lower right corner
 	chassis.moveToPoint(65, -59.0, 1100);
 	doinker.toggle();
@@ -90,15 +89,16 @@ inline void skills(){
 	delay(600); //back up into alliance stake
 	chassis.tank(0, 0);
 	delay(300);
+	intake.move(-127);
 	conveyor.move(127);
 	delay(1200);
 	conveyor.move(0);
 	intake.move(0);
-	chassis.moveToPoint(47.22, 0, 600); //move away from alliance stake
-	chassis.turnToHeading(180, 700);
-	chassis.moveToPoint(48.5, 9.609, 700, {.forwards = false}); //go to empty mogo
+	chassis.moveToPoint(47.22, 0, 600, {.earlyExitRange=3}); //move away from alliance stake
+	chassis.turnToHeading(180, 700, {.earlyExitRange=10});
+	chassis.moveToPoint(48.5, 9.609, 700, {.forwards = false, .earlyExitRange=2}); //go to empty mogo
 	approachAndClampMogo();
-	delay(300);
+	delay(100);
 	chassis.turnToPoint(23.972, -23.197, 500);
 	conveyor.move(127);
 	intake.move(-127);
