@@ -41,7 +41,7 @@ inline void skills(){
 	chassis.moveToPoint(0, -50, 800, {.forwards = false, .minSpeed=60, .earlyExitRange=3}); //move back from wallstake
 	chassis.turnToHeading(270, 800, {.earlyExitRange=5});
 	chassis.moveToPoint(-24, -50, 800, {.minSpeed=85, .earlyExitRange=5}); // grab freestanding ring
-	chassis.moveToPoint(-61.5, -50, 800, {.maxSpeed = 60}); //grab 2 rings in a line
+	chassis.moveToPoint(-61.5, -50, 900, {.maxSpeed = 60}); //grab 2 rings in a line
 	chassis.turnToPoint(-46, -60, 700, {.earlyExitRange=5});
 	chassis.moveToPoint(-46, -60, 1000); //grab last corner ring
 	// chassis.turnToPoint(-59, -62, 700, {.forwards = false});
