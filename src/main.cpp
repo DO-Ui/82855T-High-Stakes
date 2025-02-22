@@ -28,16 +28,6 @@
 
 using json = nlohmann::json;
 
-/**
- * @brief Rounds a float to 2 decimal places
- * 
- * @param num The number to round
- * @return float The rounded number
- */
-float round2dp(float num) {
-	return std::ceil(num * 100.0) / 100.0;
-}
-
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -62,7 +52,7 @@ void initialize() {
 	chassis.calibrate();
 	ladybrownSensor.reset();
 	gps_sensor.set_data_rate(5);
-	gps_sensor.set_offset(-5.25*0.0254, -0.25*0.0254);
+	gps_sensor.set_offset(-6.0*0.0254, -0.25*0.0254);
 	gps_sensor.set_position(-62.2343, 0, 90);
 	chassis.setPose(-62.2343, 0, 90);
 	master.clear();
@@ -79,7 +69,7 @@ void initialize() {
 	// });
 
 	Task lbtask(ladybrown_and_color_task);
-	Task gps_task(gps_sensor_task);
+	// Task gps_task(gps_sensor_task);
 
 	// NOTE: colour_task has logging, remove if not needed
 

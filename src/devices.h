@@ -56,3 +56,13 @@ lemlib::ControllerSettings angular_controller(7.2, 0, 71.3, 0, 2, 65, 3, 115, 30
 
 lemlib::ExpoDriveCurve throttle_curve(1, 10, 1.025);
 lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller, sensors, &throttle_curve);
+
+/**
+ * @brief Rounds a float to 2 decimal places
+ * 
+ * @param num The number to round
+ * @return float The rounded number
+ */
+float round2dp(float num) {
+	return std::ceil(num * 100.0) / 100.0;
+}
