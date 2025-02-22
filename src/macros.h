@@ -19,7 +19,7 @@ void approachAndClampMogo(int motorPower){
 void approachAndClampMogo(){
 	chassis.waitUntilDone();
 	chassis.tank(-100, -100);
-	delay(350);
+	delay(250);
 	chassis.tank(0, 0);
 	mogoclamp.toggle(); //clamp mogo
 }
