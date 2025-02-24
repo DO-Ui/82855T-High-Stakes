@@ -41,6 +41,7 @@ void initialize() {
 	lcd::initialize();
 
 	colour_sensor.set_led_pwm(100);
+	colour_sensor.set_integration_time(20);
 	horizontal_tracker.set_data_rate(5);
 	vertical_tracker.set_data_rate(5);
 	ladybrownSensor.set_data_rate(5);
