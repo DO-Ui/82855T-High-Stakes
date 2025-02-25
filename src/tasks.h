@@ -2,7 +2,7 @@
 
 //DON'T COMMUNICATE WITH MAIN THREAD. Reading is fine, never write
 const float REST = 0;
-const float CAPTURE = 32;
+const float CAPTURE = 29;
 const float WALLSTAKE_PREP = 100;
 const float WALLSTAKE = 141;
 float positions[3] = {REST, CAPTURE, WALLSTAKE};
