@@ -18,14 +18,10 @@ struct Odometry {
     double x;
     double y;
     double theta; // heading in radians. 
-    double GPSx;
-    double GPSy;
-    double GPStheta;
-    double GPSaccuracy;
 };
 
 inline void to_json(json& j, const Odometry& msg) {
-    j = json{{"x", msg.x}, {"y", msg.y}, {"theta", msg.theta}, {"GPSx", msg.GPSx}, {"GPSy", msg.GPSy}, {"GPStheta", msg.GPStheta}, {"GPSaccuracy", msg.GPSaccuracy}};
+    j = json{{"x", msg.x}, {"y", msg.y}, {"theta", msg.theta}};
 }
 
 struct Colour {

@@ -11,7 +11,6 @@
 #include "macros.h"
 #include "autons.h"
 #include "particle.hpp"
-#include "MCL.hpp"
 
 //controller mappings (all should be done now):
 //R1: intake + conveyor 
@@ -58,16 +57,16 @@ void initialize() {
 	chassis.setPose(-62.2343, 0, 90);
 	master.clear();
 
-	// Task odom_task([&]() {
-	// 	while (true) {
-	// 		lemlib::Pose pose = chassis.getPose();
-	// 		// Odometry odom = {std::ceil((double)pose.x * 100.0) / 100.0, std::ceil((double)pose.y * 100.0) / 100.0, std::ceil((double)pose.theta * 100.0) / 100.0};
-	// 		Odometry odom = {round2dp(pose.x), round2dp(pose.y), round2dp(pose.theta)};
-	// 		Message odom_message = {"odometry", odom};
-	// 		std::cout << static_cast<json>(odom_message) << std::flush;
-	// 		delay(25);
-	// 	}
-	// });
+	Task odom_task([&]() {
+		while (true) {
+			lemlib::Pose pose = chassis.getPose();
+			// Odometry odom = {std::ceil((double)pose.x * 100.0) / 100.0, std::ceil((double)pose.y * 100.0) / 100.0, std::ceil((double)pose.theta * 100.0) / 100.0};
+			Odometry odom = {round2dp(pose.x), round2dp(pose.y), round2dp(pose.theta)};
+			Message odom_message = {"odometry", odom};
+			std::cout << static_cast<json>(odom_message) << std::flush;
+			delay(25);
+		}
+	});
 
 	Task lbtask(ladybrown_and_color_task);
 	// Task gps_task(gps_sensor_task);
@@ -157,10 +156,8 @@ void opcontrol() {
 	
 	auton_active = false; //CHANGE BEFORE PROVS TO FALSE
 	sorter_active = true;
-	// skills();
-	// chassis.setPose(24, -24, 315);
-	// chassis.moveToPoint(-47, 47, 3000);
-	chassis.setPose(0, 0, 0);
+
+	// chassis.setPose(0, 0, 0);
 
 	
 
@@ -172,14 +169,14 @@ void opcontrol() {
 		int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
 		
 		chassis.arcade(leftY, rightX, false, 0.75);
-		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
+		// if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
 			// chassis.moveToPoint(0, 24, 3000);
 			// chassis.moveToPose(0, 48, 0, 2000);
 			// chassis.turnToHeading(90, 1000);
-			lastDistFuncReading = check_distance_back_BOTTOM_WALL();
-		}
+			// lastDistFuncReading = check_distance_back_BOTTOM_WALL();
+		// }
 		// if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
-		// 	chassis.moveToPoint(0, 0, 3000, {.forwards = false});
+			// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
 		// 	// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
 		// 	// chassis.turnToHeading(0, 1000);
 		// }
@@ -187,7 +184,9 @@ void opcontrol() {
 		
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
-			hang.toggle();
+			auton_active = true;
+			skills(); //REMOVE LATER
+			auton_active = false;
 		}
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
@@ -211,8 +210,8 @@ void opcontrol() {
 		// // print to brain screen
 		lcd::print(0, "x: %f", chassis.getPose().x);
 		lcd::print(1, "y: %f", chassis.getPose().y);
-		lcd::print(2, "theta: %f", imu.get_heading());
-		lcd::print(3, "LastDistanceCalcResult %f", lastDistFuncReading);
+		lcd::print(2, "theta: %f", chassis.getPose().theta);
+		// lcd::print(3, "LastDistanceCalcResult %f", lastDistFuncReading);
 		// lcd::print(3, "LBRotation: %f", ((float)ladybrownSensor.get_angle())/100);
 		// lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);
 		// lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position()/100);

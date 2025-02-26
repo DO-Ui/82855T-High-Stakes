@@ -89,9 +89,9 @@ void ladybrown_and_color_task() {
 		// lcd::print(2, "theta: %f", imu.get_heading());
         
         //below code is for bugfixing
-        if(auton_active && master.get_digital(E_CONTROLLER_DIGITAL_B)){ //REMOVE BEFORE PROVS
-            chassis.cancelAllMotions();
-        }
+        // if(auton_active && master.get_digital(E_CONTROLLER_DIGITAL_B)){ //REMOVE BEFORE PROVS
+        //     chassis.cancelAllMotions();
+        // }
 
         // 200-ish is blue
         // 10-ish is red
