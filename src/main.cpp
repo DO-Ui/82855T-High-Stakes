@@ -41,7 +41,7 @@ void initialize() {
 	lcd::initialize();
 
 	colour_sensor.set_led_pwm(100);
-	colour_sensor.set_integration_time(20);
+	colour_sensor.set_integration_time(60);
 	horizontal_tracker.set_data_rate(5);
 	vertical_tracker.set_data_rate(5);
 	ladybrownSensor.set_data_rate(5);
@@ -52,9 +52,9 @@ void initialize() {
 	vertical_tracker.reset();
 	chassis.calibrate();
 	ladybrownSensor.reset();
-	gps_sensor.set_data_rate(5);
-	gps_sensor.set_offset(-6.0*0.0254, -0.25*0.0254);
-	gps_sensor.set_position(-62.2343, 0, 90);
+	// gps_sensor.set_data_rate(5);
+	// gps_sensor.set_offset(-6.0*0.0254, -0.25*0.0254);
+	// gps_sensor.set_position(-62.2343, 0, 90);
 	chassis.setPose(-62.2343, 0, 90);
 	master.clear();
 
@@ -151,11 +151,17 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	float lastDistFuncReading = 0;
 
 	// hang.retract();
 	
-	auton_active = false;
+	auton_active = false; //CHANGE BEFORE PROVS TO FALSE
 	sorter_active = true;
+	// skills();
+	// chassis.setPose(24, -24, 315);
+	// chassis.moveToPoint(-47, 47, 3000);
+	chassis.setPose(0, 0, 0);
+
 	
 
 	// int count = 0; //used for automatic PID tuning
@@ -164,17 +170,18 @@ void opcontrol() {
 		
 		int leftY = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 		int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
-
+		
 		chassis.arcade(leftY, rightX, false, 0.75);
-		// if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-		// 	// chassis.moveToPoint(0, 48, 3000);
-		// 	// chassis.moveToPose(0, 48, 0, 2000);
-		// 	chassis.turnToHeading(90, 1000);
-		// }
+		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
+			// chassis.moveToPoint(0, 24, 3000);
+			// chassis.moveToPose(0, 48, 0, 2000);
+			// chassis.turnToHeading(90, 1000);
+			lastDistFuncReading = check_distance_back_BOTTOM_WALL();
+		}
 		// if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
-		// 	// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
+		// 	chassis.moveToPoint(0, 0, 3000, {.forwards = false});
 		// 	// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
-		// 	chassis.turnToHeading(0, 1000);
+		// 	// chassis.turnToHeading(0, 1000);
 		// }
 
 		
@@ -205,6 +212,7 @@ void opcontrol() {
 		lcd::print(0, "x: %f", chassis.getPose().x);
 		lcd::print(1, "y: %f", chassis.getPose().y);
 		lcd::print(2, "theta: %f", imu.get_heading());
+		lcd::print(3, "LastDistanceCalcResult %f", lastDistFuncReading);
 		// lcd::print(3, "LBRotation: %f", ((float)ladybrownSensor.get_angle())/100);
 		// lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);
 		// lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position()/100);

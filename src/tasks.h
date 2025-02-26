@@ -78,13 +78,20 @@ void ladybrown_and_color_task() {
     bool manualLBMode = false;
 
 
-
     char colour_detected = 'n'; // 'n' means empty
     bool wrong_color_detected = false;
     float wrong_color_detected_time = 0;
     int controller_print = 0;
     
     while (true) {
+        // lcd::print(0, "x: %f", chassis.getPose().x);
+		// lcd::print(1, "y: %f", chassis.getPose().y);
+		// lcd::print(2, "theta: %f", imu.get_heading());
+        
+        //below code is for bugfixing
+        if(auton_active && master.get_digital(E_CONTROLLER_DIGITAL_B)){ //REMOVE BEFORE PROVS
+            chassis.cancelAllMotions();
+        }
 
         // 200-ish is blue
         // 10-ish is red
@@ -199,49 +206,49 @@ void ladybrown_and_color_task() {
 }
 
 
-void gps_sensor_task(){
+// void gps_sensor_task(){
 
-    double xOffset = 6.0;
+//     double xOffset = 6.0;
 
-    while(true) {
-        float gpsX = gps_sensor.get_position_x();
-        float gpsY = gps_sensor.get_position_y();
-        float gpsYaw = gps_sensor.get_yaw();
-        gpsX *= (39.3701 * -1.0); // TEMPORARY, MAKE SURE TO UNREVERSE THIS LATER
-        gpsY *= (39.3701 * -1.0); // TEMPORARY, MAKE SURE TO UNREVERSE THIS LATER
-        lemlib::Pose pose = chassis.getPose();
-        lcd::print(6, "gpsY preffset %f", gpsY);
+//     while(true) {
+//         float gpsX = gps_sensor.get_position_x();
+//         float gpsY = gps_sensor.get_position_y();
+//         float gpsYaw = gps_sensor.get_yaw();
+//         gpsX *= (39.3701 * -1.0); // TEMPORARY, MAKE SURE TO UNREVERSE THIS LATER
+//         gpsY *= (39.3701 * -1.0); // TEMPORARY, MAKE SURE TO UNREVERSE THIS LATER
+//         lemlib::Pose pose = chassis.getPose();
+//         lcd::print(6, "gpsY preffset %f", gpsY);
 
 
 
-        gpsY -= sin(pose.theta*0.01745329) * 6.0; // PROS OFFSET IS NOT WORKING
-        gpsX -= cos(pose.theta*0.01745329) * 6.0; // PROS OFFSET IS NOT WORKING
+//         gpsY -= sin(pose.theta*0.01745329) * 6.0; // PROS OFFSET IS NOT WORKING
+//         gpsX -= cos(pose.theta*0.01745329) * 6.0; // PROS OFFSET IS NOT WORKING
 
-        if(gpsYaw < 0) gpsYaw = 360 - gpsYaw;
-        // gpsYaw += 90; // correct shift
-        gpsYaw -= 90; // TEMPORARY, MAKE SURE TO REMOVE THIS LATER
-        if(gpsYaw > 360) {
-            gpsYaw -= 360;
-        }
-        lcd::print(3, "GPSx: %f", round2dp(gpsX));
-		lcd::print(4, "GPSy: %f", round2dp(gpsY));
-        lcd::print(5, "y offset calculation %f", sin(pose.theta*0.01745329) * 6.0);
-        // lcd::print(6, "orientation: %f", pose.theta);
-        lcd::print(7, "error: %f", gps_sensor.get_error());
+//         if(gpsYaw < 0) gpsYaw = 360 - gpsYaw;
+//         // gpsYaw += 90; // correct shift
+//         gpsYaw -= 90; // TEMPORARY, MAKE SURE TO REMOVE THIS LATER
+//         if(gpsYaw > 360) {
+//             gpsYaw -= 360;
+//         }
+//         lcd::print(3, "GPSx: %f", round2dp(gpsX));
+// 		lcd::print(4, "GPSy: %f", round2dp(gpsY));
+//         lcd::print(5, "y offset calculation %f", sin(pose.theta*0.01745329) * 6.0);
+//         // lcd::print(6, "orientation: %f", pose.theta);
+//         lcd::print(7, "error: %f", gps_sensor.get_error());
 
-        // if(gps_sensor.get_error() <= 0.01016 && abs(gpsX - chassis.getPose().x) <= 0.5 && abs(gpsY - chassis.getPose().y) <= 0.5){
-        //     chassis.setPose(gpsX, gpsY, pose.theta);
-        // }
+//         // if(gps_sensor.get_error() <= 0.01016 && abs(gpsX - chassis.getPose().x) <= 0.5 && abs(gpsY - chassis.getPose().y) <= 0.5){
+//         //     chassis.setPose(gpsX, gpsY, pose.theta);
+//         // }
 
-        // Odometry odom = {std::ceil((double)pose.x * 100.0) / 100.0, std::ceil((double)pose.y * 100.0) / 100.0, std::ceil((double)pose.theta * 100.0) / 100.0};
-        // Odometry odom = {round2dp(pose.x), round2dp(pose.y), round2dp(pose.theta), round2dp(gpsX), round2dp(gpsY), round2dp(gpsYaw), gps_sensor.get_error()};
-        // Message odom_message = {"odometry", odom};
-        // std::cout << static_cast<json>(odom_message) << std::flush;
+//         // Odometry odom = {std::ceil((double)pose.x * 100.0) / 100.0, std::ceil((double)pose.y * 100.0) / 100.0, std::ceil((double)pose.theta * 100.0) / 100.0};
+//         // Odometry odom = {round2dp(pose.x), round2dp(pose.y), round2dp(pose.theta), round2dp(gpsX), round2dp(gpsY), round2dp(gpsYaw), gps_sensor.get_error()};
+//         // Message odom_message = {"odometry", odom};
+//         // std::cout << static_cast<json>(odom_message) << std::flush;
 
-        delay(50);
+//         delay(50);
         
-    }
-}
+//     }
+// }
 
 
 // void conveyor_task() {

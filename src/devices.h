@@ -17,9 +17,12 @@ Rotation vertical_tracker(8);
 Rotation ladybrownSensor(19);
 
 Optical colour_sensor(20);
-Distance distance_sensor(18);
-Distance final_distance_sensor(21);
-GPS gps_sensor(10);
+Distance distance_sensor(18); //FIRST COLOR DISTANCE SENSOR
+Distance final_distance_sensor(21); //COLOR FINAL DISTANCE SENSOR
+
+Distance left_distance(10); //6 inches to left of tracking center, .25 inches backwards from center
+Distance back_distance(13); //5.25 inches left of tracking center, 2 inches backwards from center
+// GPS gps_sensor(10);
 
 
 adi::Pneumatics mogoclamp('a', false);
@@ -46,7 +49,7 @@ lemlib::TrackingWheel vertical_tracking_wheel(&vertical_tracker, lemlib::Omniwhe
 lemlib::OdomSensors sensors(&vertical_tracking_wheel, nullptr, &horizontal_tracking_wheel, nullptr, &imu);
 
 // lemlib::ControllerSettings lateral_controller(10, 0, 60, 3, 1, 500, 3, 750, 15);
-lemlib::ControllerSettings lateral_controller(18.5, 0, 250, 3, 1, 100, 3, 500, 25);
+lemlib::ControllerSettings lateral_controller(18.5, 0, 150, 3, 1, 100, 3, 500, 45);
 
 
 // lemlib::ControllerSettings angular_controller(4.1, 0.35, 42, 3, 1, 100, 3, 500, 25);
