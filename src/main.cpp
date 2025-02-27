@@ -211,6 +211,8 @@ void opcontrol() {
 		lcd::print(0, "x: %f", chassis.getPose().x);
 		lcd::print(1, "y: %f", chassis.getPose().y);
 		lcd::print(2, "theta: %f", chassis.getPose().theta);
+		lcd::print(3, "Hori Tracking Wheel Distance: %f", horizontal_tracking_wheel.getDistanceTraveled());
+		lcd::print(4, "Verti tracking wheel distance: %f", vertical_tracking_wheel.getDistanceTraveled());
 		// lcd::print(3, "LastDistanceCalcResult %f", lastDistFuncReading);
 		// lcd::print(3, "LBRotation: %f", ((float)ladybrownSensor.get_angle())/100);
 		// lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);

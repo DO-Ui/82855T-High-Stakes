@@ -82,16 +82,17 @@ void ladybrown_and_color_task() {
     bool wrong_color_detected = false;
     float wrong_color_detected_time = 0;
     int controller_print = 0;
+
     
     while (true) {
         // lcd::print(0, "x: %f", chassis.getPose().x);
 		// lcd::print(1, "y: %f", chassis.getPose().y);
 		// lcd::print(2, "theta: %f", imu.get_heading());
         
-        //below code is for bugfixing
-        // if(auton_active && master.get_digital(E_CONTROLLER_DIGITAL_B)){ //REMOVE BEFORE PROVS
-        //     chassis.cancelAllMotions();
-        // }
+        // below code is for bugfixing
+        if(auton_active && master.get_digital(E_CONTROLLER_DIGITAL_B)){ //REMOVE BEFORE PROVS
+            chassis.cancelAllMotions();
+        }
 
         // 200-ish is blue
         // 10-ish is red
@@ -201,7 +202,7 @@ void ladybrown_and_color_task() {
             controller_print--;
         }
 
-        delay(20);
+        delay(10); //CHANGE BACK TO 20 LATER
     }
 }
 
