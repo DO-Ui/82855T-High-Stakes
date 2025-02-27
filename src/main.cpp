@@ -54,7 +54,7 @@ void initialize() {
 	// gps_sensor.set_data_rate(5);
 	// gps_sensor.set_offset(-6.0*0.0254, -0.25*0.0254);
 	// gps_sensor.set_position(-62.2343, 0, 90);
-	chassis.setPose(-62.2343, 0, 90);
+	// chassis.setPose(-62.2343, 0, 90);
 	master.clear();
 
 	Task odom_task([&]() {
@@ -169,17 +169,17 @@ void opcontrol() {
 		int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
 		
 		chassis.arcade(leftY, rightX, false, 0.75);
-		// if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-			// chassis.moveToPoint(0, 24, 3000);
+		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
+			chassis.moveToPoint(0, 24, 3000);
 			// chassis.moveToPose(0, 48, 0, 2000);
 			// chassis.turnToHeading(90, 1000);
 			// lastDistFuncReading = check_distance_back_BOTTOM_WALL();
-		// }
-		// if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
-			// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
-		// 	// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
-		// 	// chassis.turnToHeading(0, 1000);
-		// }
+		}
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
+			chassis.moveToPoint(0, 0, 3000, {.forwards = false});
+			// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
+			// chassis.turnToHeading(0, 1000);
+		}
 
 		
 
