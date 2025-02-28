@@ -41,6 +41,21 @@ int find_closest_LBPosition(float lbArmAngle, bool findPositionBehind){
     return -1;
 }
 
+/// @brief Stops the conveyor when a ring is detected by the distance sensor
+void monitor_and_stop_conveyor() {
+    while (true) {
+        if (auton_active) {
+            if (stopNextRing) {
+                if (distance_sensor.get() < 79) {
+                    conveyor.move(0);
+                    stopNextRing = false;
+                }
+            }
+        }
+        delay(30);
+    }
+}
+
 
 void driver_inputs() {
     if(!auton_active){ //don't run driver inputs if auton is active
