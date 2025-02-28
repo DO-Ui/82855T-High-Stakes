@@ -169,6 +169,7 @@ void opcontrol() {
 		int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
 		
 		chassis.arcade(leftY, rightX, false, 0.75);
+
 		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
 			chassis.moveToPoint(0, 24, 3000);
 			// chassis.moveToPose(0, 48, 0, 2000);
