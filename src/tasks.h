@@ -46,7 +46,7 @@ void monitor_and_stop_conveyor() {
     while (true) {
         if (auton_active) {
             if (stopNextRing) {
-                if (distance_sensor.get() < 79) {
+                if (final_distance_sensor.get() < 79) {
                     conveyor.move(0);
                     stopNextRing = false;
                 }
@@ -55,7 +55,28 @@ void monitor_and_stop_conveyor() {
         delay(30);
     }
 }
+void unjamLBTask() {
 
+    int jamCount = 0;
+
+    while (true) {
+        if (unJamLB) {
+            if (lbTarget == 0 && in_range(((float)ladybrownSensor.get_angle())/100, 15, 33)) {
+                if (jamCount >= 20) { // lb is not fully down despite being told to be down
+                    set_LBPosition(1);
+                    int prevMotorState = conveyor.get_voltage();
+                    conveyor.move(-127);
+                    delay(350);
+                    conveyor.move_voltage(prevMotorState);
+                    set_LBPosition(0);
+                    jamCount=0;
+                }
+                jamCount++;
+            }
+        }
+        delay(30);
+    }
+}
 
 void driver_inputs() {
     if(!auton_active){ //don't run driver inputs if auton is active
