@@ -57,16 +57,16 @@ void initialize() {
 	// chassis.setPose(-62.2343, 0, 90);
 	master.clear();
 
-	Task odom_task([&]() {
-		while (true) {
-			lemlib::Pose pose = chassis.getPose();
-			// Odometry odom = {std::ceil((double)pose.x * 100.0) / 100.0, std::ceil((double)pose.y * 100.0) / 100.0, std::ceil((double)pose.theta * 100.0) / 100.0};
-			Odometry odom = {round2dp(pose.x), round2dp(pose.y), round2dp(pose.theta)};
-			Message odom_message = {"odometry", odom};
-			std::cout << static_cast<json>(odom_message) << std::flush;
-			delay(25);
-		}
-	});
+	// Task odom_task([&]() {
+	// 	while (true) {
+	// 		lemlib::Pose pose = chassis.getPose();
+	// 		// Odometry odom = {std::ceil((double)pose.x * 100.0) / 100.0, std::ceil((double)pose.y * 100.0) / 100.0, std::ceil((double)pose.theta * 100.0) / 100.0};
+	// 		Odometry odom = {round2dp(pose.x), round2dp(pose.y), round2dp(pose.theta)};
+	// 		Message odom_message = {"odometry", odom};
+	// 		std::cout << static_cast<json>(odom_message) << std::flush;
+	// 		delay(25);
+	// 	}
+	// });
 
 	Task lbtask(ladybrown_and_color_task);
 	// Task gps_task(gps_sensor_task);
