@@ -69,6 +69,10 @@ void initialize() {
 	});
 
 	Task lbtask(ladybrown_and_color_task);
+	Task stopRing(monitor_and_stop_conveyor);
+	Task lbUnjam(unjamLBTask);
+	
+
 	// Task gps_task(gps_sensor_task);
 
 	// NOTE: colour_task has logging, remove if not needed
@@ -113,11 +117,12 @@ void autonomous() {
 
 	// blueLeftMogoRush();
 	// These ones below work
-	skills(); // FOR PROVS
+	// skills(); // FOR PROVS
 	//RED SIDE
 	// redRightSoloAWP(); // NOT WOKRING
 	// redLeftSoloAWP(); //should work FOR PROVS
 	// redMogoRush(); // FOR PROVS
+	redRingSidePROVSSoloAWP(); // FOR PROVS
 	// globalRightsideSoloAWPSAFE(); //should also work FOR PROVS
 	//BLUE SIDE
 	// blueRightSoloAWP(); //should work FOR PROVS
