@@ -112,7 +112,7 @@ void autonomous() {
 
 	sorter_active = true;
 	auton_active = true;
-	current_sort = 'b'; //SORT OUT THIS COLOR
+	current_sort = 'r'; //SORT OUT THIS COLOR
 
 
 	// blueLeftMogoRush();
@@ -122,10 +122,12 @@ void autonomous() {
 	// redRightSoloAWP(); // NOT WOKRING
 	// redLeftSoloAWP(); //should work FOR PROVS
 	// redMogoRush(); // FOR PROVS
-	redRingSidePROVSSoloAWP(); // FOR PROVS
+	// redRingSidePROVSSoloAWP(); // FOR PROVS
 	// globalRightsideSoloAWPSAFE(); //should also work FOR PROVS
 	//BLUE SIDE
 	// blueRightSoloAWP(); //should work FOR PROVS
+	// blueRingSidePROVSSoloAWP(); // FOR PROVS
+	blueMogoRush();
 	// globalLeftsideSoloAWPSAFE(); //should also work FOR PROVS
 	// blueLeftSoloAWP();
 
@@ -161,9 +163,7 @@ void opcontrol() {
 	
 	auton_active = false; //CHANGE BEFORE PROVS TO FALSE
 	sorter_active = true;
-
 	// chassis.setPose(0, 0, 0);
-
 	
 
 	// int count = 0; //used for automatic PID tuning
@@ -175,23 +175,25 @@ void opcontrol() {
 		
 		chassis.arcade(leftY, rightX, false, 0.75);
 
-		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-			chassis.moveToPoint(0, 24, 3000);
+		// if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
+			// chassis.moveToPoint(0, 24, 3000);
 			// chassis.moveToPose(0, 48, 0, 2000);
 			// chassis.turnToHeading(90, 1000);
 			// lastDistFuncReading = check_distance_back_BOTTOM_WALL();
-		}
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
-			chassis.moveToPoint(0, 0, 3000, {.forwards = false});
+		// }
+		// if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
+			// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
 			// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
 			// chassis.turnToHeading(0, 1000);
-		}
+		// }
 
 		
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
 			auton_active = true;
-			skills(); //REMOVE LATER
+			// skills(); //REMOVE LATER
+			current_sort='r';
+			blueMogoRush();
 			auton_active = false;
 		}
 

@@ -217,7 +217,7 @@ void ladybrown_and_color_task() {
         else if(wrong_color_detected && final_distance_sensor.get() < 15){
             wrong_color_detected = false;
             int voltageBeforeStop = conveyor.get_voltage();
-            delay(65);
+            delay(90);
             conveyor.move(-127);
             delay(250);
             conveyor.move_voltage(voltageBeforeStop); //reset the voltage to what it was before reversing the conveyor

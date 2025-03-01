@@ -445,6 +445,66 @@ inline void blueRightSoloAWP(){
 }
 
 
+/**
+ * @brief Red Ring Side Solo awp FOR PROVS
+ * 
+ */
+inline void blueRingSidePROVSSoloAWP() {
+	chassis.setPose(62.8, 14.5, 180);
+	set_LBPosition(2);
+	delay(800);
+	intakeRiser.toggle();
+	intake.move(-127);
+	conveyor.move(127);
+	stopNextRing = true;
+	chassis.turnToPoint(46, -1, 800, {.minSpeed=80, .earlyExitRange=10});
+	set_LBPosition(0);
+	chassis.moveToPoint(46, -1, 600); //move to reversed ring stack
+	chassis.waitUntilDone();
+	delay(400);
+	intakeRiser.toggle();
+	chassis.turnToPoint(19, 26, 1000, {.forwards = false, .minSpeed=75, .earlyExitRange=5}); //move to mogo
+	chassis.moveToPoint(19, 26, 1000, {.forwards = false, .minSpeed=20, .earlyExitRange=2}); //move to mogo
+	chassis.waitUntilDone();
+	approachAndClampMogo(); // clamp ring side safe mogo
+	conveyor.move(127);
+	chassis.turnToPoint(19, 50, 800, {.earlyExitRange=10}); // turn to ring stack
+	stopNextRing = false;
+	chassis.moveToPoint(19, 50, 600); //move to ring stack
+	stopNextRing = true;
+	chassis.waitUntilDone();
+	delay(500);
+	chassis.turnToPoint(39, -5, 1000); // turn to intermediate point
+	intake.move(0);
+	chassis.moveToPoint(39, -5, 1300, {.minSpeed=95, .earlyExitRange=9}); // move to intermediate point
+	chassis.waitUntilDone();
+	mogoclamp.toggle();
+	conveyor.move(0);
+	chassis.turnToPoint(17.5, -30, 800, {.forwards=false, .minSpeed=40, .earlyExitRange=5}); // turn to mogo
+	chassis.moveToPoint(17.5, -30, 800, {.forwards=false}); // move to mogo
+	chassis.waitUntilDone();
+	approachAndClampMogo(); // clamp mogo
+	intake.move(-127);
+	delay(300);
+	chassis.turnToPoint(20, -53, 900, {.minSpeed=70, .earlyExitRange=10}); // turn to ring stack
+	chassis.moveToPoint(20, -53, 700); // move to ring stack
+	conveyor.move(127);
+	chassis.waitUntilDone();
+	delay(500);
+	chassis.swingToPoint(20, -2.5, lemlib::DriveSide::LEFT, 2000, { .direction=lemlib::AngularDirection::CCW_COUNTERCLOCKWISE, .minSpeed=30, .earlyExitRange=5 }); // swing to face ladder
+	chassis.moveToPoint(20, -2.5, 2000, {.minSpeed=30, .earlyExitRange=3}); // move to ladder
+	chassis.waitUntilDone();
+	set_LBPosition(2);
+	chassis.tank(10, 10);
+	delay(400);
+	chassis.tank(0, 0);
+}
+
+
+/**
+ * @brief Red Ring Side Solo awp FOR PROVS
+ * 
+ */
 inline void redRingSidePROVSSoloAWP() {
 	chassis.setPose(-62.8, 14.5, 180);
 	set_LBPosition(2);
@@ -488,7 +548,7 @@ inline void redRingSidePROVSSoloAWP() {
 	chassis.waitUntilDone();
 	delay(500);
 	chassis.swingToPoint(-20, -2.5, lemlib::DriveSide::RIGHT, 2000, { .direction=lemlib::AngularDirection::CW_CLOCKWISE, .minSpeed=30, .earlyExitRange=5 }); // swing to face ladder
-	chassis.moveToPoint(-20, -2.5, 900, {.minSpeed=30, .earlyExitRange=12}); // move to ladder
+	chassis.moveToPoint(-20, -2.5, 900, {.minSpeed=30, .earlyExitRange=3}); // move to ladder
 	chassis.waitUntilDone();
 	set_LBPosition(2);
 	chassis.tank(10, 10);
@@ -497,6 +557,53 @@ inline void redRingSidePROVSSoloAWP() {
 
 
 	// chassis.moveToPoint(-37,)
+
+}
+
+
+/**
+ * @brief Blue side mogo rush
+ * SETUP IS DIFFERENT FROM RED SIDE, CENTER OF TILE BUT ABOVE RED SINGLE RING (ON JERRY FIELD), AS FAR FORWARD AS POSSIBLE
+ * 
+ */
+inline void blueMogoRush() {
+	chassis.setPose(50, -35, -90);
+	chassis.moveToPoint(32, -36.5, 1000, {.minSpeed = 120, .earlyExitRange=10}); // intermediate point
+	chassis.moveToPoint(13.5, -38, 850, {.minSpeed=100, .earlyExitRange=1}); //rush mogo
+	chassis.waitUntil(16.7);
+	doinker.toggle();
+	chassis.moveToPose(32, -36.5, -90, 900, {.forwards = false, .minSpeed=100, .earlyExitRange=10}); //bring mogo back
+	chassis.waitUntilDone();
+	doinker.toggle();
+	chassis.tank(50, 50); // move a bit so doinker can release
+	delay(250);
+	chassis.tank(0, 0);
+	chassis.turnToHeading(65, 800);
+	chassis.moveToPoint(19, -42, 500, {.forwards=false}); // move to grab mogo
+	chassis.waitUntilDone();
+	// chassis.swingToPoint(12, -47, lemlib::DriveSide::RIGHT, 900, {.forwards=false, .direction=lemlib::AngularDirection::CCW_COUNTERCLOCKWISE}); // swing to grab mogo that was rushed
+	// chassis.waitUntilDone();
+	chassis.tank(-20, -20);
+	delay(100);
+	approachAndClampMogo(); // clamp rushed mogo
+	delay(150);
+	conveyor.move(127); // score preload
+	delay(300);
+	intake.move(-127);
+	chassis.swingToPoint(16, -51, lemlib::DriveSide::RIGHT, 1800, {.direction=lemlib::AngularDirection::CW_CLOCKWISE}); // swing to face ring stack
+	stopNextRing = true; // grab and store the safe side ring stack
+	chassis.waitUntil(100);
+	mogoclamp.toggle();
+	chassis.turnToPoint(23.5, -24, 800, {.forwards=false}); // turn to second mogo
+	chassis.moveToPose(23.5, -24, 0, 900, {.forwards=false, .lead=0.2}, false); // move to second mogo
+	chassis.waitUntilDone();
+	approachAndClampMogo();
+	stopNextRing = false;
+	conveyor.move(127);
+	intake.move(0);
+	chassis.moveToPose(15, -60, 180, 1000); // move to screen second mogo
+	chassis.waitUntilDone();
+	conveyor.move(0);
 
 }
 
