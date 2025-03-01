@@ -70,7 +70,7 @@ void initialize() {
 
 	Task lbtask(ladybrown_and_color_task);
 	Task stopRing(monitor_and_stop_conveyor);
-	Task lbUnjam(unjamLBTask);
+	Task lbunjam(unjamLBTask);
 	
 
 	// Task gps_task(gps_sensor_task);
@@ -112,12 +112,11 @@ void autonomous() {
 
 	sorter_active = true;
 	auton_active = true;
-	current_sort = 'r'; //SORT OUT THIS COLOR
-
+	current_sort = 'b'; //SORT OUT THIS COLOR
 
 	// blueLeftMogoRush();
 	// These ones below work
-	// skills(); // FOR PROVS
+	skills(); // FOR PROVS
 	//RED SIDE
 	// redRightSoloAWP(); // NOT WOKRING
 	// redLeftSoloAWP(); //should work FOR PROVS
@@ -162,7 +161,8 @@ void opcontrol() {
 	// hang.retract();
 	
 	auton_active = false; //CHANGE BEFORE PROVS TO FALSE
-	sorter_active = true;
+	sorter_active = true; //CHANGE BACK TO TRUE
+
 	// chassis.setPose(0, 0, 0);
 	
 
@@ -176,26 +176,24 @@ void opcontrol() {
 		chassis.arcade(leftY, rightX, false, 0.75);
 
 		// if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-			// chassis.moveToPoint(0, 24, 3000);
-			// chassis.moveToPose(0, 48, 0, 2000);
-			// chassis.turnToHeading(90, 1000);
-			// lastDistFuncReading = check_distance_back_BOTTOM_WALL();
+		// 	chassis.moveToPoint(0, 24, 3000);
+		// 	// chassis.moveToPose(0, 48, 0, 2000);
+		// 	// chassis.turnToHeading(90, 1000);
+		// 	// lastDistFuncReading = check_distance_back_BOTTOM_WALL();
 		// }
 		// if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
-			// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
-			// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
-			// chassis.turnToHeading(0, 1000);
+		// 	chassis.moveToPoint(0, 0, 3000, {.forwards = false});
+		// 	// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
+		// 	// chassis.turnToHeading(0, 1000);
 		// }
 
 		
 
-		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
-			auton_active = true;
-			// skills(); //REMOVE LATER
-			current_sort='r';
-			blueMogoRush();
-			auton_active = false;
-		}
+		// if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
+		// 	auton_active = true;
+		// 	skills(); //REMOVE LATER
+		// 	auton_active = false;
+		// }
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
 			mogoclamp.toggle();
@@ -216,11 +214,11 @@ void opcontrol() {
 
 
 		// // print to brain screen
-		lcd::print(0, "x: %f", chassis.getPose().x);
-		lcd::print(1, "y: %f", chassis.getPose().y);
-		lcd::print(2, "theta: %f", chassis.getPose().theta);
-		lcd::print(3, "Hori Tracking Wheel Distance: %f", horizontal_tracking_wheel.getDistanceTraveled());
-		lcd::print(4, "Verti tracking wheel distance: %f", vertical_tracking_wheel.getDistanceTraveled());
+		// lcd::print(0, "x: %f", chassis.getPose().x);
+		// lcd::print(1, "y: %f", chassis.getPose().y);
+		// lcd::print(2, "theta: %f", chassis.getPose().theta);
+		// lcd::print(3, "Hori Tracking Wheel Distance: %f", horizontal_tracking_wheel.getDistanceTraveled());
+		// lcd::print(4, "Verti tracking wheel distance: %f", vertical_tracking_wheel.getDistanceTraveled());
 		// lcd::print(3, "LastDistanceCalcResult %f", lastDistFuncReading);
 		// lcd::print(3, "LBRotation: %f", ((float)ladybrownSensor.get_angle())/100);
 		// lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);
