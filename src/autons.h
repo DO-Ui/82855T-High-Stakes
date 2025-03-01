@@ -440,8 +440,58 @@ inline void blueRightSoloAWP(){
 }
 
 
+
 /**
- * @brief Red Ring Side Solo awp FOR PROVS
+ * @brief 5 ring + alliance stake on blue ring side
+ * Score on alliance stake -> score five rings on right mogo -> touch ladder / rush positive
+ * ON RING SIDE
+ */
+inline void blueRightPROVSAlliancePlus5Ring(){
+	chassis.setPose(62.8, 14.5, 180); // start hs 3 inches from tile edge, against wall
+	set_LBPosition(2);
+	delay(800);
+	intakeRiser.toggle();
+	intake.move(-127);
+	conveyor.move(127);
+	chassis.turnToPoint(46, -1, 800, {.minSpeed=80, .earlyExitRange=10});
+	set_LBPosition(0);
+	stopNextRing = true; // Ensure reversed stack ring is held
+	chassis.moveToPoint(46, -1, 600); //move to reversed ring stack
+	chassis.waitUntilDone();
+	delay(400);
+	intakeRiser.toggle();
+	chassis.turnToPoint(29, 19, 1000, {.forwards = false, .minSpeed=75, .earlyExitRange=5}); //move to mogo
+	chassis.moveToPoint(29, 19, 1000, {.forwards = false, .minSpeed=20, .earlyExitRange=2}); //move to mogo
+	chassis.waitUntilDone();
+	stopNextRing = false;
+	delay(300);
+	approachAndClampMogo(); // clamp ring side safe mogo
+	delay(150);
+	conveyor.move(127);
+	delay(100);
+	chassis.turnToPoint(5, 43.5, 800); // turn to contested ring stack
+	chassis.moveToPoint(5, 43.5, 950); //move to ring stack
+	chassis.moveToPoint(19, 35, 900, {.forwards=false, .minSpeed=75, .earlyExitRange=9}); // move to intermediate point
+	chassis.moveToPoint(25, 48, 800, {.minSpeed=60, .earlyExitRange=2}); // move to safe
+	chassis.turnToPoint(4.5, 55, 800, {.minSpeed=40, .earlyExitRange=5}); // turn to 2nd contested ring stack
+	chassis.moveToPoint(4.5, 55, 1000); //move to second contested ring stack
+	chassis.moveToPoint(50, 52, 900, {.forwards=false, .minSpeed=40, .earlyExitRange=5}); // move to intermediate point
+	chassis.turnToPoint(66, 66, 800, {.minSpeed=15, .earlyExitRange=9}); // turn to corner
+	chassis.moveToPoint(66, 66, 1000); // move to corner
+	intake.move(127); // reverse intake while jamming into corner
+	chassis.waitUntilDone();
+	delay(400);
+	chassis.tank(-60, -60);
+	intake.move(-127); // try and pull ring outta corner
+	delay(650);
+	chassis.tank(0, 0);
+	
+
+}
+
+/**
+ * @brief Blue Ring Side Solo awp FOR PROVS
+ * Score alliance stake -> score 1 on ring side mogo -> score 2 on mogo side mogo -> touch ladder -> ends with 2 rings on clamped mogo
  * 
  */
 inline void blueRingSidePROVSSoloAWP() {
@@ -498,7 +548,7 @@ inline void blueRingSidePROVSSoloAWP() {
 
 /**
  * @brief Red Ring Side Solo awp FOR PROVS
- * 
+ * Score alliance stake -> score 1 on ring side mogo -> score 2 on mogo side mogo -> touch ladder -> ends with 2 rings on clamped mogo
  */
 inline void redRingSidePROVSSoloAWP() {
 	chassis.setPose(-62.8, 14.5, 180);

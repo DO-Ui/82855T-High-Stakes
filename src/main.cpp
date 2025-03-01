@@ -57,16 +57,16 @@ void initialize() {
 	// chassis.setPose(-62.2343, 0, 90);
 	master.clear();
 
-	// Task odom_task([&]() {
-	// 	while (true) {
-	// 		lemlib::Pose pose = chassis.getPose();
-	// 		// Odometry odom = {std::ceil((double)pose.x * 100.0) / 100.0, std::ceil((double)pose.y * 100.0) / 100.0, std::ceil((double)pose.theta * 100.0) / 100.0};
-	// 		Odometry odom = {round2dp(pose.x), round2dp(pose.y), round2dp(pose.theta)};
-	// 		Message odom_message = {"odometry", odom};
-	// 		std::cout << static_cast<json>(odom_message) << std::flush;
-	// 		delay(25);
-	// 	}
-	// });
+	Task odom_task([&]() {
+		while (true) {
+			lemlib::Pose pose = chassis.getPose();
+			// Odometry odom = {std::ceil((double)pose.x * 100.0) / 100.0, std::ceil((double)pose.y * 100.0) / 100.0, std::ceil((double)pose.theta * 100.0) / 100.0};
+			Odometry odom = {round2dp(pose.x), round2dp(pose.y), round2dp(pose.theta)};
+			Message odom_message = {"odometry", odom};
+			std::cout << static_cast<json>(odom_message) << std::flush;
+			delay(25);
+		}
+	});
 
 	Task lbtask(ladybrown_and_color_task);
 	Task stopRing(monitor_and_stop_conveyor);
@@ -112,11 +112,11 @@ void autonomous() {
 
 	sorter_active = true;
 	auton_active = true;
-	current_sort = 'b'; //SORT OUT THIS COLOR
+	current_sort = 'r'; //SORT OUT THIS COLOR
 
 	// blueLeftMogoRush();
 	// These ones below work
-	skills(); // FOR PROVS
+	// skills(); // FOR PROVS
 	//RED SIDE
 	// redRightSoloAWP(); // NOT WOKRING
 	// redLeftSoloAWP(); //should work FOR PROVS
@@ -126,7 +126,8 @@ void autonomous() {
 	//BLUE SIDE
 	// blueRightSoloAWP(); //should work FOR PROVS
 	// blueRingSidePROVSSoloAWP(); // FOR PROVS
-	blueMogoRush();
+	// blueMogoRush();
+	blueRightPROVSAlliancePlus5Ring();
 	// globalLeftsideSoloAWPSAFE(); //should also work FOR PROVS
 	// blueLeftSoloAWP();
 
