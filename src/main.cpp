@@ -112,11 +112,11 @@ void autonomous() {
 
 	sorter_active = true;
 	auton_active = true;
-	current_sort = 'r'; //SORT OUT THIS COLOR
+	current_sort = 'b'; //SORT OUT THIS COLOR
 
 	// blueLeftMogoRush();
 	// These ones below work
-	// skills(); // FOR PROVS
+	skills(); // FOR PROVS
 	//RED SIDE
 	// redRightSoloAWP(); // NOT WOKRING
 	// redLeftSoloAWP(); //should work FOR PROVS
@@ -127,7 +127,7 @@ void autonomous() {
 	// blueRightSoloAWP(); //should work FOR PROVS
 	// blueRingSidePROVSSoloAWP(); // FOR PROVS
 	// blueMogoRush();
-	blueRightPROVSAlliancePlus5Ring();
+	// blueRightPROVSAlliancePlus5Ring();
 	// globalLeftsideSoloAWPSAFE(); //should also work FOR PROVS
 	// blueLeftSoloAWP();
 
@@ -163,7 +163,9 @@ void opcontrol() {
 	
 	auton_active = false; //CHANGE BEFORE PROVS TO FALSE
 	sorter_active = true; //CHANGE BACK TO TRUE
-
+	// auton_active = true;
+	// skills(); //REMOVE LATER
+	// auton_active = false;
 	// chassis.setPose(0, 0, 0);
 	
 
@@ -186,14 +188,6 @@ void opcontrol() {
 		// 	chassis.moveToPoint(0, 0, 3000, {.forwards = false});
 		// 	// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
 		// 	// chassis.turnToHeading(0, 1000);
-		// }
-
-		
-
-		// if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
-		// 	auton_active = true;
-		// 	skills(); //REMOVE LATER
-		// 	auton_active = false;
 		// }
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {

@@ -133,8 +133,8 @@ void ladybrown_and_color_task() {
 		// lcd::print(1, "y: %f", chassis.getPose().y);
 		// lcd::print(2, "theta: %f", imu.get_heading());
         
-        // below code is for bugfixing
-        // if(auton_active && master.get_digital(E_CONTROLLER_DIGITAL_B)){ //REMOVE BEFORE PROVS
+        // below code is for manual override
+        // if(auton_active && master.get_digital(E_CONTROLLER_DIGITAL_LEFT)){ //REMOVE BEFORE PROVS
         //     chassis.cancelAllMotions();
         // }
 

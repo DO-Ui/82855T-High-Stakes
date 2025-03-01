@@ -196,7 +196,7 @@ inline void skills(){
 	chassis.moveToPoint(47, 63, 1000);
 	doinker.toggle();
 	chassis.turnToHeading(205.583, 1000, {.direction=lemlib::AngularDirection::CW_CLOCKWISE}); //clear corner
-	chassis.turnToPoint(58.069, 66, 1000, {.forwards = false});
+	chassis.turnToPoint(58.069, 66, 700, {.forwards = false});
 	chassis.moveToPoint(58.069, 66, 1000, {.forwards = false}); //turn to corner
 	doinker.toggle();
 	mogoclamp.toggle();
