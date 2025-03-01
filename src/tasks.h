@@ -60,16 +60,24 @@ void unjamLBTask() {
     int jamCount = 0;
 
     while (true) {
-        if (unJamLB) {
+        if (unjamLB) {
             if (lbTarget == 0 && in_range(((float)ladybrownSensor.get_angle())/100, 15, 33)) {
                 if (jamCount >= 20) { // lb is not fully down despite being told to be down
                     set_LBPosition(1);
                     int prevMotorState = conveyor.get_voltage();
                     conveyor.move(-127);
                     delay(350);
-                    conveyor.move_voltage(prevMotorState);
+                    if(unjamLB){
+                        if(prevMotorState > 2000){
+                            conveyor.move(127);
+                        }
+                        else if(prevMotorState < -2000){
+                            conveyor.move(-127);
+                        }
+                        else conveyor.move(0);
+                    }
                     set_LBPosition(0);
-                    jamCount=0;
+                    jamCount = 0;
                 }
                 jamCount++;
             }
@@ -126,9 +134,9 @@ void ladybrown_and_color_task() {
 		// lcd::print(2, "theta: %f", imu.get_heading());
         
         // below code is for bugfixing
-        if(auton_active && master.get_digital(E_CONTROLLER_DIGITAL_B)){ //REMOVE BEFORE PROVS
-            chassis.cancelAllMotions();
-        }
+        // if(auton_active && master.get_digital(E_CONTROLLER_DIGITAL_B)){ //REMOVE BEFORE PROVS
+        //     chassis.cancelAllMotions();
+        // }
 
         // 200-ish is blue
         // 10-ish is red
@@ -217,7 +225,7 @@ void ladybrown_and_color_task() {
         else if(wrong_color_detected && final_distance_sensor.get() < 15){
             wrong_color_detected = false;
             int voltageBeforeStop = conveyor.get_voltage();
-            delay(65);
+            delay(85);
             conveyor.move(-127);
             delay(250);
             conveyor.move_voltage(voltageBeforeStop); //reset the voltage to what it was before reversing the conveyor

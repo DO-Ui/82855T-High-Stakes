@@ -65,7 +65,7 @@ lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller, sens
 
 bool stopNextRing = false;
 
-bool unJamLB = false;
+bool unjamLB = false;
 
 /**
  * 
