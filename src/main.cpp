@@ -119,9 +119,9 @@ void autonomous() {
 	// skills(); // FOR PROVS
 	//RED SIDE
 	// redRightSoloAWP(); // NOT WOKRING
-	// redLeftSoloAWP(); //WORKS FOR PROVS
+	redLeftSoloAWP(); //WORKS FOR PROVS
 	// redMogoRush(); // FOR PROVS
-	redRingSidePROVSSoloAWP(); // FOR PROVS runs across half the field
+	// redRingSidePROVSSoloAWP(); // FOR PROVS runs across half the field
 	// globalRightsideSoloAWPSAFE(); //should also work FOR PROVS
 	//BLUE SIDE
 	// blueRingSidePROVSSoloAWP(); // FOR PROVS runs across half the field
@@ -169,7 +169,7 @@ void opcontrol() {
 	// auton_active = true;
 	// skills(); //REMOVE LATER
 	// auton_active = false;
-	// chassis.setPose(0, 0, 0);
+	// chassis.setPose(0, 0, 0); vc
 	
 
 	// int count = 0; //used for automatic PID tuning

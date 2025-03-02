@@ -247,12 +247,14 @@ inline void redLeftSoloAWP(){
 	chassis.moveToPoint(-25, 48, 800, {.minSpeed=60, .earlyExitRange=2}); // move to safe
 	chassis.turnToPoint(-4.5, 53, 800, {.minSpeed=40, .earlyExitRange=5}); // turn to 2nd contested ring stack
 	chassis.moveToPoint(-4.5, 53, 1000); //move to second contested ring stack
-	// chassis.moveToPoint(50, 52, 900, {.forwards=false, .minSpeed=40, .earlyExitRange=5}); // move to intermediate point
-	// chassis.turnToPoint(66, 66, 800, {.minSpeed=15, .earlyExitRange=9}); // turn to corner
-	// chassis.moveToPoint(66, 66, 1000); // move to corner
-	// intake.move(127); // reverse intake while jamming into corner
-	// chassis.waitUntilDone();
-	// delay(400);
+
+	//following code goes to corner
+	chassis.moveToPoint(50, 52, 900, {.forwards=false, .minSpeed=40, .earlyExitRange=5}); // move to intermediate point
+	chassis.turnToPoint(66, 66, 800, {.minSpeed=15, .earlyExitRange=9}); // turn to corner
+	chassis.moveToPoint(66, 66, 1000); // move to corner
+	intake.move(127); // reverse intake while jamming into corner
+	chassis.waitUntilDone();
+	delay(400);
 	// chassis.tank(45, 45);
 	// delay(400);
 	// chassis.tank(-60, -60);
@@ -263,11 +265,23 @@ inline void redLeftSoloAWP(){
 	// chassis.tank(30, 30);
 	// delay(450);
 	// chassis.tank(0, 0);
-	chassis.moveToPoint(-16, 30, 1000, {.forwards=false}); // move to ladder
-	chassis.turnToPoint(-16, 0, 900);
-	chassis.moveToPoint(-16, 0, 2000, {.maxSpeed=55}); // move to ladder
-	chassis.waitUntilDone();
-	set_LBPosition(2);
+
+	chassis.tank(40, 40);
+	delay(300);
+	chassis.tank(127, 127);
+	delay(150);
+	chassis.tank(90, 90);
+	intake.move(-127);
+	delay(200);
+	chassis.tank(-20, -20);
+
+
+	//following block moves to ladder
+	// chassis.moveToPoint(-16, 30, 1000, {.forwards=false}); // move to ladder
+	// chassis.turnToPoint(-16, 0, 900);
+	// chassis.moveToPoint(-16, 0, 2000, {.maxSpeed=55}); // move to ladder
+	// chassis.waitUntilDone();
+	// set_LBPosition(2);
 
 }
 
