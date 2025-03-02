@@ -57,16 +57,16 @@ void initialize() {
 	// chassis.setPose(-62.2343, 0, 90);
 	master.clear();
 
-	Task odom_task([&]() {
-		while (true) {
-			lemlib::Pose pose = chassis.getPose();
-			// Odometry odom = {std::ceil((double)pose.x * 100.0) / 100.0, std::ceil((double)pose.y * 100.0) / 100.0, std::ceil((double)pose.theta * 100.0) / 100.0};
-			Odometry odom = {round2dp(pose.x), round2dp(pose.y), round2dp(pose.theta)};
-			Message odom_message = {"odometry", odom};
-			std::cout << static_cast<json>(odom_message) << std::flush;
-			delay(25);
-		}
-	});
+	// Task odom_task([&]() {
+	// 	while (true) {
+	// 		lemlib::Pose pose = chassis.getPose();
+	// 		// Odometry odom = {std::ceil((double)pose.x * 100.0) / 100.0, std::ceil((double)pose.y * 100.0) / 100.0, std::ceil((double)pose.theta * 100.0) / 100.0};
+	// 		Odometry odom = {round2dp(pose.x), round2dp(pose.y), round2dp(pose.theta)};
+	// 		Message odom_message = {"odometry", odom};
+	// 		std::cout << static_cast<json>(odom_message) << std::flush;
+	// 		delay(25);
+	// 	}
+	// });
 
 	Task lbtask(ladybrown_and_color_task);
 	Task stopRing(monitor_and_stop_conveyor);
@@ -116,22 +116,25 @@ void autonomous() {
 
 	// blueLeftMogoRush();
 	// These ones below work
-	skills(); // FOR PROVS
+	// skills(); // FOR PROVS
 	//RED SIDE
 	// redRightSoloAWP(); // NOT WOKRING
-	// redLeftSoloAWP(); //should work FOR PROVS
+	// redLeftSoloAWP(); //WORKS FOR PROVS
 	// redMogoRush(); // FOR PROVS
-	// redRingSidePROVSSoloAWP(); // FOR PROVS
+	redRingSidePROVSSoloAWP(); // FOR PROVS runs across half the field
 	// globalRightsideSoloAWPSAFE(); //should also work FOR PROVS
 	//BLUE SIDE
-	// blueRightSoloAWP(); //should work FOR PROVS
-	// blueRingSidePROVSSoloAWP(); // FOR PROVS
+	// blueRingSidePROVSSoloAWP(); // FOR PROVS runs across half the field
 	// blueMogoRush();
-	// blueRightPROVSAlliancePlus5Ring();
+	// stupid();
+	// blueRightPROVSAlliancePlus5Ring(); //WORKS FOR PROVS
 	// globalLeftsideSoloAWPSAFE(); //should also work FOR PROVS
 	// blueLeftSoloAWP();
 
 	//NONFUNCTIONAL
+		// blueRightSoloAWP(); //should work FOR PROVS
+
+
 	// redLeftAllianceStake4Ring();
 	// blueRight5RingElim();
 	// redLeft5RingElim()

@@ -30,7 +30,7 @@ adi::Pneumatics doinker('b', false);
 adi::Pneumatics intakeRiser('c', false);
 adi::Pneumatics hang('d', false);
 
-lemlib::PID ladybrownPID(2, // kP
+lemlib::PID ladybrownPID(3, // kP
                 0, // kI
                 3, // kD
                 5, // integral anti windup range
@@ -60,7 +60,7 @@ lemlib::ControllerSettings angular_controller(7.2, 0, 71.3, 0, 2, 65, 3, 115, 20
 lemlib::ExpoDriveCurve throttle_curve(1, 10, 1.025);
 lemlib::ExpoDriveCurve steer_curve(1, 10, 1.025);
 
-lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller, sensors, &throttle_curve, &steer_curve);
+lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller, sensors, &throttle_curve);
 
 
 bool stopNextRing = false;

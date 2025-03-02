@@ -2,7 +2,7 @@
 
 //DON'T COMMUNICATE WITH MAIN THREAD. Reading is fine, never write
 const float REST = 0;
-const float CAPTURE = 29;
+const float CAPTURE = 27;
 const float WALLSTAKE_PREP = 100;
 const float WALLSTAKE = 141;
 float positions[3] = {REST, CAPTURE, WALLSTAKE};
@@ -97,20 +97,19 @@ void driver_inputs() {
             // else if(CLOCK_REALTIME - conveyor_start_time > 5 && conveyor.get_actual_velocity() < 150){
             //     conveyor.move(-127);
             // }
-        }
-        else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
-            // conveyor_powered = false;
+        } else if (master.get_digital(E_CONTROLLER_DIGITAL_LEFT)) {
             conveyor.move(-127);
         } else {
             // conveyor_powered = false;
             conveyor.move(0);
         }
 
-        if (master.get_digital(E_CONTROLLER_DIGITAL_R1) || master.get_digital(E_CONTROLLER_DIGITAL_LEFT)) {
+        if (master.get_digital(E_CONTROLLER_DIGITAL_R1) || master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
             intake.move(-127);
-        } else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
+        } else if (master.get_digital(E_CONTROLLER_DIGITAL_LEFT)){
             intake.move(127);
-        } else {
+        }
+        else {
             intake.move(0);
         }
     }
@@ -225,7 +224,7 @@ void ladybrown_and_color_task() {
         else if(wrong_color_detected && final_distance_sensor.get() < 15){
             wrong_color_detected = false;
             int voltageBeforeStop = conveyor.get_voltage();
-            delay(90);
+            delay(95);
             conveyor.move(-127);
             delay(250);
             conveyor.move_voltage(voltageBeforeStop); //reset the voltage to what it was before reversing the conveyor
