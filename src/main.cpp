@@ -112,14 +112,14 @@ void autonomous() {
 
 	sorter_active = true;
 	auton_active = true;
-	current_sort = 'b'; //SORT OUT THIS COLOR
+	current_sort = 'r'; //SORT OUT THIS COLOR
 
 	// blueLeftMogoRush();
 	// These ones below work
 	// skills(); // FOR PROVS
 	//RED SIDE
 	// redRightSoloAWP(); // NOT WOKRING
-	redLeftSoloAWP(); //WORKS FOR PROVS
+	// redLeftSoloAWP(); //WORKS FOR PROVS
 	// redMogoRush(); // FOR PROVS
 	// redRingSidePROVSSoloAWP(); // FOR PROVS runs across half the field
 	// globalRightsideSoloAWPSAFE(); //should also work FOR PROVS
@@ -127,7 +127,7 @@ void autonomous() {
 	// blueRingSidePROVSSoloAWP(); // FOR PROVS runs across half the field
 	// blueMogoRush();
 	// stupid();
-	// blueRightPROVSAlliancePlus5Ring(); //WORKS FOR PROVS
+	blueRightPROVSAlliancePlus5Ring(); //WORKS FOR PROVS
 	// globalLeftsideSoloAWPSAFE(); //should also work FOR PROVS
 	// blueLeftSoloAWP();
 
@@ -160,6 +160,7 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	set_LBPosition(0);
 	float lastDistFuncReading = 0;
 
 	// hang.retract();

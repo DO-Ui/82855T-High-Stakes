@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "Red Ring Elims",
+    "project_name": "Blue Elims",
     "target": "v5",
     "templates": {
       "LemLib": {
@@ -301,8 +301,8 @@
     },
     "upload_options": {
       "icon": "pizza",
-      "slot": 3,
-      "description": ""
+      "slot": 2,
+      "description": "we win the comp"
     },
     "use_early_access": false
   }

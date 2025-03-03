@@ -221,15 +221,16 @@ inline void redLeftSoloAWP(){
 	intakeRiser.toggle();
 	intake.move(-127);
 	conveyor.move(127);
-	chassis.turnToPoint(-46, -1, 800, {.minSpeed=80, .earlyExitRange=10});
+	chassis.turnToPoint(-47.353, 0, 800, {.minSpeed=80, .earlyExitRange=10});
 	set_LBPosition(0);
 	stopNextRing = true; // Ensure reversed stack ring is held
-	chassis.moveToPoint(-46, -1, 600); //move to reversed ring stack
+	chassis.moveToPoint(-47.353, 0, 600, {.maxSpeed = 50}); //move to reversed ring stack
 	chassis.waitUntilDone();
 	delay(450);
 	intakeRiser.toggle();
-	chassis.turnToPoint(-29, 19, 1000, {.forwards = false, .minSpeed=75, .earlyExitRange=5}); //move to mogo
-	chassis.moveToPoint(-29, 19, 1000, {.forwards = false, .minSpeed=20, .earlyExitRange=4}); //move to mogo
+	delay(200);
+	chassis.turnToPoint(-27.226, 21.3, 1000, {.forwards = false, .minSpeed=75, .earlyExitRange=5}); //move to mogo
+	chassis.moveToPose(-27.226, 21.3, 225, 1200, {.forwards = false, .minSpeed=20, .earlyExitRange=2}); //move to mogo
 	chassis.waitUntilDone();
 	chassis.tank(-30, -30);
 	delay(150);
@@ -240,20 +241,23 @@ inline void redLeftSoloAWP(){
 	delay(150);
 	conveyor.move(127);
 	delay(100);
-	chassis.turnToPoint(-4.5, 42, 800); // turn to contested ring stack
-	chassis.moveToPoint(-4.5, 42, 950); //move to ring stack
+	chassis.turnToPoint(-3.887, 43.209, 800); // turn to contested ring stack
+	chassis.moveToPoint(-3.887, 43.209, 950); //move to ring stack
 	delay(300);
 	chassis.moveToPoint(-19, 35, 900, {.forwards=false, .minSpeed=75, .earlyExitRange=9}); // move to intermediate point
+	delay(400);
 	chassis.moveToPoint(-25, 48, 800, {.minSpeed=60, .earlyExitRange=2}); // move to safe
 	chassis.turnToPoint(-4.5, 53, 800, {.minSpeed=40, .earlyExitRange=5}); // turn to 2nd contested ring stack
 	chassis.moveToPoint(-4.5, 53, 1000); //move to second contested ring stack
 
 	//following code goes to corner
-	chassis.moveToPoint(50, 52, 900, {.forwards=false, .minSpeed=40, .earlyExitRange=5}); // move to intermediate point
-	chassis.turnToPoint(66, 66, 800, {.minSpeed=15, .earlyExitRange=9}); // turn to corner
-	chassis.moveToPoint(66, 66, 1000); // move to corner
+	chassis.moveToPoint(-50, 52, 900, {.forwards=false, .minSpeed=40, .earlyExitRange=5}); // move to intermediate point
+	chassis.turnToPoint(-66, 71, 800, {.minSpeed=15, .earlyExitRange=9}); // turn to corner
+	chassis.moveToPoint(-66, 71, 1000, {.maxSpeed = 100}); // move to corner
 	intake.move(127); // reverse intake while jamming into corner
 	chassis.waitUntilDone();
+	set_LBPosition(2);
+	conveyor.move(0);
 	delay(400);
 	// chassis.tank(45, 45);
 	// delay(400);
@@ -265,15 +269,17 @@ inline void redLeftSoloAWP(){
 	// chassis.tank(30, 30);
 	// delay(450);
 	// chassis.tank(0, 0);
-
 	chassis.tank(40, 40);
 	delay(300);
-	chassis.tank(127, 127);
+	chassis.tank(110, 110);
+	conveyor.move(127);
 	delay(150);
 	chassis.tank(90, 90);
 	intake.move(-127);
-	delay(200);
+	delay(300);
 	chassis.tank(-20, -20);
+	delay(400);
+	chassis.moveToPose(-54.456, -57.507, 0, 2000, {.forwards = false});
 
 
 	//following block moves to ladder
@@ -458,15 +464,15 @@ inline void blueRightPROVSAlliancePlus5Ring(){
 	intakeRiser.toggle();
 	intake.move(-127);
 	conveyor.move(127);
-	chassis.turnToPoint(47.106, 0, 800, {.minSpeed=80, .earlyExitRange=10});
+	chassis.turnToPoint(48.374, 1.434, 800, {.minSpeed=80, .earlyExitRange=10});
 	set_LBPosition(0);
 	stopNextRing = true; // Ensure reversed stack ring is held
-	chassis.moveToPoint(47.106, 0, 700, {.maxSpeed = 70}); //move to reversed ring stack
+	chassis.moveToPoint(48.374, 1.434, 700, {.maxSpeed = 60}); //move to reversed ring stack
 	chassis.waitUntilDone();
-	delay(450);
+	delay(450);	
 	intakeRiser.toggle();
-	chassis.turnToPoint(29, 19, 1000, {.forwards = false, .minSpeed=75, .earlyExitRange=5}); //move to mogo
-	chassis.moveToPose(29, 19, 135, 1200, {.forwards = false, .minSpeed=20, .earlyExitRange=4}); //move to mogo
+	chassis.turnToPoint(25.204, 22.568, 1000, {.forwards = false, .minSpeed=75, .earlyExitRange=5}); //move to mogo
+	chassis.moveToPose(25.204, 22.568, 135, 1200, {.forwards = false, .minSpeed=20, .earlyExitRange=3}); //move to mogo
 	chassis.waitUntilDone();
 	chassis.tank(-30, -30);
 	delay(150);
@@ -480,6 +486,7 @@ inline void blueRightPROVSAlliancePlus5Ring(){
 	chassis.turnToPoint(4.5, 43.5, 800); // turn to contested ring stack
 	chassis.moveToPoint(4.5, 43.5, 950); //move to ring stack
 	chassis.moveToPoint(19, 35, 900, {.forwards=false, .minSpeed=75, .earlyExitRange=9}); // move to intermediate point
+	delay(400);
 	chassis.moveToPoint(25, 48, 800, {.minSpeed=60, .earlyExitRange=2}); // move to safe
 	chassis.turnToPoint(4.5, 55, 800, {.minSpeed=40, .earlyExitRange=5}); // turn to 2nd contested ring stack
 	chassis.moveToPoint(4.5, 55, 1000); //move to second contested ring stack
@@ -508,8 +515,10 @@ inline void blueRightPROVSAlliancePlus5Ring(){
 	chassis.tank(40, 40);
 	delay(300);
 	chassis.tank(127, 127);
+	conveyor.move(0);
 	delay(150);
 	chassis.tank(90, 90);
+	conveyor.move(127);
 	intake.move(-127);
 	delay(200);
 	chassis.tank(-20, -20);
@@ -583,6 +592,8 @@ inline void blueRingSidePROVSSoloAWP() {
 	chassis.tank(10, 10);
 	delay(400);
 	chassis.tank(0, 0);
+	delay(300);
+	chassis.moveToPose(57.507, -55.647, 0, 2000, {.forwards = false});
 }
 
 
