@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "Blue Elims",
+    "project_name": "Auto Selector",
     "target": "v5",
     "templates": {
       "LemLib": {
