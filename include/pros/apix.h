@@ -4,7 +4,7 @@
  *
  * PROS Extended API header
  *
- * Contains additional declarations for use by advaned users of PROS. These
+ * Contains additional declarations for use by advanced users of PROS. These
  * functions do not typically have as much error handling or require deeper
  * knowledge of real time operating systems.
  *

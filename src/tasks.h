@@ -12,12 +12,7 @@ bool sorter_active = true;
 bool auton_active = false;
 char current_sort = 'b';
 float conveyor_speed = 127;
-// float conveyor_start_time = 0;
-// bool conveyor_powered = false;
 
-bool in_range(double value, double bottom, double top) {
-    return (value >= bottom) && (value <= top);
-}
 
 /**
  * Sets the position of the ladybrown arm to the given index
@@ -118,7 +113,9 @@ void driver_inputs() {
 
 void ladybrown_and_color_task() {
     
-    bool manualLBMode = false;
+    bool lbAboveCapture = false;
+    bool newLBPress = false;
+    ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
 
 
     char colour_detected = 'n'; // 'n' means empty
@@ -166,56 +163,94 @@ void ladybrown_and_color_task() {
                 current_sort = 'r';
             }
         }
-        float currAngle = ((float)ladybrownSensor.get_angle())/100;
+        float currAngle = ((float)ladybrownMotor.get_position())/3; //the current angle of the lady brown arm in degrees
         if(currAngle > 300) currAngle = currAngle - 360;
         //LADYBROWN CODE BELOW
-        if(master.get_digital(E_CONTROLLER_DIGITAL_UP) && currAngle <= 140){
-            ladybrownMotor.move(127);
-            manualLBMode = true;
-        }
-        else if(master.get_digital(E_CONTROLLER_DIGITAL_DOWN)){
-            ladybrownMotor.move(-127);
-            manualLBMode = true;
-        }
-        else if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)){ //moves the arm up in positions in the wallstake chain of action
-            if(manualLBMode){
-                lbTarget = find_closest_LBPosition(currAngle, false);
+        if(!lbAboveCapture){ //arm is below the capture angle
+            if(master.get_digital(E_CONTROLLER_DIGITAL_UP)){
+                if(currAngle <= CAPTURE){
+                    ladybrownMotor.move(100);
+                }
+                else {
+                    lbAboveCapture = true;
+                    newLBPress = false;
+                    ladybrownMotor.brake();
+                }
             }
-            else if(lbTarget < (sizeof(positions) / sizeof(positions[0]))-1){
-                lbTarget++;
-            }
-            manualLBMode = false;
-        }
-        else if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)){ //arm recovery
-            if(manualLBMode){
-                lbTarget = find_closest_LBPosition(currAngle, true);
-            }
-            else if(lbTarget > 0){
-                lbTarget--;
-            }
-            manualLBMode = false;
-        }
-        else if(manualLBMode && (!auton_active)){
-            ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
-            ladybrownMotor.brake();
-        }
-
-        if(!manualLBMode){ //no manual overrides have been given, move on to macros
-            // float powerGiven = ladybrownPID.update(positions[lbTarget] - currAngle);
-            float powerGiven = ladybrownController.update(currAngle, (positions[lbTarget] - currAngle));
-            if(positions[lbTarget] == WALLSTAKE) powerGiven = 127;
-            if(currAngle <= 142 || positions[lbTarget] < WALLSTAKE) {
-                ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_COAST);
-                ladybrownMotor.move(powerGiven); //update PID and motor voltage
+            else if(master.get_digital(E_CONTROLLER_DIGITAL_DOWN) && currAngle >= REST){
+                ladybrownMotor.move(-100);
             }
             else {
-                ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
                 ladybrownMotor.brake();
             }
-            // lcd::print(0, "targetAngle: %f", positions[lbTarget]);
-            // lcd::print(1, "lbAngleAdjusted: %f", lbAngle);
-            // lcd::print(2, "power given: %f", powerGiven);
         }
+        if(!newLBPress && lbAboveCapture){ //arm is being held in capture position
+            if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)) {
+                ladybrownMotor.move(100);
+                newLBPress = true;
+            }
+            else if(master.get_digital(E_CONTROLLER_DIGITAL_DOWN) && !master.get_digital(E_CONTROLLER_DIGITAL_UP)) {
+                ladybrownMotor.move(-100);
+                lbAboveCapture = false;
+                newLBPress = false;
+            }
+            else ladybrownMotor.brake();
+        }
+        else { //arm is above capture position
+            if(master.get_digital(E_CONTROLLER_DIGITAL_UP)){
+                ladybrownMotor.move(100);
+            }
+            else if(master.get_digital(E_CONTROLLER_DIGITAL_DOWN)){
+                if(currAngle < CAPTURE){
+                    lbAboveCapture = false;
+                    newLBPress = false;
+                }
+                ladybrownMotor.move(-100);
+            }
+            else ladybrownMotor.brake();
+        }
+        
+
+
+        // else if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)){ //moves the arm up in positions in the wallstake chain of action
+        //     if(manualLBMode){
+        //         lbTarget = find_closest_LBPosition(currAngle, false);
+        //     }
+        //     else if(lbTarget < (sizeof(positions) / sizeof(positions[0]))-1){
+        //         lbTarget++;
+        //     }
+        //     manualLBMode = false;
+        // }
+        // else if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)){ //arm recovery
+        //     if(manualLBMode){
+        //         lbTarget = find_closest_LBPosition(currAngle, true);
+        //     }
+        //     else if(lbTarget > 0){
+        //         lbTarget--;
+        //     }
+        //     manualLBMode = false;
+        // }
+        // else if(manualLBMode && (!auton_active)){
+        //     ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+        //     ladybrownMotor.brake();
+        // }
+
+        // if(!manualLBMode){ //no manual overrides have been given, move on to macros
+        //     // float powerGiven = ladybrownPID.update(positions[lbTarget] - currAngle);
+        //     float powerGiven = ladybrownController.update(currAngle, (positions[lbTarget] - currAngle));
+        //     if(positions[lbTarget] == WALLSTAKE) powerGiven = 127;
+        //     if(currAngle <= 142 || positions[lbTarget] < WALLSTAKE) {
+        //         ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_COAST);
+        //         ladybrownMotor.move(powerGiven); //update PID and motor voltage
+        //     }
+        //     else {
+        //         ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+        //         ladybrownMotor.brake();
+        //     }
+        //     // lcd::print(0, "targetAngle: %f", positions[lbTarget]);
+        //     // lcd::print(1, "lbAngleAdjusted: %f", lbAngle);
+        //     // lcd::print(2, "power given: %f", powerGiven);
+        // }
         
         if (!wrong_color_detected && (sorter_active && current_sort == colour_detected) && distance_sensor.get() < 79) {
             wrong_color_detected = true;

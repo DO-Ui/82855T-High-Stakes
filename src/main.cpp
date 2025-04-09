@@ -1,18 +1,21 @@
 #include "main.h"
 #include "lemlib/api.hpp"
+#include "pros/screen.h"
+#include "pros/screen.hpp"
+#include <cmath>
+#include "util.h"
 #include "ArmController.h"
 #include "./devices.h"
 #include "logging.hpp"
 #include "json.hpp"
 #include <iostream>
-#include <cmath>
 #include <string>
+#include <type_traits>
 #include "./tasks.h"
 #include "macros.h"
 #include "autons.h"
-#include "particle.hpp"
-#include "pros/screen.h"
-#include "pros/screen.hpp"
+#include "pong.h"
+
 
 //controller mappings (all should be done now):
 //R1: intake + conveyor 
@@ -72,13 +75,12 @@ void initialize() {
 	Task lbtask(ladybrown_and_color_task);
 	Task stopRing(monitor_and_stop_conveyor);
 	Task lbunjam(unjamLBTask);
-	
 
 	// Task gps_task(gps_sensor_task);
 
 	// NOTE: colour_task has logging, remove if not needed
 
-	//screen is 480 by 272 wide
+	//screen is 480 wide by 272 tall
 
 	screen::set_pen(Color::blue);
 	screen::fill_rect(0, 0, 480, 136);
@@ -95,15 +97,17 @@ void initialize() {
 	screen::set_eraser(Color::white);
 	screen::print(E_TEXT_MEDIUM, 15, 50, "RING");
 	screen::print(E_TEXT_MEDIUM, 15, 70, "RUSH");
+	screen::print(E_TEXT_MEDIUM, 415, 200, "PONG");
+	screen::print(E_TEXT_MEDIUM, 415, 60, "PONG");
 
 	screen_touch_status_s_t status;
+	Pong pongGame;
 
     while(true) {
 		status = c::screen_touch_status();
-		if(status.touch_status == pros::E_TOUCH_HELD){
-			pros::screen::fill_rect(status.x-10,status.y-10, status.x+10, status.y+10);
-		}
-    	pros::delay(5);
+		pongGame.update(status);
+		pongGame.draw();
+    	pros::delay(16.67);
     }
 	// while(true){
 	// 	if(screen)

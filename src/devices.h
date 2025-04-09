@@ -9,7 +9,7 @@ MotorGroup left({-1, 2, -3}, v5::MotorGears::blue, v5::MotorUnits::rotations);
 
 Motor intake(16, v5::MotorGears::rpm_200);
 Motor conveyor(-17, v5::MotorGears::blue);
-Motor ladybrownMotor(14, v5::MotorGears::rpm_200);
+Motor ladybrownMotor(14, v5::MotorGears::rpm_200, pros::v5::MotorUnits::degrees);
 Imu imu(7);
 
 Rotation horizontal_tracker(-9);
@@ -62,18 +62,6 @@ lemlib::ExpoDriveCurve steer_curve(1, 10, 1.025);
 
 lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller, sensors, &throttle_curve);
 
-
 bool stopNextRing = false;
 
 bool unjamLB = false;
-
-/**
- * 
- * @brief Rounds a float to 2 decimal places
- * 
- * @param num The number to round
- * @return float The rounded number
- */
-float round2dp(float num) {
-	return std::ceil(num * 100.0) / 100.0;
-}
