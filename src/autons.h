@@ -27,7 +27,7 @@ inline void skills(){
 	chassis.moveToPoint(24.488, -48.77, 1100, {.minSpeed=60, .earlyExitRange=3}); //move to far ring
 	delay(400);
 	chassis.waitUntilDone();
-	set_LBPosition(1);
+	// set_LBPosition(1);
 	chassis.moveToPoint(4, -43, 800, {.forwards = false, .earlyExitRange=2}); // move backwards to wallstake
 	chassis.turnToHeading(180, 900, {.minSpeed = 30, .earlyExitRange = 10});
 	chassis.waitUntilDone();
@@ -36,14 +36,14 @@ inline void skills(){
 	chassis.waitUntil(10);
 	chassis.turnToHeading(180, 500);
 	delay(100);
-	set_LBPosition(2); //score wallstake
+	// set_LBPosition(2); //score wallstake
 	chassis.tank(60, 60);
 	delay(750);
 	conveyor.move(127);
 	chassis.tank(-50, -50);
 	delay(450);
 	chassis.moveToPoint(3, -55, 800, {.forwards = false, .minSpeed=60, .earlyExitRange=3}); //move back from wallstake
-	set_LBPosition(0);
+	// set_LBPosition(0);
 	unjamLB = true;
 	chassis.turnToHeading(270, 800, {.earlyExitRange=5});
 	chassis.moveToPoint(-24, -50, 800, {.minSpeed=85, .earlyExitRange=5}); // grab freestanding ring
@@ -151,7 +151,7 @@ inline void skills(){
 	delay(400);
 	mogoclamp.toggle(); //drop mogo off in upper left corner
 	chassis.waitUntilDone();
-	set_LBPosition(1);
+	// set_LBPosition(1);
 	conveyor.move(0);
 	chassis.moveToPoint(-21, 46, 1000); //move to final ring
 	delay(300);
@@ -169,14 +169,14 @@ inline void skills(){
 	chassis.waitUntil(12);
 	conveyor.move(0);
 	chassis.turnToHeading(0, 500);
-	set_LBPosition(2); //score wallstake
+	// set_LBPosition(2); //score wallstake
 	chassis.tank(60, 60);
 	delay(1050);
 	conveyor.move(127);
 	chassis.tank(-50, -50);
 	delay(350);
 	chassis.moveToPoint(-2, 50, 600, {.forwards = false});
-	set_LBPosition(0);
+	// set_LBPosition(0);
 	unjamLB = true;
 	chassis.turnToPoint(22, 50, 600, {.minSpeed = 30, .earlyExitRange = 10});
 	chassis.moveToPoint(22, 50, 1000); //move to first ring in upper right corner
@@ -216,13 +216,13 @@ inline void skills(){
  */
 inline void redLeftSoloAWP(){
 	chassis.setPose(-62.8, 14.5, 180); // start hs 3 inches from tile edge, against wall
-	set_LBPosition(2);
+	// set_LBPosition(2);
 	delay(800);
 	intakeRiser.toggle();
 	intake.move(-127);
 	conveyor.move(127);
 	chassis.turnToPoint(-47.353, 0, 800, {.minSpeed=80, .earlyExitRange=10});
-	set_LBPosition(0);
+	// set_LBPosition(0);
 	stopNextRing = true; // Ensure reversed stack ring is held
 	chassis.moveToPoint(-47.353, 0, 600, {.maxSpeed = 50}); //move to reversed ring stack
 	chassis.waitUntilDone();
@@ -256,7 +256,7 @@ inline void redLeftSoloAWP(){
 	chassis.moveToPoint(-66, 71, 1000, {.maxSpeed = 100}); // move to corner
 	intake.move(127); // reverse intake while jamming into corner
 	chassis.waitUntilDone();
-	set_LBPosition(2);
+	// set_LBPosition(2);
 	conveyor.move(0);
 	delay(400);
 	// chassis.tank(45, 45);
@@ -287,7 +287,7 @@ inline void redLeftSoloAWP(){
 	// chassis.turnToPoint(-16, 0, 900);
 	// chassis.moveToPoint(-16, 0, 2000, {.maxSpeed=55}); // move to ladder
 	// chassis.waitUntilDone();
-	// set_LBPosition(2);
+	// // set_LBPosition(2);
 
 }
 
@@ -297,7 +297,7 @@ inline void redLeftSoloAWP(){
 */
 inline void globalRightsideSoloAWPSAFE(){
 	chassis.setPose(62.8, 15.5, 180);
-	set_LBPosition(2);
+	// set_LBPosition(2);
 	delay(800);
 	intakeRiser.toggle();
 	intake.move(-127);
@@ -323,7 +323,7 @@ inline void globalRightsideSoloAWPSAFE(){
 	conveyor.move(0);
 	intake.move(0);
 	chassis.waitUntilDone();
-	set_LBPosition(0);
+	// set_LBPosition(0);
 
 }
 
@@ -333,7 +333,7 @@ inline void globalRightsideSoloAWPSAFE(){
  */
  inline void globalLeftsideSoloAWPSAFE(){
 	chassis.setPose(-62.8, 15.5, 180);
-	set_LBPosition(2);
+	// set_LBPosition(2);
 	delay(800);
 	intakeRiser.toggle();
 	intake.move(-127);
@@ -370,7 +370,7 @@ inline void globalRightsideSoloAWPSAFE(){
 	delay(650);
 	chassis.moveToPoint(-11.676, 11.676, 2000, {.forwards = false, .minSpeed = 30, .earlyExitRange = 3}); //move underneath ladder
 	chassis.waitUntilDone();
-	set_LBPosition(0);
+	// set_LBPosition(0);
 
 }
 
@@ -382,9 +382,9 @@ inline void globalRightsideSoloAWPSAFE(){
 inline void blueRightSoloAWP(){
 	chassis.setPose(62.8, 14.5, 180); //3 inches high strength from furthest mat edge
 
-	set_LBPosition(2);
+	// set_LBPosition(2);
 	delay(800);
-	set_LBPosition(0);
+	// set_LBPosition(0);
 	intakeRiser.toggle();
 	intake.move(-127);
 	chassis.turnToPoint(50.939, 3.926, 800, {.minSpeed=80, .earlyExitRange=10});
@@ -433,18 +433,18 @@ inline void blueRightSoloAWP(){
 	chassis.tank(0, 0);
 	chassis.tank(90, 90);
 	intake.move(-127);
-	set_LBPosition(2);
+	// set_LBPosition(2);
 	delay(650);
 
 	// the following block moves to the ladder
 	chassis.moveToPoint(11.676, 11.676, 2000, {.forwards = false, .minSpeed = 30, .earlyExitRange = 3}); //move underneath ladder
 	chassis.waitUntilDone();
-	set_LBPosition(0);
+	// set_LBPosition(0);
 
 	// //the following block rushes positive corner
 	// chassis.tank(-127, -127);
 	// delay(500);
-	// set_LBPosition(0);
+	// // set_LBPosition(0);
 	// chassis.turnToPoint(60.91, -54.711, 700);
 	// chassis.moveToPoint(60.91, -54.711, 3000);
 
@@ -459,13 +459,13 @@ inline void blueRightSoloAWP(){
  */
 inline void blueRightPROVSAlliancePlus5Ring(){
 	chassis.setPose(62.8, 14.5, 180); // start hs 3 inches from tile edge, against wall
-	set_LBPosition(2);
+	// set_LBPosition(2);
 	delay(800);
 	intakeRiser.toggle();
 	intake.move(-127);
 	conveyor.move(127);
 	chassis.turnToPoint(48.374, 1.434, 800, {.minSpeed=80, .earlyExitRange=10});
-	set_LBPosition(0);
+	// set_LBPosition(0);
 	stopNextRing = true; // Ensure reversed stack ring is held
 	chassis.moveToPoint(48.374, 1.434, 700, {.maxSpeed = 60}); //move to reversed ring stack
 	chassis.waitUntilDone();
@@ -528,7 +528,7 @@ inline void blueRightPROVSAlliancePlus5Ring(){
 	// chassis.turnToPoint(16, 0, 900);
 	// chassis.moveToPoint(16, 0, 1500, {.maxSpeed=55}); // move to ladder
 	// chassis.waitUntilDone();
-	// set_LBPosition(2);
+	// // set_LBPosition(2);
 	
 
 }
@@ -540,14 +540,14 @@ inline void blueRightPROVSAlliancePlus5Ring(){
  */
 inline void blueRingSidePROVSSoloAWP() {
 	chassis.setPose(62.8, 14.5, 180);
-	set_LBPosition(2);
+	// set_LBPosition(2);
 	delay(800);
 	intakeRiser.toggle();
 	intake.move(-127);
 	conveyor.move(127);
 	stopNextRing = true;
 	chassis.turnToPoint(46, -1, 800, {.minSpeed=80, .earlyExitRange=10});
-	set_LBPosition(0);
+	// set_LBPosition(0);
 	chassis.moveToPoint(46, -1, 600); //move to reversed ring stack
 	chassis.waitUntilDone();
 	delay(300);
@@ -587,7 +587,7 @@ inline void blueRingSidePROVSSoloAWP() {
 	chassis.swingToPoint(20, -2.5, lemlib::DriveSide::LEFT, 2000, { .direction=lemlib::AngularDirection::CCW_COUNTERCLOCKWISE, .minSpeed=30, .earlyExitRange=5 }); // swing to face ladder
 	chassis.moveToPoint(20, -2.5, 4000, {.maxSpeed=75}); // move to ladder
 	delay(200);
-	set_LBPosition(2);
+	// set_LBPosition(2);
 	chassis.waitUntilDone();
 	chassis.tank(10, 10);
 	delay(400);
@@ -603,14 +603,14 @@ inline void blueRingSidePROVSSoloAWP() {
  */
 inline void redRingSidePROVSSoloAWP() {
 	chassis.setPose(-62.8, 14.5, 180);
-	set_LBPosition(2);
+	// set_LBPosition(2);
 	delay(800);
 	intakeRiser.toggle();
 	intake.move(-127);
 	conveyor.move(127);
 	stopNextRing = true;
 	chassis.turnToPoint(-49, 1, 800, {.minSpeed=80, .earlyExitRange=10});
-	set_LBPosition(0);
+	// set_LBPosition(0);
 	chassis.moveToPoint(-49, 1, 600); //move to reversed ring stack
 	chassis.waitUntilDone();
 	delay(400);
@@ -646,7 +646,7 @@ inline void redRingSidePROVSSoloAWP() {
 	chassis.swingToPoint(-20, -2.5, lemlib::DriveSide::RIGHT, 2000, { .direction=lemlib::AngularDirection::CW_CLOCKWISE, .minSpeed=30, .earlyExitRange=5 }); // swing to face ladder
 	chassis.moveToPoint(-20, -2.5, 900, {.minSpeed=30, .earlyExitRange=3}); // move to ladder
 	chassis.waitUntilDone();
-	set_LBPosition(2);
+	// set_LBPosition(2);
 	chassis.tank(10, 10);
 	delay(400);
 	chassis.tank(0, 0);

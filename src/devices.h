@@ -2,27 +2,26 @@
 
 Controller master(E_CONTROLLER_MASTER);
 
-MotorGroup right({4, 5, -6}, v5::MotorGears::blue, v5::MotorUnits::rotations);
-MotorGroup left({-1, 2, -3}, v5::MotorGears::blue, v5::MotorUnits::rotations);
+MotorGroup right({11, 12, 13}, v5::MotorGears::blue, v5::MotorUnits::rotations);
+MotorGroup left({-14, -15, -16}, v5::MotorGears::blue, v5::MotorUnits::rotations);
 
 
 
 Motor intake(16, v5::MotorGears::rpm_200);
 Motor conveyor(-17, v5::MotorGears::blue);
-Motor ladybrownMotor(14, v5::MotorGears::rpm_200, pros::v5::MotorUnits::degrees);
+Motor ladybrownMotor(17, v5::MotorGears::green, v5::MotorUnits::degrees);
 Imu imu(7);
 
 Rotation horizontal_tracker(-9);
 Rotation vertical_tracker(8);
-Rotation ladybrownSensor(19);
 
 Optical colour_sensor(20);
 Distance distance_sensor(18); //FIRST COLOR DISTANCE SENSOR
 Distance final_distance_sensor(21); //COLOR FINAL DISTANCE SENSOR
 
-Distance left_distance(10); //6 inches to left of tracking center, .25 inches backwards from center
-Distance back_distance(13); //5.25 inches left of tracking center, 2 inches backwards from center
-// GPS gps_sensor(10);
+Distance left_distance(10);
+Distance back_distance(13);
+GPS gps_sensor(10);
 
 
 adi::Pneumatics mogoclamp('a', false);

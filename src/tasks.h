@@ -14,28 +14,6 @@ char current_sort = 'b';
 float conveyor_speed = 127;
 
 
-/**
- * Sets the position of the ladybrown arm to the given index
- * 0 REST, 1 CAPTURE, 2 WALLSTAKE
- */
-void set_LBPosition(int target){
-    lbTarget = target;
-}
-
-int find_closest_LBPosition(float lbArmAngle, bool findPositionBehind){
-    if(lbArmAngle > 300 || lbArmAngle < 0) lbArmAngle = 1; //if the angle is slightly past hard stop, making it do a full rotation over to 359.99 degrees, this accounts for that case
-    if(lbArmAngle > positions[sizeof(positions)/sizeof(positions[0])-1]) return sizeof(positions)/sizeof(positions[0])-1; //arm is greater than the maximum target angle, so return the max target angle
-    for(int i = 0; i < sizeof(positions)/sizeof(positions[0])-1; i++){
-        float lowerBound = positions[i];
-        float upperBound = positions[i+1];
-        if(lowerBound <= lbArmAngle && lbArmAngle < upperBound){
-            if(findPositionBehind) return i;
-            else return i+1;
-        }
-    }
-    return -1;
-}
-
 /// @brief Stops the conveyor when a ring is detected by the distance sensor
 void monitor_and_stop_conveyor() {
     while (true) {
@@ -56,9 +34,9 @@ void unjamLBTask() {
 
     while (true) {
         if (unjamLB) {
-            if (lbTarget == 0 && in_range(((float)ladybrownSensor.get_angle())/100, 15, 33)) {
+            if (lbTarget == 0 && in_range(((float)ladybrownMotor.get_position()), 15, 33)) {
                 if (jamCount >= 20) { // lb is not fully down despite being told to be down
-                    set_LBPosition(1);
+                    // set_LBPosition(1);
                     int prevMotorState = conveyor.get_voltage();
                     conveyor.move(-127);
                     delay(350);
@@ -71,7 +49,7 @@ void unjamLBTask() {
                         }
                         else conveyor.move(0);
                     }
-                    set_LBPosition(0);
+                    // set_LBPosition(0);
                     jamCount = 0;
                 }
                 jamCount++;
@@ -162,52 +140,6 @@ void ladybrown_and_color_task() {
             } else {
                 current_sort = 'r';
             }
-        }
-        float currAngle = ((float)ladybrownMotor.get_position())/3; //the current angle of the lady brown arm in degrees
-        if(currAngle > 300) currAngle = currAngle - 360;
-        //LADYBROWN CODE BELOW
-        if(!lbAboveCapture){ //arm is below the capture angle
-            if(master.get_digital(E_CONTROLLER_DIGITAL_UP)){
-                if(currAngle <= CAPTURE){
-                    ladybrownMotor.move(100);
-                }
-                else {
-                    lbAboveCapture = true;
-                    newLBPress = false;
-                    ladybrownMotor.brake();
-                }
-            }
-            else if(master.get_digital(E_CONTROLLER_DIGITAL_DOWN) && currAngle >= REST){
-                ladybrownMotor.move(-100);
-            }
-            else {
-                ladybrownMotor.brake();
-            }
-        }
-        if(!newLBPress && lbAboveCapture){ //arm is being held in capture position
-            if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)) {
-                ladybrownMotor.move(100);
-                newLBPress = true;
-            }
-            else if(master.get_digital(E_CONTROLLER_DIGITAL_DOWN) && !master.get_digital(E_CONTROLLER_DIGITAL_UP)) {
-                ladybrownMotor.move(-100);
-                lbAboveCapture = false;
-                newLBPress = false;
-            }
-            else ladybrownMotor.brake();
-        }
-        else { //arm is above capture position
-            if(master.get_digital(E_CONTROLLER_DIGITAL_UP)){
-                ladybrownMotor.move(100);
-            }
-            else if(master.get_digital(E_CONTROLLER_DIGITAL_DOWN)){
-                if(currAngle < CAPTURE){
-                    lbAboveCapture = false;
-                    newLBPress = false;
-                }
-                ladybrownMotor.move(-100);
-            }
-            else ladybrownMotor.brake();
         }
         
 

@@ -16,19 +16,52 @@
 #include "autons.h"
 #include "pong.h"
 
+bool holdLB = false;
+int preCatch = 1; // 1 is precatch, -1 is needs press again, 0 is in postcatch
+bool LBUpRefreshed = false;
 
-//controller mappings (all should be done now):
-//R1: intake + conveyor 
-//R2: reverse intake & conveyor
-//L1: mogoclamp 
-//L2: doinker 
-//y (right paddle): ladybrown up macro
-//right arrow (left paddle): ladybrown down macro
-//down arrow: intake lower
-//up arrow: intake riser
-//left arrow: intake 
-//X: ladybrown up manual 
-//B: ladybrown down manual 
+void lbController() {
+
+	if (holdLB) {
+		float LBPower = cos(((ladybrownMotor.get_position() - 60) * 0.3333333333 * 0.01745329251));
+		ladybrownMotor.move(LBPower * 10);
+	}
+
+	if (master.get_digital(E_CONTROLLER_DIGITAL_Y) && preCatch == 1) {
+		ladybrownMotor.move(127);
+		if (ladybrownMotor.get_position() > 60.0) {
+			holdLB = true;
+			preCatch = -1;
+		}
+		LBUpRefreshed = true;
+	}
+
+	if (LBUpRefreshed && !master.get_digital(E_CONTROLLER_DIGITAL_Y)) {
+		LBUpRefreshed = false;
+		preCatch = 0;
+	}
+
+	if ((preCatch == 0 && master.get_digital(E_CONTROLLER_DIGITAL_Y))) {
+		holdLB = false;
+		ladybrownMotor.move(127);
+		if (ladybrownMotor.get_position() < 70.0) {
+			holdLB = false;
+			preCatch = 1;
+		}
+	}
+
+	if (!holdLB && preCatch == 0 && !master.get_digital(E_CONTROLLER_DIGITAL_Y)) {
+		holdLB = true;
+		LBUpRefreshed = false;
+	}
+
+
+	if (master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)) {
+		ladybrownMotor.move(-127);
+	}
+}
+
+
 
 using json = nlohmann::json;
 
@@ -47,14 +80,13 @@ void initialize() {
 	colour_sensor.set_integration_time(60);
 	horizontal_tracker.set_data_rate(5);
 	vertical_tracker.set_data_rate(5);
-	ladybrownSensor.set_data_rate(5);
 	imu.set_data_rate(5);
 	horizontal_tracker.set_position(0);
 	vertical_tracker.set_position(0);
 	horizontal_tracker.reset();
 	vertical_tracker.reset();
 	chassis.calibrate();
-	ladybrownSensor.reset();
+	ladybrownMotor.tare_position();
 	// gps_sensor.set_data_rate(5);
 	// gps_sensor.set_offset(-6.0*0.0254, -0.25*0.0254);
 	// gps_sensor.set_position(-62.2343, 0, 90);
@@ -197,7 +229,6 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	set_LBPosition(0);
 	float lastDistFuncReading = 0;
 
 	// hang.retract();
@@ -231,21 +262,26 @@ void opcontrol() {
 		// 	// chassis.turnToHeading(0, 1000);
 		// }
 
-		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
-			mogoclamp.toggle();
-		}
-
+		// Doinker mode activated
 		if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
-			if(!doinker.is_extended()){
-				doinker.extend();
+			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)) {
+				// Toggle Right Doinker
 			}
-			
-		} else if(doinker.is_extended()){
-			doinker.retract();
-		}
 
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
-			intakeRiser.toggle();
+			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)) {
+				// Toggle Left Doinker
+			}
+
+			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
+				// Toggle Claw Doinker Clamp
+			}
+
+		} else {
+			lbController();
+
+			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
+				mogoclamp.toggle();
+			}
 		}
 
 
@@ -253,12 +289,6 @@ void opcontrol() {
 		// lcd::print(0, "x: %f", chassis.getPose().x);
 		// lcd::print(1, "y: %f", chassis.getPose().y);
 		// lcd::print(2, "theta: %f", chassis.getPose().theta);
-		// lcd::print(3, "Hori Tracking Wheel Distance: %f", horizontal_tracking_wheel.getDistanceTraveled());
-		// lcd::print(4, "Verti tracking wheel distance: %f", vertical_tracking_wheel.getDistanceTraveled());
-		// lcd::print(3, "LastDistanceCalcResult %f", lastDistFuncReading);
-		// lcd::print(3, "LBRotation: %f", ((float)ladybrownSensor.get_angle())/100);
-		// lcd::print(3, "horizontal rotations: %d", horizontal_tracker.get_position()/100);
-		// lcd::print(4, "vertical rotations: %d", vertical_tracker.get_position()/100);
 
 		// if (master.get_digital(E_CONTROLLER_DIGITAL_LEFT)) {
 		// 	if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)) {
