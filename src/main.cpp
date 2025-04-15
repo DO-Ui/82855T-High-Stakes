@@ -11,10 +11,10 @@
 #include <iostream>
 #include <string>
 #include <type_traits>
-#include "./tasks.h"
-#include "macros.h"
-#include "autons.h"
-#include "pong.h"
+// #include "./tasks.h"
+// #include "macros.h"
+// #include "autons.h"
+// #include "pong.h"
 
 bool holdLB = false;
 int preCatch = 1; // 1 is precatch, -1 is needs press again, 0 is in postcatch
@@ -73,74 +73,74 @@ using json = nlohmann::json;
  */
 void initialize() {
 
-	std::cout << "foxglove" << std::endl;
-	lcd::initialize();
+	// std::cout << "foxglove" << std::endl;
+	// lcd::initialize();
 
-	colour_sensor.set_led_pwm(100);
-	colour_sensor.set_integration_time(60);
-	horizontal_tracker.set_data_rate(5);
-	vertical_tracker.set_data_rate(5);
-	imu.set_data_rate(5);
-	horizontal_tracker.set_position(0);
-	vertical_tracker.set_position(0);
-	horizontal_tracker.reset();
-	vertical_tracker.reset();
-	chassis.calibrate();
-	ladybrownMotor.tare_position();
-	// gps_sensor.set_data_rate(5);
-	// gps_sensor.set_offset(-6.0*0.0254, -0.25*0.0254);
-	// gps_sensor.set_position(-62.2343, 0, 90);
-	// chassis.setPose(-62.2343, 0, 90);
-	master.clear();
+	// colour_sensor.set_led_pwm(100);
+	// colour_sensor.set_integration_time(60);
+	// horizontal_tracker.set_data_rate(5);
+	// vertical_tracker.set_data_rate(5);
+	// imu.set_data_rate(5);
+	// horizontal_tracker.set_position(0);
+	// vertical_tracker.set_position(0);
+	// horizontal_tracker.reset();
+	// vertical_tracker.reset();
+	// chassis.calibrate();
+	// ladybrownMotor.tare_position();
+	// // gps_sensor.set_data_rate(5);
+	// // gps_sensor.set_offset(-6.0*0.0254, -0.25*0.0254);
+	// // gps_sensor.set_position(-62.2343, 0, 90);
+	// // chassis.setPose(-62.2343, 0, 90);
+	// master.clear();
 
-	// Task odom_task([&]() {
-	// 	while (true) {
-	// 		lemlib::Pose pose = chassis.getPose();
-	// 		// Odometry odom = {std::ceil((double)pose.x * 100.0) / 100.0, std::ceil((double)pose.y * 100.0) / 100.0, std::ceil((double)pose.theta * 100.0) / 100.0};
-	// 		Odometry odom = {round2dp(pose.x), round2dp(pose.y), round2dp(pose.theta)};
-	// 		Message odom_message = {"odometry", odom};
-	// 		std::cout << static_cast<json>(odom_message) << std::flush;
-	// 		delay(25);
-	// 	}
-	// });
+	// // Task odom_task([&]() {
+	// // 	while (true) {
+	// // 		lemlib::Pose pose = chassis.getPose();
+	// // 		// Odometry odom = {std::ceil((double)pose.x * 100.0) / 100.0, std::ceil((double)pose.y * 100.0) / 100.0, std::ceil((double)pose.theta * 100.0) / 100.0};
+	// // 		Odometry odom = {round2dp(pose.x), round2dp(pose.y), round2dp(pose.theta)};
+	// // 		Message odom_message = {"odometry", odom};
+	// // 		std::cout << static_cast<json>(odom_message) << std::flush;
+	// // 		delay(25);
+	// // 	}
+	// // });
 
-	Task lbtask(ladybrown_and_color_task);
-	Task stopRing(monitor_and_stop_conveyor);
-	Task lbunjam(unjamLBTask);
+	// Task lbtask(ladybrown_and_color_task);
+	// Task stopRing(monitor_and_stop_conveyor);
+	// Task lbunjam(unjamLBTask);
 
-	// Task gps_task(gps_sensor_task);
+	// // Task gps_task(gps_sensor_task);
 
-	// NOTE: colour_task has logging, remove if not needed
+	// // NOTE: colour_task has logging, remove if not needed
 
-	//screen is 480 wide by 272 tall
+	// //screen is 480 wide by 272 tall
 
-	screen::set_pen(Color::blue);
-	screen::fill_rect(0, 0, 480, 136);
-	screen::set_pen(Color::red);
-	screen::fill_rect(0, 136, 480, 272);
-	screen::set_pen(Color::black);
+	// screen::set_pen(Color::blue);
+	// screen::fill_rect(0, 0, 480, 136);
+	// screen::set_pen(Color::red);
+	// screen::fill_rect(0, 136, 480, 272);
+	// screen::set_pen(Color::black);
 
-	int numSeperatingLines = 5;
-	for(int i = 1; i <= numSeperatingLines; i++){
-		screen::draw_line(i*480/(numSeperatingLines+1), 0, i*480/(numSeperatingLines+1), 272);
-	}
+	// int numSeperatingLines = 5;
+	// for(int i = 1; i <= numSeperatingLines; i++){
+	// 	screen::draw_line(i*480/(numSeperatingLines+1), 0, i*480/(numSeperatingLines+1), 272);
+	// }
 
 
-	screen::set_eraser(Color::white);
-	screen::print(E_TEXT_MEDIUM, 15, 50, "RING");
-	screen::print(E_TEXT_MEDIUM, 15, 70, "RUSH");
-	screen::print(E_TEXT_MEDIUM, 415, 200, "PONG");
-	screen::print(E_TEXT_MEDIUM, 415, 60, "PONG");
+	// screen::set_eraser(Color::white);
+	// screen::print(E_TEXT_MEDIUM, 15, 50, "RING");
+	// screen::print(E_TEXT_MEDIUM, 15, 70, "RUSH");
+	// screen::print(E_TEXT_MEDIUM, 415, 200, "PONG");
+	// screen::print(E_TEXT_MEDIUM, 415, 60, "PONG");
 
-	screen_touch_status_s_t status;
-	Pong pongGame;
+	// screen_touch_status_s_t status;
+	// Pong pongGame;
 
-    while(true) {
-		status = c::screen_touch_status();
-		pongGame.update(status);
-		pongGame.draw();
-    	pros::delay(16.67);
-    }
+    // while(true) {
+	// 	status = c::screen_touch_status();
+	// 	pongGame.update(status);
+	// 	pongGame.draw();
+    // 	pros::delay(16.67);
+    // }
 	// while(true){
 	// 	if(screen)
 	// }
@@ -179,9 +179,9 @@ void competition_initialize() {}
  */
 void autonomous() {
 
-	sorter_active = true;
-	auton_active = true;
-	current_sort = 'r'; //SORT OUT THIS COLOR
+	// sorter_active = true;
+	// auton_active = true;
+	// current_sort = 'r'; //SORT OUT THIS COLOR
 
 	// blueLeftMogoRush();
 	// These ones below work
@@ -196,7 +196,7 @@ void autonomous() {
 	// blueRingSidePROVSSoloAWP(); // FOR PROVS runs across half the field
 	// blueMogoRush();
 	// stupid();
-	blueRightPROVSAlliancePlus5Ring(); //WORKS FOR PROVS
+	// blueRightPROVSAlliancePlus5Ring(); //WORKS FOR PROVS
 	// globalLeftsideSoloAWPSAFE(); //should also work FOR PROVS
 	// blueLeftSoloAWP();
 
@@ -233,8 +233,8 @@ void opcontrol() {
 
 	// hang.retract();
 	
-	auton_active = false; //CHANGE BEFORE PROVS TO FALSE
-	sorter_active = true; //CHANGE BACK TO TRUE
+	// auton_active = false; //CHANGE BEFORE PROVS TO FALSE
+	// sorter_active = true; //CHANGE BACK TO TRUE
 	// auton_active = true;
 	// skills(); //REMOVE LATER
 	// auton_active = false;
@@ -282,6 +282,17 @@ void opcontrol() {
 			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
 				mogoclamp.toggle();
 			}
+		}
+
+		if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
+			intake.move(127);
+			conveyor.move(127);
+		} else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
+			intake.move(-127);
+			conveyor.move(-127);
+		} else {
+			intake.move(0);
+			conveyor.move(0);
 		}
 
 

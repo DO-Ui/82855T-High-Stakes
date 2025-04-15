@@ -7,27 +7,27 @@ MotorGroup left({-14, -15, -16}, v5::MotorGears::blue, v5::MotorUnits::rotations
 
 
 
-Motor intake(16, v5::MotorGears::rpm_200);
-Motor conveyor(-17, v5::MotorGears::blue);
+Motor intake(10, v5::MotorGears::rpm_200);
+Motor conveyor(18, v5::MotorGears::blue);
 Motor ladybrownMotor(17, v5::MotorGears::green, v5::MotorUnits::degrees);
 Imu imu(7);
 
 Rotation horizontal_tracker(-9);
 Rotation vertical_tracker(8);
 
-Optical colour_sensor(20);
-Distance distance_sensor(18); //FIRST COLOR DISTANCE SENSOR
-Distance final_distance_sensor(21); //COLOR FINAL DISTANCE SENSOR
+// Optical colour_sensor(20);
+// Distance distance_sensor(18); //FIRST COLOR DISTANCE SENSOR
+// Distance final_distance_sensor(21); //COLOR FINAL DISTANCE SENSOR
 
-Distance left_distance(10);
-Distance back_distance(13);
-GPS gps_sensor(10);
+// Distance left_distance(10);
+// Distance back_distance(13);
+// GPS gps_sensor(10);
 
 
 adi::Pneumatics mogoclamp('a', false);
-adi::Pneumatics doinker('b', false);
-adi::Pneumatics intakeRiser('c', false);
-adi::Pneumatics hang('d', false);
+// adi::Pneumatics doinker('b', false);
+// adi::Pneumatics intakeRiser('c', false);
+// adi::Pneumatics hang('d', false);
 
 lemlib::PID ladybrownPID(3, // kP
                 0, // kI
