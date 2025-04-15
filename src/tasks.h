@@ -5,12 +5,9 @@ const float REST = 0;
 const float CAPTURE = 27;
 const float WALLSTAKE_PREP = 100;
 const float WALLSTAKE = 141;
-float positions[3] = {REST, CAPTURE, WALLSTAKE};
+float positions[3] = {REST, CAPTURE, WALLSTAKE};    
 int lbTarget = 0; //NUMBER FROM 0-SIZE OF POSITIONS ARRAY, DO NOT PUT THE ACTUAL ANGLE
 
-bool sorter_active = true;
-bool auton_active = false;
-char current_sort = 'b';
 float conveyor_speed = 127;
 
 
@@ -135,10 +132,10 @@ void ladybrown_and_color_task() {
         }
 
         if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) { //toggle color sort setting
-            if (current_sort == 'r') {
-                current_sort = 'b';
+            if (curr_color_sort_out == 'r') {
+                curr_color_sort_out = 'b';
             } else {
-                current_sort = 'r';
+                curr_color_sort_out = 'r';
             }
         }
         
@@ -184,7 +181,7 @@ void ladybrown_and_color_task() {
         //     // lcd::print(2, "power given: %f", powerGiven);
         // }
         
-        if (!wrong_color_detected && (sorter_active && current_sort == colour_detected) && distance_sensor.get() < 79) {
+        if (!wrong_color_detected && (sorter_active && curr_color_sort_out == colour_detected) && distance_sensor.get() < 79) {
             wrong_color_detected = true;
             driver_inputs();
         }
@@ -205,7 +202,7 @@ void ladybrown_and_color_task() {
             master.print(0, 0, "Sorter State: %s", sorter_active ? "Active" : "Inactive");
             controller_print = 10;
         } else if (controller_print == 5) {
-            master.print(1, 0, "Current Sort: %s", current_sort == 'r' ? "Red" : "Blue");
+            master.print(1, 0, "Current Sort: %s", curr_color_sort_out == 'r' ? "Red" : "Blue");
         }
 
         if (controller_print > 0) {

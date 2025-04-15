@@ -1,4 +1,3 @@
-#include <math.h>
 
 /// @brief A PIDF Controller for an armf
 class ArmController {

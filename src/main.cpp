@@ -2,19 +2,22 @@
 #include "lemlib/api.hpp"
 #include "pros/screen.h"
 #include "pros/screen.hpp"
-#include <cmath>
-#include "util.h"
-#include "ArmController.h"
+#include "constants.h"
+#include "globalStates.h"
+#include "armController.h"
 #include "./devices.h"
-#include "logging.hpp"
-#include "json.hpp"
+#include "macros.h"
+#include <cmath>
 #include <iostream>
 #include <string>
 #include <type_traits>
-// #include "./tasks.h"
-// #include "macros.h"
-// #include "autons.h"
-// #include "pong.h"
+#include "util.h"
+#include "logging.hpp"
+#include "json.hpp"
+#include "pong.h"
+#include "./autoSelector.h"
+#include "./tasks.h"
+#include "autons.h"
 
 bool holdLB = false;
 int preCatch = 1; // 1 is precatch, -1 is needs press again, 0 is in postcatch
@@ -63,7 +66,7 @@ void lbController() {
 
 
 
-using json = nlohmann::json;
+// using json = nlohmann::json;
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -112,38 +115,7 @@ void initialize() {
 
 	// // NOTE: colour_task has logging, remove if not needed
 
-	// //screen is 480 wide by 272 tall
-
-	// screen::set_pen(Color::blue);
-	// screen::fill_rect(0, 0, 480, 136);
-	// screen::set_pen(Color::red);
-	// screen::fill_rect(0, 136, 480, 272);
-	// screen::set_pen(Color::black);
-
-	// int numSeperatingLines = 5;
-	// for(int i = 1; i <= numSeperatingLines; i++){
-	// 	screen::draw_line(i*480/(numSeperatingLines+1), 0, i*480/(numSeperatingLines+1), 272);
-	// }
-
-
-	// screen::set_eraser(Color::white);
-	// screen::print(E_TEXT_MEDIUM, 15, 50, "RING");
-	// screen::print(E_TEXT_MEDIUM, 15, 70, "RUSH");
-	// screen::print(E_TEXT_MEDIUM, 415, 200, "PONG");
-	// screen::print(E_TEXT_MEDIUM, 415, 60, "PONG");
-
-	// screen_touch_status_s_t status;
-	// Pong pongGame;
-
-    // while(true) {
-	// 	status = c::screen_touch_status();
-	// 	pongGame.update(status);
-	// 	pongGame.draw();
-    // 	pros::delay(16.67);
-    // }
-	// while(true){
-	// 	if(screen)
-	// }
+	
 
 
 }
@@ -181,7 +153,7 @@ void autonomous() {
 
 	// sorter_active = true;
 	// auton_active = true;
-	// current_sort = 'r'; //SORT OUT THIS COLOR
+	// curr_color_sort_out = 'r'; //SORT OUT THIS COLOR
 
 	// blueLeftMogoRush();
 	// These ones below work

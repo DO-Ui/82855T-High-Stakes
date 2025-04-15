@@ -1,5 +1,4 @@
 #pragma once
-using namespace pros;
 /**
  * SKILLS ROUTE FOR PROVS
  * by Grant
