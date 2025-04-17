@@ -57,16 +57,16 @@ void unjamLBTask() {
 }
 
 void driver_inputs() {
-    if(!auton_active && !clawDoinker.is_extended()){ //don't run driver inputs if auton is active or if doinker is out
+    if(!auton_active){ //don't run driver inputs if auton is active
         if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
             conveyor.move(conveyor_speed);
-        } else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
+        } else if (master.get_digital(E_CONTROLLER_DIGITAL_R2) && !clawDoinker.is_extended()) {
             conveyor.move(-127);
         } else {
             conveyor.move(0);
         }
 
-        if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
+        if (master.get_digital(E_CONTROLLER_DIGITAL_R1) && !clawDoinker.is_extended()) {
             intake.move(127);
         } else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)){
             intake.move(-127);
