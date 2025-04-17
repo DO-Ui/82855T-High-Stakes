@@ -23,7 +23,7 @@ bool in_range(double value, double bottom, double top) {
  * checks if a given point is located within the rectangle defined by the lower left corner x1, y1, and the upper right corner x2, y2
  * input the x, y coordinates of the point first, then x1, y1, x2, y2
  */
-bool coordinateWithinBounds(float coordX, float coordY, float x1, float y1, float x2, float y2){
+bool coordinateWithinRectangle(float coordX, float coordY, float x1, float y1, float x2, float y2){
 	if(x1 <= coordX && coordX <= x2 && y1 <= coordY && coordY <= y2) return true;
 	else return false;
 }

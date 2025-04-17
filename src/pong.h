@@ -20,10 +20,10 @@ class Pong{
     public:
         void update(screen_touch_status_s_t status){
             if(status.touch_status == E_TOUCH_HELD){
-                if(coordinateWithinBounds(status.x, status.y, 0, 0, 20, 272)){
+                if(coordinateWithinRectangle(status.x, status.y, 0, 0, 20, 272)){
                     leftPaddleY = status.y;
                 }
-                if(coordinateWithinBounds(status.x, status.y, 480-20, 0, 480, 272)){
+                if(coordinateWithinRectangle(status.x, status.y, 480-20, 0, 480, 272)){
                     rightPaddleY = status.y;
                 }
             }

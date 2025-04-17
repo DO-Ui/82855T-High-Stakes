@@ -1,9 +1,9 @@
 
 /// @brief A PIDF Controller for an armf
-class ArmController {
+class armController {
 
     public:
-        ArmController(double Kcos, const lemlib::PID& ArmPID) : Kcos(Kcos), ArmPID(ArmPID) {}
+        armController(double Kcos, const lemlib::PID& ArmPID) : Kcos(Kcos), ArmPID(ArmPID) {}
 
         /// @brief Updates the controller
         /// @param currTheta The desired angle in DEGREES

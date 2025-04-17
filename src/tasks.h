@@ -132,10 +132,10 @@ void ladybrown_and_color_task() {
         }
 
         if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) { //toggle color sort setting
-            if (curr_color_sort_out == 'r') {
-                curr_color_sort_out = 'b';
+            if (team_color == 'r') {
+                team_color = 'b';
             } else {
-                curr_color_sort_out = 'r';
+                team_color = 'r';
             }
         }
         
@@ -181,7 +181,7 @@ void ladybrown_and_color_task() {
         //     // lcd::print(2, "power given: %f", powerGiven);
         // }
         
-        if (!wrong_color_detected && (sorter_active && curr_color_sort_out == colour_detected) && distance_sensor.get() < 79) {
+        if (!wrong_color_detected && (sorter_active && team_color != colour_detected && colour_detected != 'n') && distance_sensor.get() < 79) {
             wrong_color_detected = true;
             driver_inputs();
         }
@@ -202,7 +202,7 @@ void ladybrown_and_color_task() {
             master.print(0, 0, "Sorter State: %s", sorter_active ? "Active" : "Inactive");
             controller_print = 10;
         } else if (controller_print == 5) {
-            master.print(1, 0, "Current Sort: %s", curr_color_sort_out == 'r' ? "Red" : "Blue");
+            master.print(1, 0, "Current Team: %s", team_color == 'r' ? "Red" : "Blue");
         }
 
         if (controller_print > 0) {

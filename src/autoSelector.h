@@ -12,6 +12,7 @@ void autoSelector(){
 	int numSeperatingLines = 5;
 	for(int i = 1; i <= numSeperatingLines; i++){
 		screen::draw_line(i*480/(numSeperatingLines+1), 0, i*480/(numSeperatingLines+1), 272);
+		//80 width per rectangle when numSepLines = 5
 	}
 
 
@@ -22,12 +23,17 @@ void autoSelector(){
 	screen::print(E_TEXT_MEDIUM, 415, 60, "PONG");
 
 	screen_touch_status_s_t status;
-	Pong pongGame;
+	// Pong pongGame;
 
     while(true) {
 		status = c::screen_touch_status();
-		pongGame.update(status);
-		pongGame.draw();
+		if(status.touch_status == TOUCH_PRESSED){
+			if(coordinateWithinRectangle(status.x, status.y, 0, 136, 80, 272)){
+
+			}
+		}
+		// pongGame.update(status);
+		// pongGame.draw();
     	pros::delay(16.67);
     }
 }

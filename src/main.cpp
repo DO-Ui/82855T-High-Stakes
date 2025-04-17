@@ -151,9 +151,9 @@ void competition_initialize() {}
  */
 void autonomous() {
 
-	// sorter_active = true;
-	// auton_active = true;
-	// curr_color_sort_out = 'r'; //SORT OUT THIS COLOR
+	sorter_active = true;
+	auton_active = true;
+	team_color = 'r'; //SORT OUT THIS COLOR
 
 	// blueLeftMogoRush();
 	// These ones below work
@@ -167,23 +167,9 @@ void autonomous() {
 	//BLUE SIDE
 	// blueRingSidePROVSSoloAWP(); // FOR PROVS runs across half the field
 	// blueMogoRush();
-	// stupid();
 	// blueRightPROVSAlliancePlus5Ring(); //WORKS FOR PROVS
 	// globalLeftsideSoloAWPSAFE(); //should also work FOR PROVS
 	// blueLeftSoloAWP();
-
-	//NONFUNCTIONAL
-		// blueRightSoloAWP(); //should work FOR PROVS
-
-
-	// redLeftAllianceStake4Ring();
-	// blueRight5RingElim();
-	// redLeft5RingElim()
-	//redMogoRushSoloAWP();
-	//blueMogoRushSoloAWP();
-	//redTwoMogosAWP();
-	//redRightTeammateAWP();
-	//blueLeftTeammateAWP();
 
 }
 
@@ -234,18 +220,19 @@ void opcontrol() {
 		// 	// chassis.turnToHeading(0, 1000);
 		// }
 
-		// Doinker mode activated
+		// doinker mode activated
 		if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
+			ladybrownMotor.brake();
 			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)) {
-				// Toggle Right Doinker
+				// Toggle Right leftDoinker
 			}
 
 			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)) {
-				// Toggle Left Doinker
+				leftDoinker.toggle();
 			}
 
 			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
-				// Toggle Claw Doinker Clamp
+				doinkerClamp.toggle();
 			}
 
 		} else {

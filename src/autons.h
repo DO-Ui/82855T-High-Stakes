@@ -82,11 +82,11 @@ inline void skills(){
 	delay(100);
 	chassis.turnToPoint(64+8, -57.5-3, 900); //move back to three ring lower right corner
 	chassis.moveToPoint(64+8, -57.5-3, 1100);
-	doinker.toggle();
-	chassis.turnToHeading(330, 1000, {.direction=lemlib::AngularDirection::CW_CLOCKWISE}); //clear lower right corner with doinker
+	leftDoinker.toggle();
+	chassis.turnToHeading(330, 1000, {.direction=lemlib::AngularDirection::CW_CLOCKWISE}); //clear lower right corner with leftDoinker
 	chassis.moveToPoint(66+8, -61-7, 600, {.forwards = false}); //move to corner to drop mogo off
 	delay(300);
-	doinker.toggle();
+	leftDoinker.toggle();
 	mogoclamp.toggle(); //drop mogo off
 	// temp = chassis.getPose();
 	// // chassis.setPose(temp.x-4, -70.5+check_distance_back_BOTTOM_WALL(), temp.theta);
@@ -193,11 +193,11 @@ inline void skills(){
 	chassis.moveToPoint(37.146, 44.482, 1500, {.forwards = false, .minSpeed = 30, .earlyExitRange = 3}); //move back
 	chassis.turnToPoint(47, 61.397, 500, {.minSpeed = 30, .earlyExitRange = 10}); //move to top ring
 	chassis.moveToPoint(47, 63, 1000);
-	doinker.toggle();
+	leftDoinker.toggle();
 	chassis.turnToHeading(205.583, 1000, {.direction=lemlib::AngularDirection::CW_CLOCKWISE}); //clear corner
 	chassis.turnToPoint(58.069, 66, 700, {.forwards = false});
 	chassis.moveToPoint(58.069, 66, 1000, {.forwards = false}); //turn to corner
-	doinker.toggle();
+	leftDoinker.toggle();
 	mogoclamp.toggle();
 	chassis.waitUntilDone();
 	conveyor.move(-50);
@@ -655,17 +655,6 @@ inline void redRingSidePROVSSoloAWP() {
 
 }
 
-inline void stupid() {
-	chassis.setPose(58, -25, 90);
-	chassis.moveToPoint(27, -25, 5000, {.forwards=false, .maxSpeed=60}); // intermediate point
-	chassis.waitUntilDone();
-	approachAndClampMogo();
-	delay(700);
-	conveyor.move(127);
-
-
-}
-
 
 /**
  * @brief Blue side mogo rush
@@ -677,12 +666,12 @@ inline void blueMogoRush() {
 	chassis.moveToPoint(32, -36.5, 1000, {.minSpeed = 120, .earlyExitRange=10}); // intermediate point
 	chassis.moveToPoint(11.5, -38, 850, {.minSpeed=100, .earlyExitRange=0.25}); //rush mogo
 	chassis.waitUntil(16.9);
-	doinker.toggle();
+	leftDoinker.toggle();
 	delay(400);
 	chassis.moveToPose(32, -36.5, -90, 900, {.forwards = false, .minSpeed=100, .earlyExitRange=10}); //bring mogo back
 	chassis.waitUntilDone();
-	doinker.toggle();
-	chassis.tank(50, 50); // move a bit so doinker can release
+	leftDoinker.toggle();
+	chassis.tank(50, 50); // move a bit so leftDoinker can release
 	delay(250);
 	chassis.tank(0, 0);
 	chassis.turnToHeading(70, 800);
@@ -724,12 +713,12 @@ inline void redMogoRush(){
 	chassis.moveToPoint(-11, -58, 700, {.minSpeed=100, .earlyExitRange=0.5}); //rush mogo
 	// chassis.turnToHeading(69, 300, {.earlyExitRange=5});
 	chassis.waitUntil(12.5); // TUNE THIS VALUE
-	doinker.toggle(); // doinker down
+	leftDoinker.toggle(); // leftDoinker down
 	chassis.moveToPose(-30, -60, 90, 900, {.forwards = false, .minSpeed=100, .earlyExitRange=10}); //bring mogo back
 	chassis.moveToPose(-30, -60, 90, 1000, {.forwards = false, .minSpeed=15, .earlyExitRange=4}); //bring mogo back
 	chassis.waitUntilDone();
-	doinker.toggle(); // doinker up
-	chassis.tank(50, 50); // to release doinker cause doinker sucks
+	leftDoinker.toggle(); // leftDoinker up
+	chassis.tank(50, 50); // to release leftDoinker cause leftDoinker sucks
 	delay(250);
 	chassis.tank(0, 0);
 	chassis.moveToPoint(-37, -60, 900, {.forwards=false});
@@ -896,44 +885,6 @@ inline void blueLeftSoloAWP(){
 
 
 }
-
-/**
- * CURRENTLY RAMS CORNER TOO HARD
- * If teammate has ring side Solo AWP, then run this
- * Grab mogo -> Score preload, safe ring, and corner ring -> move to ladder
- * ON MOGO SIDE
- */
-inline void redRightTeammate3Ring(){
-	chassis.setPose(-57.5, -40.5, 270);
-	chassis.turnToPoint(-31, -28, 700, {.forwards=false, .minSpeed=5, .earlyExitRange=5}); // turn toward mogo flat side
-	chassis.moveToPose(-31, -28, 245, 700, {.forwards = false, .lead=0.3}); //move to right mogo
-	chassis.waitUntilDone();
-	chassis.tank(-45, -45);
-	delay(450);
-	chassis.tank(0, 0);
-	mogoclamp.extend(); //clamp right mogo
-	delay(100);
-	chassis.turnToPoint(-23, -50, 1000);
-	chassis.moveToPoint(-23, -50, 1500); //grab safe ring
-	intake.move(-127);
-	chassis.turnToPoint(-62.029, -63.693, 1000);
-	conveyor.move(127);
-	chassis.moveToPoint(-62.029, -63.693, 1100); //move to right corner to grab lowest ring
-	chassis.waitUntilDone();
-	chassis.tank(80, 80);
-	intake.move(127);
-	delay(1000);
-	conveyor.move(0);
-	chassis.tank(0, 0);
-	intake.move(-100);
-	delay(500);
-	chassis.moveToPose(-28.913, -7.98, 29.667, 3000); //move to ladder
-	conveyor.move(127);
-	chassis.waitUntilDone();
-	intake.move(0);
-	conveyor.move(0);
-}
-
 /**
  * MOGO RUSH SOLO AWP BLUE SIDE
  * 4.5 inch from wall, ramp barely touching starting line

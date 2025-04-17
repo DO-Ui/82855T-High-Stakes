@@ -25,9 +25,10 @@ GPS gps_sensor(10);
 
 
 adi::Pneumatics mogoclamp('a', false);
-adi::Pneumatics doinker('b', false);
-adi::Pneumatics intakeRiser('c', false);
+adi::Pneumatics leftDoinker('b', false);
+adi::Pneumatics doinkerClamp('c', false);
 adi::Pneumatics hang('d', false);
+adi::Pneumatics intakeRiser('e', false);
 
 lemlib::PID ladybrownPID(3, // kP
                 0, // kI
@@ -35,7 +36,7 @@ lemlib::PID ladybrownPID(3, // kP
                 5, // integral anti windup range
                 false); // don't reset integral when sign of error flips
 
-ArmController ladybrownController(
+armController ladybrownController(
     14, // Kcos
     ladybrownPID
 );
