@@ -16,7 +16,7 @@ void monitor_and_stop_conveyor() {
     while (true) {
         if (auton_active) {
             if (stopNextRing) {
-                if (final_distance_sensor.get() < 79) {
+                if (distance_sensor.get() < CONVEYOR_DISTANCE_OFFSET) {
                     conveyor.move(0);
                     stopNextRing = false;
                 }
@@ -57,27 +57,19 @@ void unjamLBTask() {
 }
 
 void driver_inputs() {
-    if(!auton_active){ //don't run driver inputs if auton is active
+    if(!auton_active && !clawDoinker.is_extended()){ //don't run driver inputs if auton is active or if doinker is out
         if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
             conveyor.move(conveyor_speed);
-            // if(!conveyor_powered) {
-            //     conveyor_powered = true;
-            //     conveyor_start_time = CLOCK_REALTIME;
-            // }
-            // else if(CLOCK_REALTIME - conveyor_start_time > 5 && conveyor.get_actual_velocity() < 150){
-            //     conveyor.move(-127);
-            // }
-        } else if (master.get_digital(E_CONTROLLER_DIGITAL_LEFT)) {
+        } else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
             conveyor.move(-127);
         } else {
-            // conveyor_powered = false;
             conveyor.move(0);
         }
 
-        if (master.get_digital(E_CONTROLLER_DIGITAL_R1) || master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
-            intake.move(-127);
-        } else if (master.get_digital(E_CONTROLLER_DIGITAL_LEFT)){
+        if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
             intake.move(127);
+        } else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)){
+            intake.move(-127);
         }
         else {
             intake.move(0);
@@ -181,14 +173,10 @@ void ladybrown_and_color_task() {
         //     // lcd::print(2, "power given: %f", powerGiven);
         // }
         
-        if (!wrong_color_detected && (sorter_active && team_color != colour_detected && colour_detected != 'n') && distance_sensor.get() < 79) {
-            wrong_color_detected = true;
-            driver_inputs();
-        }
-        else if(wrong_color_detected && final_distance_sensor.get() < 15){
+        if(sorter_active && team_color != colour_detected && colour_detected != 'n' &&  distance_sensor.get() < CONVEYOR_DISTANCE_OFFSET){
             wrong_color_detected = false;
             int voltageBeforeStop = conveyor.get_voltage();
-            delay(95);
+            delay(30);
             conveyor.move(-127);
             delay(250);
             conveyor.move_voltage(voltageBeforeStop); //reset the voltage to what it was before reversing the conveyor
@@ -202,7 +190,7 @@ void ladybrown_and_color_task() {
             master.print(0, 0, "Sorter State: %s", sorter_active ? "Active" : "Inactive");
             controller_print = 10;
         } else if (controller_print == 5) {
-            master.print(1, 0, "Current Team: %s", team_color == 'r' ? "Red" : "Blue");
+            master.print(1, 0, "Team Color: %s", team_color == 'r' ? "Red" : "Blue");
         }
 
         if (controller_print > 0) {

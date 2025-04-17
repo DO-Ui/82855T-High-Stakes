@@ -4,7 +4,7 @@
 #include "pros/screen.hpp"
 #include "constants.h"
 #include "globalStates.h"
-#include "armController.h"
+// #include "armController.h"
 #include "./devices.h"
 #include "macros.h"
 #include <cmath>
@@ -17,7 +17,7 @@
 #include "pong.h"
 #include "./autoSelector.h"
 #include "./tasks.h"
-#include "autons.h"
+// #include "autons.h"
 
 bool holdLB = false;
 int preCatch = 1; // 1 is precatch, -1 is needs press again, 0 is in postcatch
@@ -77,24 +77,23 @@ void lbController() {
 void initialize() {
 
 	// std::cout << "foxglove" << std::endl;
-	// lcd::initialize();
+	lcd::initialize();
 
-	// colour_sensor.set_led_pwm(100);
-	// colour_sensor.set_integration_time(60);
-	// horizontal_tracker.set_data_rate(5);
-	// vertical_tracker.set_data_rate(5);
-	// imu.set_data_rate(5);
-	// horizontal_tracker.set_position(0);
-	// vertical_tracker.set_position(0);
-	// horizontal_tracker.reset();
-	// vertical_tracker.reset();
-	// chassis.calibrate();
-	// ladybrownMotor.tare_position();
+	colour_sensor.set_led_pwm(100);
+	colour_sensor.set_integration_time(60);
+	horizontal_tracker.set_data_rate(5);
+	vertical_tracker.set_data_rate(5);
+	imu.set_data_rate(5);
+	horizontal_tracker.set_position(0);
+	vertical_tracker.set_position(0);
+	horizontal_tracker.reset();
+	vertical_tracker.reset();
+	chassis.calibrate();
+	ladybrownMotor.tare_position();
 	// // gps_sensor.set_data_rate(5);
 	// // gps_sensor.set_offset(-6.0*0.0254, -0.25*0.0254);
 	// // gps_sensor.set_position(-62.2343, 0, 90);
-	// // chassis.setPose(-62.2343, 0, 90);
-	// master.clear();
+	master.clear();
 
 	// // Task odom_task([&]() {
 	// // 	while (true) {
@@ -107,7 +106,7 @@ void initialize() {
 	// // 	}
 	// // });
 
-	// Task lbtask(ladybrown_and_color_task);
+	Task lbtask(ladybrown_and_color_task);
 	// Task stopRing(monitor_and_stop_conveyor);
 	// Task lbunjam(unjamLBTask);
 
@@ -187,8 +186,6 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	float lastDistFuncReading = 0;
-
 	// hang.retract();
 	
 	// auton_active = false; //CHANGE BEFORE PROVS TO FALSE
@@ -196,8 +193,8 @@ void opcontrol() {
 	// auton_active = true;
 	// skills(); //REMOVE LATER
 	// auton_active = false;
-	// chassis.setPose(0, 0, 0); vc
-	
+	chassis.setPose(0, 0, 0);
+
 
 	// int count = 0; //used for automatic PID tuning
 
@@ -208,57 +205,46 @@ void opcontrol() {
 		
 		chassis.arcade(leftY, rightX, false, 0.75);
 
-		// if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-		// 	chassis.moveToPoint(0, 24, 3000);
-		// 	// chassis.moveToPose(0, 48, 0, 2000);
-		// 	// chassis.turnToHeading(90, 1000);
-		// 	// lastDistFuncReading = check_distance_back_BOTTOM_WALL();
-		// }
-		// if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
-		// 	chassis.moveToPoint(0, 0, 3000, {.forwards = false});
-		// 	// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
-		// 	// chassis.turnToHeading(0, 1000);
-		// }
+		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
+			// find_tracking_center(10000);
+			// chassis.moveToPoint(0, 24, 3000);
+			// chassis.moveToPose(0, 48, 0, 2000);
+			chassis.turnToHeading(90, 1000);
+		}
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
+			// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
+			// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
+			chassis.turnToHeading(0, 1000);
+		}
 
-		// doinker mode activated
-		if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
-			ladybrownMotor.brake();
-			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)) {
-				// Toggle Right leftDoinker
+		lbController();
+		
+		if(master.get_digital(E_CONTROLLER_DIGITAL_L2)){ //claw doinker mode activated
+			if(!clawDoinker.is_extended()){
+				clawDoinker.extend();
 			}
-
-			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)) {
-				leftDoinker.toggle();
+			if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_R2)){
+				claw.toggle();
 			}
-
-			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
-				doinkerClamp.toggle();
-			}
-
-		} else {
-			lbController();
-
+		}
+		else {
+			clawDoinker.retract();
 			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
 				mogoclamp.toggle();
 			}
 		}
+		
 
-		if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
-			intake.move(127);
-			conveyor.move(127);
-		} else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
-			intake.move(-127);
-			conveyor.move(-127);
-		} else {
-			intake.move(0);
-			conveyor.move(0);
-		}
+		
+		
 
 
 		// // print to brain screen
-		// lcd::print(0, "x: %f", chassis.getPose().x);
-		// lcd::print(1, "y: %f", chassis.getPose().y);
-		// lcd::print(2, "theta: %f", chassis.getPose().theta);
+		lcd::print(0, "x: %f", chassis.getPose().x);
+		lcd::print(1, "y: %f", chassis.getPose().y);
+		lcd::print(2, "theta: %f", chassis.getPose().theta);
+		lcd::print(3, "hori tracker: %f", horizontal_tracking_wheel.getDistanceTraveled());
+		lcd::print(4, "verti tracker: %f", vertical_tracking_wheel.getDistanceTraveled());
 
 		// if (master.get_digital(E_CONTROLLER_DIGITAL_LEFT)) {
 		// 	if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)) {

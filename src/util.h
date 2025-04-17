@@ -28,6 +28,36 @@ bool coordinateWithinRectangle(float coordX, float coordY, float x1, float y1, f
 	else return false;
 }
 
+void find_tracking_center(uint32_t time){
+	chassis.setPose(0, 0, 0);
+	unsigned long n = 0;
+	float heading;
+
+	std::cout << std::fixed << "\033[1mCopy this:\033[0m\n\\left[";
+	right.move(-100);
+	left.move(100);
+
+	std::ostringstream out;
+
+	delay(1500);
+
+	auto end_time = time + millis();
+
+	int i = 0;
+
+	while(millis() < end_time && i++ < 10000){
+		std::cout << "\\left(" << chassis.getPose().x << "," << chassis.getPose().y << "\\right),";
+		if(i % 50 == 0){
+			std::cout.flush();
+		}
+		delay(20);
+	}
+	right.move(0);
+	left.move(0);
+
+	std::cout << "\b\\right]" << std::endl;
+}
+
 
 // /**
 //  * THETA IS ANGLE IN RADIANS
