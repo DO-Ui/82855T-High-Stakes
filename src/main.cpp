@@ -17,7 +17,7 @@
 #include "pong.h"
 #include "./autoSelector.h"
 #include "./tasks.h"
-// #include "autons.h"
+#include "autons.h"
 
 bool holdLB = false;
 int preCatch = 1; // 1 is precatch, -1 is needs press again, 0 is in postcatch
@@ -32,7 +32,7 @@ void lbController() {
 
 	if (master.get_digital(E_CONTROLLER_DIGITAL_Y) && preCatch == 1) {
 		ladybrownMotor.move(127);
-		if (ladybrownMotor.get_position() > 60.0) {
+		if (ladybrownMotor.get_position() > 30) {
 			holdLB = true;
 			preCatch = -1;
 		}
@@ -47,7 +47,8 @@ void lbController() {
 	if ((preCatch == 0 && master.get_digital(E_CONTROLLER_DIGITAL_Y))) {
 		holdLB = false;
 		ladybrownMotor.move(127);
-		if (ladybrownMotor.get_position() < 70.0) {
+		conveyor.move(-50); // get hook out of the way
+		if (ladybrownMotor.get_position() < 40.0) {
 			holdLB = false;
 			preCatch = 1;
 		}
@@ -107,7 +108,9 @@ void initialize() {
 	// // });
 
 	Task lbtask(ladybrown_and_color_task);
-	// Task stopRing(monitor_and_stop_conveyor);
+	Task reacClawClamp(reactiveClawClamp);
+	Task autoClamp(autoClampTask);
+	Task stopRing(monitor_and_stop_conveyor);
 	// Task lbunjam(unjamLBTask);
 
 	// // Task gps_task(gps_sensor_task);
@@ -152,7 +155,18 @@ void autonomous() {
 
 	sorter_active = true;
 	auton_active = true;
-	team_color = 'r'; //SORT OUT THIS COLOR
+	team_color = 'r'; //KEEP THiS COLOR IN BOT
+
+	// revealRingRush();
+
+	//WORLDS AUTOS
+	//RED SIDE
+	// redMogoRush();
+	redRingRush();
+
+
+
+
 
 	// blueLeftMogoRush();
 	// These ones below work
@@ -160,7 +174,6 @@ void autonomous() {
 	//RED SIDE
 	// redRightSoloAWP(); // NOT WOKRING
 	// redLeftSoloAWP(); //WORKS FOR PROVS
-	// redMogoRush(); // FOR PROVS
 	// redRingSidePROVSSoloAWP(); // FOR PROVS runs across half the field
 	// globalRightsideSoloAWPSAFE(); //should also work FOR PROVS
 	//BLUE SIDE
@@ -209,12 +222,12 @@ void opcontrol() {
 			// find_tracking_center(10000);
 			// chassis.moveToPoint(0, 24, 3000);
 			// chassis.moveToPose(0, 48, 0, 2000);
-			chassis.turnToHeading(90, 1000);
+			// chassis.turnToHeading(180, 1000);
 		}
 		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
 			// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
 			// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
-			chassis.turnToHeading(0, 1000);
+			// chassis.turnToHeading(0, 1000);
 		}
 
 		lbController();
@@ -230,7 +243,11 @@ void opcontrol() {
 		else {
 			clawDoinker.retract();
 			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
-				mogoclamp.toggle();
+				if (mogoclamp.is_extended()) {
+					mogoclamp.retract();
+				} else {
+					clampRequested = true;
+				}
 			}
 		}
 		

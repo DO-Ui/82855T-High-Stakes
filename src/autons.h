@@ -82,11 +82,11 @@ inline void skills(){
 	delay(100);
 	chassis.turnToPoint(64+8, -57.5-3, 900); //move back to three ring lower right corner
 	chassis.moveToPoint(64+8, -57.5-3, 1100);
-	leftDoinker.toggle();
-	chassis.turnToHeading(330, 1000, {.direction=lemlib::AngularDirection::CW_CLOCKWISE}); //clear lower right corner with leftDoinker
+	clawDoinker.toggle();
+	chassis.turnToHeading(330, 1000, {.direction=lemlib::AngularDirection::CW_CLOCKWISE}); //clear lower right corner with clawDoinker
 	chassis.moveToPoint(66+8, -61-7, 600, {.forwards = false}); //move to corner to drop mogo off
 	delay(300);
-	leftDoinker.toggle();
+	clawDoinker.toggle();
 	mogoclamp.toggle(); //drop mogo off
 	// temp = chassis.getPose();
 	// // chassis.setPose(temp.x-4, -70.5+check_distance_back_BOTTOM_WALL(), temp.theta);
@@ -193,15 +193,42 @@ inline void skills(){
 	chassis.moveToPoint(37.146, 44.482, 1500, {.forwards = false, .minSpeed = 30, .earlyExitRange = 3}); //move back
 	chassis.turnToPoint(47, 61.397, 500, {.minSpeed = 30, .earlyExitRange = 10}); //move to top ring
 	chassis.moveToPoint(47, 63, 1000);
-	leftDoinker.toggle();
+	clawDoinker.toggle();
 	chassis.turnToHeading(205.583, 1000, {.direction=lemlib::AngularDirection::CW_CLOCKWISE}); //clear corner
 	chassis.turnToPoint(58.069, 66, 700, {.forwards = false});
 	chassis.moveToPoint(58.069, 66, 1000, {.forwards = false}); //turn to corner
-	leftDoinker.toggle();
+	clawDoinker.toggle();
 	mogoclamp.toggle();
 	chassis.waitUntilDone();
 	conveyor.move(-50);
 	chassis.tank(70, 70);
+
+
+}
+
+inline void revealRingRush(){
+	ringDoinker.extend();
+	chassis.setPose(0, 0, 0);
+	chassis.moveToPoint(0, 44, 1000, {.minSpeed = 127});
+	chassis.moveToPoint(0, 0, 1200, {.forwards = false});
+}
+
+inline void redRingRush(){
+	ringDoinker.extend();
+	chassis.setPose(-50.165, 62.047, 100);
+	chassis.moveToPoint(-20.975, 58.947, 1000, {.minSpeed = 30, .earlyExitRange = 5}); //move to intermediate point
+	chassis.moveToPoint(-11.676, 54.298, 1000); //rush the rings
+	intake.move(127);
+	conveyor.move(127);
+	stopNextRing = true;
+	chassis.swingToHeading(270, DriveSide::RIGHT, 1000);
+	chassis.moveToPoint(-41.382, 36.216, 1000); //thread the needle
+	ringDoinker.retract();
+	chassis.turnToPoint(-31.308, 29.499, 1000, {.forwards = false}); //go to grab mogo
+	chassis.moveToPoint(-31.308, 29.499, 1000, {.forwards = false}); //go to grab mogo
+	approachAndAutoClampMogo(500);
+	conveyor.move(127);
+	chassis.moveToPoint(-54.298, 51.714, 1500); //move to preload ring that was left beside bot
 
 
 }
@@ -666,12 +693,12 @@ inline void blueMogoRush() {
 	chassis.moveToPoint(32, -36.5, 1000, {.minSpeed = 120, .earlyExitRange=10}); // intermediate point
 	chassis.moveToPoint(11.5, -38, 850, {.minSpeed=100, .earlyExitRange=0.25}); //rush mogo
 	chassis.waitUntil(16.9);
-	leftDoinker.toggle();
+	clawDoinker.toggle();
 	delay(400);
 	chassis.moveToPose(32, -36.5, -90, 900, {.forwards = false, .minSpeed=100, .earlyExitRange=10}); //bring mogo back
 	chassis.waitUntilDone();
-	leftDoinker.toggle();
-	chassis.tank(50, 50); // move a bit so leftDoinker can release
+	clawDoinker.toggle();
+	chassis.tank(50, 50); // move a bit so clawDoinker can release
 	delay(250);
 	chassis.tank(0, 0);
 	chassis.turnToHeading(70, 800);
@@ -708,68 +735,115 @@ inline void blueMogoRush() {
  * FOR PROVS
  */
 inline void redMogoRush(){
-	chassis.setPose(-50, -60, 90);
-	chassis.moveToPoint(-22, -60, 1000, {.minSpeed = 120, .earlyExitRange=10}); // intermediate point
-	chassis.moveToPoint(-11, -58, 700, {.minSpeed=100, .earlyExitRange=0.5}); //rush mogo
-	// chassis.turnToHeading(69, 300, {.earlyExitRange=5});
-	chassis.waitUntil(12.5); // TUNE THIS VALUE
-	leftDoinker.toggle(); // leftDoinker down
-	chassis.moveToPose(-30, -60, 90, 900, {.forwards = false, .minSpeed=100, .earlyExitRange=10}); //bring mogo back
-	chassis.moveToPose(-30, -60, 90, 1000, {.forwards = false, .minSpeed=15, .earlyExitRange=4}); //bring mogo back
+	reactiveClawClampOn = true;
+	clawDoinker.extend();
+	chassis.setPose(-49.906, -36.887, 110);
+	intake.move(127);
+	chassis.moveToPoint(-17.875, -47.8, 1500, {.minSpeed = 127}); //rush mogo
+	chassis.moveToPoint(-34.407, -42.57, 1000, {.forwards = false});
+	claw.extend();
+	reactiveClawClampOn = false;
 	chassis.waitUntilDone();
-	leftDoinker.toggle(); // leftDoinker up
-	chassis.tank(50, 50); // to release leftDoinker cause leftDoinker sucks
-	delay(250);
-	chassis.tank(0, 0);
-	chassis.moveToPoint(-37, -60, 900, {.forwards=false});
-	chassis.turnToHeading(270, 800);
-	chassis.moveToPoint(-22, -58, 800, {.forwards=false});
-	chassis.swingToHeading(230, lemlib::DriveSide::RIGHT, 800, {.direction=lemlib::AngularDirection::CCW_COUNTERCLOCKWISE});
-	// chassis.turnToHeading(230, 500); // turn around to face mogo clamp to mogo
-	// chassis.waitUntilDone();
-
-	// chassis.moveToPose(-11.5, -48, 190, 800, {.forwards=false, .lead=0.2}, false); // move to clamp mogo
+	claw.retract();
+	delay(400);
+	clawDoinker.retract();
+	chassis.tank(-40, -40);
+	delay(600);
+	chassis.turnToPoint(-22, -42, 1200, {.forwards = false}); //turn to the rushed mogo
+	chassis.moveToPoint(-22, -42, 1200, {.forwards = false, .maxSpeed = 100});
 	chassis.waitUntilDone();
-	approachAndClampMogo();
+	chassis.tank(0, -100);
+	delay(150);
+	approachAndAutoClampMogo(80, 500); //clamp the rushed mogo
+	chassis.waitUntilDone();
 	conveyor.move(127);
-	chassis.moveToPoint(-22, -60, 800); // move outta the way of ring stack
-	chassis.turnToPoint(-38, -60, 800);
-	chassis.moveToPoint(-38, -60, 800); // move back to drop off mogo
-	sorter_active=false;
-	chassis.swingToHeading(60, lemlib::DriveSide::RIGHT, 2000, {.direction=lemlib::AngularDirection::CW_CLOCKWISE}); // swing to face ring stack
+	chassis.moveToPoint(-14.001, -43.862, 1000, {.forwards = false});
 	chassis.waitUntilDone();
-	mogoclamp.toggle(); // drop mogo
-	intake.move(-127);
-	chassis.turnToPoint(-38, -47, 800); // turn to the blue ring
-	chassis.waitUntilDone();
-	chassis.moveToPoint(-38, -47, 800); // move to throw away blue single ring
-	chassis.waitUntilDone();
-	// chassis.turnToPoint(-23, -46, 800);
-	delay(1000);
-	chassis.moveToPoint(-23, -46, 900); // move to ring stack
-	sorter_active=true;
-	stopNextRing=true;
-	chassis.turnToPoint(-22.5, -27, 900, {.forwards=false}); // move to second mogo
-	chassis.moveToPoint(-22.5, -27, 900, {.forwards=false}); // move to second mogo
-	chassis.waitUntilDone();
-	approachAndClampMogo();
+	delay(600);
+	mogoclamp.retract(); //unclamp first mogo
 	delay(200);
-	stopNextRing=false;
-	conveyor.move(127);
+	delay(4000);
+	chassis.turnToPoint(-22, -34, 1000, {.forwards = false});
+	intake.move(0);
+	conveyor.move(0);
+	chassis.moveToPoint(-22, -34, 1000, {.forwards = false});
+	chassis.waitUntilDone();
+	chassis.tank(0, -100);
+	delay(200);
+	// chassis.moveToPose(-24, -34, 180, 1000, {.forwards = false});
+	approachAndAutoClampMogo(500);
+	
 
 
-	// chassis.moveToPose(-32, -55, 270, 1000, { .earlyExitRange=5 }, false); //bring mogo back
-	// chassis.turnToPoint(-12, -44, 900);
-	// chassis.moveToPoint(-12, -44, 1000);
-	// intake.move(-127);
-	// conveyor.move(0);
-	// chassis.turnToHeading(180, 800);
-	// chassis.moveToPoint(-18, -18, 1000, {.forwards=false}, false); // move backwards into safe mogo
-	// chassis.tank(-60, -60);
-	// delay(200);
+
+
+	
+
+
+
+	
+	// chassis.setPose(-50, -60, 90);
+	// chassis.moveToPoint(-22, -60, 1000, {.minSpeed = 120, .earlyExitRange=10}); // intermediate point
+	// chassis.moveToPoint(-11, -58, 700, {.minSpeed=100, .earlyExitRange=0.5}); //rush mogo
+	// // chassis.turnToHeading(69, 300, {.earlyExitRange=5});
+	// chassis.waitUntil(12.5); // TUNE THIS VALUE
+	// clawDoinker.toggle(); // clawDoinker down
+	// chassis.moveToPose(-30, -60, 90, 900, {.forwards = false, .minSpeed=100, .earlyExitRange=10}); //bring mogo back
+	// chassis.moveToPose(-30, -60, 90, 1000, {.forwards = false, .minSpeed=15, .earlyExitRange=4}); //bring mogo back
+	// chassis.waitUntilDone();
+	// clawDoinker.toggle(); // clawDoinker up
+	// chassis.tank(50, 50); // to release clawDoinker cause clawDoinker sucks
+	// delay(250);
 	// chassis.tank(0, 0);
-	// mogoclamp.toggle(); //clamp mogo
+	// chassis.moveToPoint(-37, -60, 900, {.forwards=false});
+	// chassis.turnToHeading(270, 800);
+	// chassis.moveToPoint(-22, -58, 800, {.forwards=false});
+	// chassis.swingToHeading(230, lemlib::DriveSide::RIGHT, 800, {.direction=lemlib::AngularDirection::CCW_COUNTERCLOCKWISE});
+	// // chassis.turnToHeading(230, 500); // turn around to face mogo clamp to mogo
+	// // chassis.waitUntilDone();
+
+	// // chassis.moveToPose(-11.5, -48, 190, 800, {.forwards=false, .lead=0.2}, false); // move to clamp mogo
+	// chassis.waitUntilDone();
+	// approachAndClampMogo();
 	// conveyor.move(127);
+	// chassis.moveToPoint(-22, -60, 800); // move outta the way of ring stack
+	// chassis.turnToPoint(-38, -60, 800);
+	// chassis.moveToPoint(-38, -60, 800); // move back to drop off mogo
+	// sorter_active=false;
+	// chassis.swingToHeading(60, lemlib::DriveSide::RIGHT, 2000, {.direction=lemlib::AngularDirection::CW_CLOCKWISE}); // swing to face ring stack
+	// chassis.waitUntilDone();
+	// mogoclamp.toggle(); // drop mogo
+	// intake.move(-127);
+	// chassis.turnToPoint(-38, -47, 800); // turn to the blue ring
+	// chassis.waitUntilDone();
+	// chassis.moveToPoint(-38, -47, 800); // move to throw away blue single ring
+	// chassis.waitUntilDone();
+	// // chassis.turnToPoint(-23, -46, 800);
+	// delay(1000);
+	// chassis.moveToPoint(-23, -46, 900); // move to ring stack
+	// sorter_active=true;
+	// stopNextRing=true;
+	// chassis.turnToPoint(-22.5, -27, 900, {.forwards=false}); // move to second mogo
+	// chassis.moveToPoint(-22.5, -27, 900, {.forwards=false}); // move to second mogo
+	// chassis.waitUntilDone();
+	// approachAndClampMogo();
+	// delay(200);
+	// stopNextRing=false;
+	// conveyor.move(127);
+
+
+	// // chassis.moveToPose(-32, -55, 270, 1000, { .earlyExitRange=5 }, false); //bring mogo back
+	// // chassis.turnToPoint(-12, -44, 900);
+	// // chassis.moveToPoint(-12, -44, 1000);
+	// // intake.move(-127);
+	// // conveyor.move(0);
+	// // chassis.turnToHeading(180, 800);
+	// // chassis.moveToPoint(-18, -18, 1000, {.forwards=false}, false); // move backwards into safe mogo
+	// // chassis.tank(-60, -60);
+	// // delay(200);
+	// // chassis.tank(0, 0);
+	// // mogoclamp.toggle(); //clamp mogo
+	// // conveyor.move(127);
 
 }
 /**

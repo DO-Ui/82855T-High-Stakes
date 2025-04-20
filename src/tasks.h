@@ -10,6 +10,17 @@ int lbTarget = 0; //NUMBER FROM 0-SIZE OF POSITIONS ARRAY, DO NOT PUT THE ACTUAL
 
 float conveyor_speed = 127;
 
+void reactiveClawClamp(){
+    while(true){
+        if(reactiveClawClampOn){
+            if(clawLimitSwitch.get_new_press() == 1){
+                claw.extend();
+                chassis.cancelMotion();
+            }
+        }
+        delay(30);
+    }
+}
 
 /// @brief Stops the conveyor when a ring is detected by the distance sensor
 void monitor_and_stop_conveyor() {
@@ -173,7 +184,7 @@ void ladybrown_and_color_task() {
         //     // lcd::print(2, "power given: %f", powerGiven);
         // }
         
-        if(sorter_active && team_color != colour_detected && colour_detected != 'n' &&  distance_sensor.get() < CONVEYOR_DISTANCE_OFFSET){
+        if(sorter_active && team_color != 'n' && team_color != colour_detected && colour_detected != 'n' &&  distance_sensor.get() < CONVEYOR_DISTANCE_OFFSET){
             wrong_color_detected = false;
             int voltageBeforeStop = conveyor.get_voltage();
             delay(30);
@@ -201,6 +212,18 @@ void ladybrown_and_color_task() {
     }
 }
 
+
+void autoClampTask() {
+    while (true) {
+        if (clampRequested) {
+            if (mogo_distance.get() < 10 && !mogoclamp.is_extended()) { // clamp the mogo when it is close enough
+                mogoclamp.extend();
+                clampRequested = false;
+            }
+        }
+        delay(30);
+    }
+}
 
 // void gps_sensor_task(){
 

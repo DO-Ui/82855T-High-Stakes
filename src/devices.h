@@ -12,8 +12,10 @@ Motor conveyor(18, v5::MotorGears::blue);
 Motor ladybrownMotor(17, v5::MotorGears::green, v5::MotorUnits::degrees);
 Imu imu(1);
 
-Rotation horizontal_tracker(-19);
+Rotation horizontal_tracker(19);
 Rotation vertical_tracker(-20);
+
+Distance mogo_distance(7);
 
 Optical colour_sensor(9);
 Distance distance_sensor(8);
@@ -26,9 +28,10 @@ GPS gps_sensor(10);
 adi::Pneumatics mogoclamp('a', false);
 adi::Pneumatics clawDoinker('b', false);
 adi::Pneumatics claw('c', false);
-adi::Pneumatics ringDoinker('f', false);
-adi::Pneumatics hang('d', false);
-adi::Pneumatics intakeRiser('e', false);
+adi::Pneumatics ringDoinker('d', false);
+adi::Button clawLimitSwitch('e');
+adi::Pneumatics hang('f', false);
+adi::Pneumatics intakeRiser('g', false);
 
 // lemlib::PID ladybrownPID(3, // kP
 //                 0, // kI

@@ -21,8 +21,40 @@ void approachAndClampMogo(int motorPower){
 }
 
 /**
+ * Backs up and uses auto clamp to clamp
+ * @param motorPower desired speed of motors when moving back
+ * @param timeout timeout in milliseconds
+*/
+void approachAndAutoClampMogo(int motorPower, int timeout) {
+	chassis.waitUntilDone();
+	chassis.tank(-motorPower, -motorPower);
+	clampRequested = true;
+	int start = millis();
+	while (millis() <= start+timeout) {
+		if (!clampRequested) {
+			chassis.tank(0, 0);
+			clampRequested = false;
+			return;
+		}
+		delay(10);
+	}
+	chassis.tank(0, 0);
+	clampRequested = false;
+	mogoclamp.extend();
+}
+
+/**
+ * Backs up and uses auto clamp to clamp (default speed of -100)
+ * @param timeout timeout in milliseconds
+*/
+void approachAndAutoClampMogo(int timeout) {
+	approachAndAutoClampMogo(100, timeout);
+}
+
+
+/**
  * Slowly backs up and clamps onto mogo using chassis.tank();
- * Motor speed is defaulted to -60
+ * Motor speed is defaulted to -100
  */
 void approachAndClampMogo(){
 	chassis.waitUntilDone();
