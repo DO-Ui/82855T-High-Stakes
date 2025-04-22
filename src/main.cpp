@@ -4,7 +4,7 @@
 #include "pros/screen.hpp"
 #include "constants.h"
 #include "globalStates.h"
-// #include "armController.h"
+#include "armController.h"
 #include "./devices.h"
 #include "macros.h"
 #include <cmath>
@@ -25,13 +25,15 @@ bool LBUpRefreshed = false;
 
 void lbController() {
 
+	float currTheta = ladybrownMotor.get_position();
+
 	if (holdLB) {
 		float LBPower = cos(((ladybrownMotor.get_position() - 60) * 0.3333333333 * 0.01745329251));
 		ladybrownMotor.move(LBPower * 10);
 	}
 
-	if (master.get_digital(E_CONTROLLER_DIGITAL_Y) && preCatch == 1) {
-		ladybrownMotor.move(127);
+	if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y) && preCatch == 1) {
+		ladybrownMotor.move(ladybrownController.update(currTheta, abs(30-currTheta)));
 		if (ladybrownMotor.get_position() > 30) {
 			holdLB = true;
 			preCatch = -1;
@@ -228,10 +230,9 @@ void opcontrol() {
 			// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
 			// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
 			// chassis.turnToHeading(0, 1000);
-			intakeRiser.toggle();
 		}
 
-		lbController();
+		// lbController();
 		
 		if(master.get_digital(E_CONTROLLER_DIGITAL_L2)){ //claw doinker mode activated
 			if(!clawDoinker.is_extended()){
@@ -280,7 +281,7 @@ void opcontrol() {
 
 
 		// if (count == 3) {
-		// 	master.print(0, 0, "P: %f", chassis.lateralPID.kP);
+		// 	master.print(0, 0, "P: %f", ch	assis.lateralPID.kP);
 		// }
 		// if (count == 6) {
 		// 	master.print(1, 0, "D: %f", chassis.lateralPID.kD);

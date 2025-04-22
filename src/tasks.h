@@ -2,10 +2,11 @@
 
 //DON'T COMMUNICATE WITH MAIN THREAD. Reading is fine, never write
 const float REST = 0;
-const float CAPTURE = 27;
+const float CAPTURE = 36;
 const float WALLSTAKE_PREP = 100;
 const float WALLSTAKE = 141;
-float positions[3] = {REST, CAPTURE, WALLSTAKE};    
+const float MANUAL = 350;
+float positions[3] = {REST, CAPTURE, MANUAL};    
 int lbTarget = 0; //NUMBER FROM 0-SIZE OF POSITIONS ARRAY, DO NOT PUT THE ACTUAL ANGLE
 
 float conveyor_speed = 127;
@@ -93,7 +94,9 @@ void ladybrown_and_color_task() {
     
     bool lbAboveCapture = false;
     bool newLBPress = false;
+    bool manualLBMode = false;
     ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+    int lbTarget = 0;
 
 
     char colour_detected = 'n'; // 'n' means empty
@@ -141,9 +144,40 @@ void ladybrown_and_color_task() {
                 team_color = 'r';
             }
         }
+
+        float currTheta = ladybrownMotor.get_position() / 3;
+        
+        if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)){
+            if(lbTarget < (sizeof(positions) / sizeof(positions[0]))-1){
+                lbTarget++;
+            }
+        }
+        if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT) && currTheta < CAPTURE){
+            lbTarget = 0;
+        }
+        if(positions[lbTarget] != MANUAL){
+            float powerGiven = ladybrownController.update(currTheta, (positions[lbTarget] - currTheta));
+            ladybrownMotor.move(powerGiven); //update PID and motor voltage
+        }
+        else { //manual mode is active
+            if(master.get_digital(E_CONTROLLER_DIGITAL_Y) && master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)){
+                ladybrownMotor.move(0);
+            }
+            else if(master.get_digital(E_CONTROLLER_DIGITAL_Y)){
+                ladybrownMotor.move(127);
+            }
+            else if(master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)){
+                ladybrownMotor.move(-127);
+            }
+            else ladybrownMotor.move(0);
+        }
+
+
         
 
 
+
+        
         // else if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)){ //moves the arm up in positions in the wallstake chain of action
         //     if(manualLBMode){
         //         lbTarget = find_closest_LBPosition(currAngle, false);
@@ -216,7 +250,7 @@ void ladybrown_and_color_task() {
 void autoClampTask() {
     while (true) {
         if (clampRequested) {
-            if (mogo_distance.get() < 10 && !mogoclamp.is_extended()) { // clamp the mogo when it is close enough
+            if (mogo_distance.get() < 7 && !mogoclamp.is_extended()) { // clamp the mogo when it is close enough
                 mogoclamp.extend();
                 clampRequested = false;
             }

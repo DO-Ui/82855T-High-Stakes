@@ -32,16 +32,16 @@ adi::Pneumatics ringDoinker('d', false);
 adi::Button clawLimitSwitch('e');
 adi::Pneumatics intakeRiser('f', false);
 
-// lemlib::PID ladybrownPID(3, // kP
-//                 0, // kI
-//                 3, // kD
-//                 5, // integral anti windup range
-//                 false); // don't reset integral when sign of error flips
+lemlib::PID ladybrownPID(3, // kP
+                0, // kI
+                3, // kD
+                5, // integral anti windup range
+                false); // don't reset integral when sign of error flips
 
-// armController ladybrownController(
-//     14, // Kcos
-//     ladybrownPID
-// );
+armController ladybrownController(
+    12, // Kcos
+    ladybrownPID
+);
 
 //drivetrain is 12 inches wide and 11.5 inches from back to front, all measured from midwheels
 lemlib::Drivetrain drivetrain(&left, &right, 12, lemlib::Omniwheel::NEW_275, 450, 2);
