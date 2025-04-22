@@ -244,6 +244,7 @@ void opcontrol() {
 		}
 		else {
 			clawDoinker.retract();
+			claw.retract();
 			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
 				if (mogoclamp.is_extended()) {
 					mogoclamp.retract();

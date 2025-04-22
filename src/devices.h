@@ -39,7 +39,7 @@ lemlib::PID ladybrownPID(3, // kP
                 false); // don't reset integral when sign of error flips
 
 armController ladybrownController(
-    12, // Kcos
+    13, // Kcos
     ladybrownPID
 );
 

@@ -2,7 +2,7 @@
 
 //DON'T COMMUNICATE WITH MAIN THREAD. Reading is fine, never write
 const float REST = 0;
-const float CAPTURE = 36;
+const float CAPTURE = 37;
 const float WALLSTAKE_PREP = 100;
 const float WALLSTAKE = 141;
 const float MANUAL = 350;
@@ -155,6 +155,8 @@ void ladybrown_and_color_task() {
         if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT) && currTheta < CAPTURE){
             lbTarget = 0;
         }
+
+
         if(positions[lbTarget] != MANUAL){
             float powerGiven = ladybrownController.update(currTheta, (positions[lbTarget] - currTheta));
             ladybrownMotor.move(powerGiven); //update PID and motor voltage
@@ -170,6 +172,7 @@ void ladybrown_and_color_task() {
                 ladybrownMotor.move(-127);
             }
             else ladybrownMotor.move(0);
+            if(currTheta < CAPTURE) lbTarget = 0;
         }
 
 
