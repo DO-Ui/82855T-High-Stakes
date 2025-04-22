@@ -1,1 +1,1 @@
-const float CONVEYOR_DISTANCE_OFFSET = 30;
+const float CONVEYOR_DISTANCE_OFFSET = 35;

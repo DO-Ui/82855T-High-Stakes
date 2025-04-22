@@ -125,7 +125,7 @@ void ladybrown_and_color_task() {
 
         if (in_range(hue, 190, 215)) {
             colour_detected = 'b';
-        } else if (in_range(hue, 5, 13.5)) {
+        } else if (in_range(hue, 5, 15)) {
             colour_detected = 'r';
         } else {
             colour_detected = 'n';
@@ -224,7 +224,7 @@ void ladybrown_and_color_task() {
         if(sorter_active && team_color != 'n' && team_color != colour_detected && colour_detected != 'n' &&  distance_sensor.get() < CONVEYOR_DISTANCE_OFFSET){
             wrong_color_detected = false;
             int voltageBeforeStop = conveyor.get_voltage();
-            delay(30);
+            delay(25);
             conveyor.move(-127);
             delay(250);
             conveyor.move_voltage(voltageBeforeStop); //reset the voltage to what it was before reversing the conveyor
@@ -245,7 +245,7 @@ void ladybrown_and_color_task() {
             controller_print--;
         }
 
-        delay(20);
+        delay(15);
     }
 }
 

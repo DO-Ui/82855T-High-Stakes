@@ -210,6 +210,7 @@ void opcontrol() {
 	// auton_active = false;
 	chassis.setPose(0, 0, 0);
 
+	team_color = 'b';
 
 	// int count = 0; //used for automatic PID tuning
 
