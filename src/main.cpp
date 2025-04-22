@@ -228,6 +228,7 @@ void opcontrol() {
 			// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
 			// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
 			// chassis.turnToHeading(0, 1000);
+			intakeRiser.toggle();
 		}
 
 		lbController();

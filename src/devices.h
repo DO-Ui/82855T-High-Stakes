@@ -30,8 +30,7 @@ adi::Pneumatics clawDoinker('b', false);
 adi::Pneumatics claw('c', false);
 adi::Pneumatics ringDoinker('d', false);
 adi::Button clawLimitSwitch('e');
-adi::Pneumatics hang('f', false);
-adi::Pneumatics intakeRiser('g', false);
+adi::Pneumatics intakeRiser('f', false);
 
 // lemlib::PID ladybrownPID(3, // kP
 //                 0, // kI
