@@ -19,56 +19,6 @@
 #include "./tasks.h"
 #include "autons.h"
 
-bool holdLB = false;
-int preCatch = 1; // 1 is precatch, -1 is needs press again, 0 is in postcatch
-bool LBUpRefreshed = false;
-
-void lbController() {
-
-	float currTheta = ladybrownMotor.get_position();
-
-	if (holdLB) {
-		float LBPower = cos(((ladybrownMotor.get_position() - 60) * 0.3333333333 * 0.01745329251));
-		ladybrownMotor.move(LBPower * 10);
-	}
-
-	if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y) && preCatch == 1) {
-		ladybrownMotor.move(ladybrownController.update(currTheta, abs(30-currTheta)));
-		if (ladybrownMotor.get_position() > 30) {
-			holdLB = true;
-			preCatch = -1;
-		}
-		LBUpRefreshed = true;
-	}
-
-	if (LBUpRefreshed && !master.get_digital(E_CONTROLLER_DIGITAL_Y)) {
-		LBUpRefreshed = false;
-		preCatch = 0;
-	}
-
-	if ((preCatch == 0 && master.get_digital(E_CONTROLLER_DIGITAL_Y))) {
-		holdLB = false;
-		ladybrownMotor.move(127);
-		conveyor.move(-50); // get hook out of the way
-		if (ladybrownMotor.get_position() < 40.0) {
-			holdLB = false;
-			preCatch = 1;
-		}
-	}
-
-	if (!holdLB && preCatch == 0 && !master.get_digital(E_CONTROLLER_DIGITAL_Y)) {
-		holdLB = true;
-		LBUpRefreshed = false;
-	}
-
-
-	if (master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)) {
-		ladybrownMotor.move(-127);
-	}
-}
-
-
-
 // using json = nlohmann::json;
 
 /**
@@ -113,6 +63,8 @@ void initialize() {
 	Task reacClawClamp(reactiveClawClamp);
 	Task autoClamp(autoClampTask);
 	Task stopRing(monitor_and_stop_conveyor);
+
+	// autoSelector();
 	// Task lbunjam(unjamLBTask);
 
 	// // Task gps_task(gps_sensor_task);
@@ -164,7 +116,10 @@ void autonomous() {
 	//WORLDS AUTOS
 	//RED SIDE
 	// redMogoRush();
-	redRingRush();
+
+	// redRingRush();
+	// redRightCenterRingAlliance5Ring();
+	revealRingRush();
 
 
 
@@ -201,20 +156,55 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	// hang.retract();
-	
-	// auton_active = false; //CHANGE BEFORE PROVS TO FALSE
-	// sorter_active = true; //CHANGE BACK TO TRUE
-	// auton_active = true;
-	// skills(); //REMOVE LATER
-	// auton_active = false;
-	chassis.setPose(0, 0, 0);
 
-	team_color = 'b';
+	sorter_active = true;
+	auton_active = false;
+	team_color = 'r'; //KEEP THiS COLOR IN BOT
+
+	// revealRingRush();
+
+	//WORLDS AUTOS
+	//RED SIDE
+	// redMogoRush();
+
+	
+
+
+
+
+	//FOLLOWING LINES SHOULD BE UNCOMMENTED WHEN AUTO MOVES BACK TO autonomous() function
+	// auton_active = false; 
+	// sorter_active = true;
+	// chassis.setPose(0, 0, 0);
+
+	// team_color = 'b';
 
 	// int count = 0; //used for automatic PID tuning
 
 	while (true) {
+
+		if(auton_active){
+			if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)){
+				if(auto_selected == 1){
+					redMogoRush();
+				}
+				else if(auto_selected == 2){
+					redRightCenterRingAlliance5Ring();
+				}
+				else {
+					revealRingRush();
+				}
+				auton_active = false;
+			}
+			else if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
+				auton_active = false;
+			}
+		}
+
+		else{ //THIs ELSE SHOULD BE REMOVED WHEN AUTO MOVES BACK TO autonomous() function
+
+			
+		
 		
 		int leftY = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 		int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
@@ -240,11 +230,16 @@ void opcontrol() {
 				clawDoinker.extend();
 			}
 			if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_R2)){
-				claw.toggle();
+				if (claw.is_extended()) {
+					claw.retract();
+				} else {
+					reactiveClawClampOn = true;
+				}
 			}
 		}
 		else {
 			clawDoinker.retract();
+			reactiveClawClampOn = false;
 			claw.retract();
 			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
 				if (mogoclamp.is_extended()) {
@@ -266,6 +261,7 @@ void opcontrol() {
 		lcd::print(2, "theta: %f", chassis.getPose().theta);
 		lcd::print(3, "hori tracker: %f", horizontal_tracking_wheel.getDistanceTraveled());
 		lcd::print(4, "verti tracker: %f", vertical_tracking_wheel.getDistanceTraveled());
+		}
 
 		// if (master.get_digital(E_CONTROLLER_DIGITAL_LEFT)) {
 		// 	if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)) {

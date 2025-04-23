@@ -13,10 +13,12 @@ float conveyor_speed = 127;
 
 void reactiveClawClamp(){
     while(true){
-        if(reactiveClawClampOn){
+        if(reactiveClawClampOn) {
             if(clawLimitSwitch.get_new_press() == 1){
                 claw.extend();
-                chassis.cancelMotion();
+                if (auton_active) {
+                    chassis.cancelMotion();
+                }
             }
         }
         delay(30);
@@ -152,7 +154,7 @@ void ladybrown_and_color_task() {
                 lbTarget++;
             }
         }
-        if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT) && currTheta < CAPTURE){
+        if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT) && positions[lbTarget] != MANUAL){
             lbTarget = 0;
         }
 

@@ -17,10 +17,13 @@ void autoSelector(){
 
 
 	screen::set_eraser(Color::white);
-	screen::print(E_TEXT_MEDIUM, 15, 50, "RING");
+	screen::print(E_TEXT_MEDIUM, 15, 50, "MOGO");
 	screen::print(E_TEXT_MEDIUM, 15, 70, "RUSH");
-	screen::print(E_TEXT_MEDIUM, 415, 200, "PONG");
-	screen::print(E_TEXT_MEDIUM, 415, 60, "PONG");
+
+	screen::print(E_TEXT_MEDIUM, 15, 212, "MID");
+	screen::print(E_TEXT_MEDIUM, 15, 222, "RUSH");
+	// screen::print(E_TEXT_MEDIUM, 415, 200, "PONG");
+	// screen::print(E_TEXT_MEDIUM, 415, 60, "PONG");
 
 	screen_touch_status_s_t status;
 	// Pong pongGame;
@@ -29,8 +32,16 @@ void autoSelector(){
 		status = c::screen_touch_status();
 		if(status.touch_status == TOUCH_PRESSED){
 			if(coordinateWithinRectangle(status.x, status.y, 0, 136, 80, 272)){
-
+				screen::print(E_TEXT_MEDIUM, 415, 200, "SELECTED");
+				auto_selected = 2; //lower left rectangle
+				return;
 			}
+			else if(coordinateWithinRectangle(status.x, status.y, 0, 0, 80, 180)){
+				screen::print(E_TEXT_MEDIUM, 415, 60, "SELECTED");
+				auto_selected = 1; //upper right rectangle
+				return;
+			}
+			
 		}
 		// pongGame.update(status);
 		// pongGame.draw();
