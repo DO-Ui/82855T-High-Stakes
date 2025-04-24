@@ -10,11 +10,9 @@
 #include <cmath>
 #include <iostream>
 #include <string>
-#include <type_traits>
 #include "util.h"
 #include "logging.hpp"
 #include "json.hpp"
-#include "pong.h"
 #include "./autoSelector.h"
 #include "./tasks.h"
 #include "autons.h"
@@ -60,7 +58,7 @@ void initialize() {
 	// // });
 
 	Task lbtask(ladybrown_and_color_task);
-	Task reacClawClamp(reactiveClawClamp);
+	Task reactClawClamp(reactiveClawClamp);
 	Task autoClamp(autoClampTask);
 	Task stopRing(monitor_and_stop_conveyor);
 
@@ -71,7 +69,7 @@ void initialize() {
 
 	// // NOTE: colour_task has logging, remove if not needed
 
-	
+
 
 
 }
@@ -167,7 +165,7 @@ void opcontrol() {
 	//RED SIDE
 	// redMogoRush();
 
-	
+
 
 
 
@@ -183,84 +181,80 @@ void opcontrol() {
 
 	while (true) {
 
-		if(auton_active){
-			if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)){
-				if(auto_selected == 1){
+		if (auton_active) {
+			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
+				if (auto_selected == 1) {
 					redMogoRush();
-				}
-				else if(auto_selected == 2){
+				} else if (auto_selected == 2) {
 					redRightCenterRingAlliance5Ring();
-				}
-				else {
+				} else {
 					revealRingRush();
 				}
 				auton_active = false;
-			}
-			else if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
+			} else if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
 				auton_active = false;
 			}
 		}
 
-		else{ //THIs ELSE SHOULD BE REMOVED WHEN AUTO MOVES BACK TO autonomous() function
+		else { //THIs ELSE SHOULD BE REMOVED WHEN AUTO MOVES BACK TO autonomous() function
 
-			
-		
-		
-		int leftY = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-		int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
-		
-		chassis.arcade(leftY, rightX, false, 0.75);
 
-		if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-			// find_tracking_center(10000);
-			// chassis.moveToPoint(0, 24, 3000);
-			// chassis.moveToPose(0, 48, 0, 2000);
-			// chassis.turnToHeading(180, 1000);
-		}
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
-			// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
-			// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
-			// chassis.turnToHeading(0, 1000);
-		}
 
-		// lbController();
-		
-		if(master.get_digital(E_CONTROLLER_DIGITAL_L2)){ //claw doinker mode activated
-			if(!clawDoinker.is_extended()){
-				clawDoinker.extend();
+
+			int leftY = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+			int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
+
+			chassis.arcade(leftY, rightX, false, 0.75);
+
+			if (master.get_digital(E_CONTROLLER_DIGITAL_A)) {
+				// find_tracking_center(10000);
+				// chassis.moveToPoint(0, 24, 3000);
+				// chassis.moveToPose(0, 48, 0, 2000);
+				// chassis.turnToHeading(180, 1000);
 			}
-			if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_R2)){
-				if (claw.is_extended()) {
-					claw.retract();
-				} else {
-					reactiveClawClampOn = true;
+			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
+				// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
+				// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
+				// chassis.turnToHeading(0, 1000);
+			}
+
+			// lbController();
+
+			if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) { //claw doinker mode activated
+				if (!clawDoinker.is_extended()) {
+					clawDoinker.extend();
+				}
+				if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_R2)) {
+					if (claw.is_extended()) {
+						claw.retract();
+					} else {
+						reactiveClawClampOn = true;
+					}
+				}
+			} else {
+				clawDoinker.retract();
+				reactiveClawClampOn = false;
+				claw.retract();
+				if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
+					if (mogoclamp.is_extended()) {
+						mogoclamp.retract();
+					} else {
+						clampRequested = true;
+					}
 				}
 			}
-		}
-		else {
-			clawDoinker.retract();
-			reactiveClawClampOn = false;
-			claw.retract();
-			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
-				if (mogoclamp.is_extended()) {
-					mogoclamp.retract();
-				} else {
-					clampRequested = true;
-				}
-			}
-		}
-		
-
-		
-		
 
 
-		// // print to brain screen
-		lcd::print(0, "x: %f", chassis.getPose().x);
-		lcd::print(1, "y: %f", chassis.getPose().y);
-		lcd::print(2, "theta: %f", chassis.getPose().theta);
-		lcd::print(3, "hori tracker: %f", horizontal_tracking_wheel.getDistanceTraveled());
-		lcd::print(4, "verti tracker: %f", vertical_tracking_wheel.getDistanceTraveled());
+
+
+
+
+			// // print to brain screen
+			lcd::print(0, "x: %f", chassis.getPose().x);
+			lcd::print(1, "y: %f", chassis.getPose().y);
+			lcd::print(2, "theta: %f", chassis.getPose().theta);
+			lcd::print(3, "hori tracker: %f", horizontal_tracking_wheel.getDistanceTraveled());
+			lcd::print(4, "verti tracker: %f", vertical_tracking_wheel.getDistanceTraveled());
 		}
 
 		// if (master.get_digital(E_CONTROLLER_DIGITAL_LEFT)) {

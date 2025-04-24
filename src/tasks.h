@@ -6,15 +6,15 @@ const float CAPTURE = 37;
 const float WALLSTAKE_PREP = 100;
 const float WALLSTAKE = 141;
 const float MANUAL = 350;
-float positions[3] = {REST, CAPTURE, MANUAL};    
+float positions[3] = { REST, CAPTURE, MANUAL };
 int lbTarget = 0; //NUMBER FROM 0-SIZE OF POSITIONS ARRAY, DO NOT PUT THE ACTUAL ANGLE
 
 float conveyor_speed = 127;
 
-void reactiveClawClamp(){
-    while(true){
-        if(reactiveClawClampOn) {
-            if(clawLimitSwitch.get_new_press() == 1){
+void reactiveClawClamp() {
+    while (true) {
+        if (reactiveClawClampOn) {
+            if (clawLimitSwitch.get_new_press() == 1) {
                 claw.extend();
                 if (auton_active) {
                     chassis.cancelMotion();
@@ -51,14 +51,12 @@ void unjamLBTask() {
                     int prevMotorState = conveyor.get_voltage();
                     conveyor.move(-127);
                     delay(350);
-                    if(unjamLB){
-                        if(prevMotorState > 2000){
+                    if (unjamLB) {
+                        if (prevMotorState > 2000) {
                             conveyor.move(127);
-                        }
-                        else if(prevMotorState < -2000){
+                        } else if (prevMotorState < -2000) {
                             conveyor.move(-127);
-                        }
-                        else conveyor.move(0);
+                        } else conveyor.move(0);
                     }
                     // set_LBPosition(0);
                     jamCount = 0;
@@ -71,7 +69,7 @@ void unjamLBTask() {
 }
 
 void driver_inputs() {
-    if(!auton_active){ //don't run driver inputs if auton is active
+    if (!auton_active) { //don't run driver inputs if auton is active
         if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
             conveyor.move(conveyor_speed);
         } else if (master.get_digital(E_CONTROLLER_DIGITAL_R2) && !clawDoinker.is_extended()) {
@@ -82,10 +80,9 @@ void driver_inputs() {
 
         if (master.get_digital(E_CONTROLLER_DIGITAL_R1) && !clawDoinker.is_extended()) {
             intake.move(127);
-        } else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)){
+        } else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
             intake.move(-127);
-        }
-        else {
+        } else {
             intake.move(0);
         }
     }
@@ -93,7 +90,7 @@ void driver_inputs() {
 
 
 void ladybrown_and_color_task() {
-    
+
     bool lbAboveCapture = false;
     bool newLBPress = false;
     bool manualLBMode = false;
@@ -106,12 +103,12 @@ void ladybrown_and_color_task() {
     float wrong_color_detected_time = 0;
     int controller_print = 0;
 
-    
+
     while (true) {
         // lcd::print(0, "x: %f", chassis.getPose().x);
-		// lcd::print(1, "y: %f", chassis.getPose().y);
-		// lcd::print(2, "theta: %f", imu.get_heading());
-        
+        // lcd::print(1, "y: %f", chassis.getPose().y);
+        // lcd::print(2, "theta: %f", imu.get_heading());
+
         // below code is for manual override
         // if(auton_active && master.get_digital(E_CONTROLLER_DIGITAL_LEFT)){ //REMOVE BEFORE PROVS
         //     chassis.cancelAllMotions();
@@ -133,7 +130,7 @@ void ladybrown_and_color_task() {
             colour_detected = 'n';
         }
 
-        
+
 
         if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) { //toggle whether color sort is active or not
             sorter_active = !sorter_active;
@@ -148,41 +145,37 @@ void ladybrown_and_color_task() {
         }
 
         float currTheta = ladybrownMotor.get_position() / 3;
-        
-        if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)){
-            if(lbTarget < (sizeof(positions) / sizeof(positions[0]))-1){
+
+        if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)) {
+            if (lbTarget < (sizeof(positions) / sizeof(positions[0])) - 1) {
                 lbTarget++;
             }
         }
-        if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT) && positions[lbTarget] != MANUAL){
+        if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT) && positions[lbTarget] != MANUAL) {
             lbTarget = 0;
         }
 
 
-        if(positions[lbTarget] != MANUAL){
+        if (positions[lbTarget] != MANUAL) {
             float powerGiven = ladybrownController.update(currTheta, (positions[lbTarget] - currTheta));
             ladybrownMotor.move(powerGiven); //update PID and motor voltage
-        }
-        else { //manual mode is active
-            if(master.get_digital(E_CONTROLLER_DIGITAL_Y) && master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)){
+        } else { //manual mode is active
+            if (master.get_digital(E_CONTROLLER_DIGITAL_Y) && master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)) {
                 ladybrownMotor.move(0);
-            }
-            else if(master.get_digital(E_CONTROLLER_DIGITAL_Y)){
+            } else if (master.get_digital(E_CONTROLLER_DIGITAL_Y)) {
                 ladybrownMotor.move(127);
-            }
-            else if(master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)){
+            } else if (master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)) {
                 ladybrownMotor.move(-127);
-            }
-            else ladybrownMotor.move(0);
-            if(currTheta < CAPTURE) lbTarget = 0;
+            } else ladybrownMotor.move(0);
+            if (currTheta < CAPTURE) lbTarget = 0;
         }
 
 
-        
 
 
 
-        
+
+
         // else if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)){ //moves the arm up in positions in the wallstake chain of action
         //     if(manualLBMode){
         //         lbTarget = find_closest_LBPosition(currAngle, false);
@@ -222,8 +215,8 @@ void ladybrown_and_color_task() {
         //     // lcd::print(1, "lbAngleAdjusted: %f", lbAngle);
         //     // lcd::print(2, "power given: %f", powerGiven);
         // }
-        
-        if(sorter_active && team_color != 'n' && team_color != colour_detected && colour_detected != 'n' &&  distance_sensor.get() < CONVEYOR_DISTANCE_OFFSET){
+
+        if (sorter_active && team_color != 'n' && team_color != colour_detected && colour_detected != 'n' && distance_sensor.get() < CONVEYOR_DISTANCE_OFFSET) {
             wrong_color_detected = false;
             int voltageBeforeStop = conveyor.get_voltage();
             delay(25);
@@ -231,8 +224,7 @@ void ladybrown_and_color_task() {
             delay(250);
             conveyor.move_voltage(voltageBeforeStop); //reset the voltage to what it was before reversing the conveyor
             colour_detected = 'n';
-        }
-        else{
+        } else {
             driver_inputs();
         }
 
@@ -304,7 +296,7 @@ void autoClampTask() {
 //         // std::cout << static_cast<json>(odom_message) << std::flush;
 
 //         delay(50);
-        
+
 //     }
 // }
 

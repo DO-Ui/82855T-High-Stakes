@@ -2,8 +2,8 @@
 
 Controller master(E_CONTROLLER_MASTER);
 
-MotorGroup right({11, 12, 13}, v5::MotorGears::blue, v5::MotorUnits::rotations);
-MotorGroup left({-14, -15, -16}, v5::MotorGears::blue, v5::MotorUnits::rotations);
+MotorGroup right({ 11, 12, 13 }, v5::MotorGears::blue, v5::MotorUnits::rotations);
+MotorGroup left({ -14, -15, -16 }, v5::MotorGears::blue, v5::MotorUnits::rotations);
 
 
 
@@ -33,10 +33,10 @@ adi::Button clawLimitSwitch('e');
 adi::Pneumatics intakeRiser('f', false);
 
 lemlib::PID ladybrownPID(3, // kP
-                0, // kI
-                3, // kD
-                5, // integral anti windup range
-                false); // don't reset integral when sign of error flips
+    0, // kI
+    3, // kD
+    5, // integral anti windup range
+    false); // don't reset integral when sign of error flips
 
 armController ladybrownController(
     13, // Kcos
