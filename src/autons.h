@@ -233,6 +233,40 @@ inline void redRingRush(){
 
 }
 
+inline void blueRingRush(){
+	chassis.setPose(48.432, 29.406, 286);
+	ringDoinker.extend();
+	intake.move(127);
+	conveyor.move(127);
+	chassis.moveToPoint(13.075, 39.544, 1500, {.minSpeed = 100}); //rush rings
+	delay(300);
+	chassis.turnToPoint(15.991, 32.553, 500, {.forwards = false}); //turn to mogo
+	chassis.moveToPoint(15.991, 32.553, 1000, {.forwards = false});
+	approachAndAutoClampMogo(300); //clamp first mogo
+	chassis.moveToPoint(23.496, 15.537, 1000, {.forwards = false}); //move back so doinkerd ring is aligned with the other ring
+	chassis.turnToPoint(23.738, 46.837, 1000);
+	ringDoinker.retract();
+	chassis.moveToPoint(23.738, 46.837, 1000);
+	chassis.turnToHeading(90, 1000); 
+	chassis.moveToPose(59.327, 57.974, 45, 1500); //move to corner
+	chassis.waitUntilDone();
+	chassis.tank(80, 80);
+	intake.move(127);
+	delay(1000);
+	chassis.moveToPoint(-55.072, -54.775, 1000, {.forwards = false}); //move back out
+	chassis.moveToPose(59.327, 57.974, 45, 1500); //move back to corner
+	intakeRiser.retract();
+	chassis.tank(80, 80);
+	intake.move(127);
+	delay(1000);
+	chassis.moveToPoint(-55.072, -54.775, 1000, {.forwards = false}); //move back out
+	chassis.turnToPoint(54.242, 42.237, 600);
+	chassis.moveToPoint(54.242, 42.237, 1000); //move back to ring preload
+	
+
+	
+}
+
 
 /**
  * Grant's Solo AWP Red Left side FOR PROVS

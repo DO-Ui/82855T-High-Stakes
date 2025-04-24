@@ -107,7 +107,7 @@ void autonomous() {
 
 	sorter_active = true;
 	auton_active = true;
-	team_color = 'r'; //KEEP THiS COLOR IN BOT
+	team_color = 'b'; //KEEP THiS COLOR IN BOT
 
 	// revealRingRush();
 
@@ -117,7 +117,8 @@ void autonomous() {
 
 	// redRingRush();
 	// redRightCenterRingAlliance5Ring();
-	revealRingRush();
+	// revealRingRush();
+	blueRingRush();
 
 
 
