@@ -61,6 +61,7 @@ void initialize() {
 	Task reactClawClamp(reactiveClawClamp);
 	Task autoClamp(autoClampTask);
 	Task stopRing(monitor_and_stop_conveyor);
+	Task lbAngleReset(lbAngleResetTask);
 
 	// autoSelector();
 	// Task lbunjam(unjamLBTask);

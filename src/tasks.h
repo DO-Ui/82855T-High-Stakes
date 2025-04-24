@@ -156,7 +156,8 @@ void ladybrown_and_color_task() {
         }
 
 
-        if (positions[lbTarget] != MANUAL) {
+
+        if (positions[lbTarget] == CAPTURE) {
             float powerGiven = ladybrownController.update(currTheta, (positions[lbTarget] - currTheta));
             ladybrownMotor.move(powerGiven); //update PID and motor voltage
         } else { //manual mode is active
@@ -252,6 +253,27 @@ void autoClampTask() {
                 clampRequested = false;
             }
         }
+        delay(30);
+    }
+}
+
+
+void lbAngleResetTask() {
+    int count = 0;
+    while (true) {
+        if (positions[lbTarget] == REST) {
+            if (ladybrownMotor.get_current_draw() > 900 && ladybrownMotor.get_actual_velocity() < 2) {
+                count++;
+            } else {
+                count = 0;
+            }
+            if (count == 10) {
+                ladybrownMotor.move(0);
+                ladybrownMotor.tare_position();
+                count = 0;
+            }
+        }
+        std::cout << ladybrownMotor.get_position() / 3 << std::endl; 
         delay(30);
     }
 }
