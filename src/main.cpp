@@ -4,10 +4,10 @@
 #include "./devices.h"
 // #include "pros/screen.h"
 // #include "pros/screen.hpp"
-// #include "constants.h"
+#include "constants.h"
 #include "globalStates.h"
-// #include "macros.h"
-// #include <cmath>
+#include "macros.h"
+#include <cmath>
 // #include <iostream>
 // #include <string>
 // #include <type_traits>
@@ -17,7 +17,7 @@
 // #include "pong.h"
 // #include "./autoSelector.h"
 #include "./tasks.h"
-// #include "autons.h"
+#include "autons.h"
 
 
 // using json = nlohmann::json;
@@ -165,9 +165,17 @@ void opcontrol() {
 			reactiveClawClampOn = false;
 			claw.retract();
 			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_R1)) {
-				mogoClamp.toggle();
+				mogoclamp.toggle();
 			}
 		}
+
+
+		// // print to brain screen
+		lcd::print(0, "x: %f", chassis.getPose().x);
+		lcd::print(1, "y: %f", chassis.getPose().y);
+		lcd::print(2, "theta: %f", chassis.getPose().theta);
+		// lcd::print(3, "hori tracker: %f", horizontal_tracking_wheel.getDistanceTraveled());
+		// lcd::print(4, "verti tracker: %f", vertical_tracking_wheel.getDistanceTraveled());
 
 
 		delay(20);
