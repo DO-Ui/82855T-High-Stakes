@@ -1,69 +1,23 @@
 #include "main.h"
 #include "lemlib/api.hpp"
-#include "pros/screen.h"
-#include "pros/screen.hpp"
-#include "constants.h"
-#include "globalStates.h"
 #include "armController.h"
 #include "./devices.h"
-#include "macros.h"
-#include <cmath>
-#include <iostream>
-#include <string>
-#include <type_traits>
+// #include "pros/screen.h"
+// #include "pros/screen.hpp"
+// #include "constants.h"
+#include "globalStates.h"
+// #include "macros.h"
+// #include <cmath>
+// #include <iostream>
+// #include <string>
+// #include <type_traits>
 #include "util.h"
-#include "logging.hpp"
-#include "json.hpp"
-#include "pong.h"
-#include "./autoSelector.h"
+// #include "logging.hpp"
+// #include "json.hpp"
+// #include "pong.h"
+// #include "./autoSelector.h"
 #include "./tasks.h"
-#include "autons.h"
-
-bool holdLB = false;
-int preCatch = 1; // 1 is precatch, -1 is needs press again, 0 is in postcatch
-bool LBUpRefreshed = false;
-
-void lbController() {
-
-	if (holdLB) {
-		float LBPower = cos(((ladybrownMotor.get_position() - 60) * 0.3333333333 * 0.01745329251));
-		ladybrownMotor.move(LBPower * 10);
-	}
-
-	if (master.get_digital(E_CONTROLLER_DIGITAL_Y) && preCatch == 1) {
-		ladybrownMotor.move(127);
-		if (ladybrownMotor.get_position() > 60.0) {
-			holdLB = true;
-			preCatch = -1;
-		}
-		LBUpRefreshed = true;
-	}
-
-	if (LBUpRefreshed && !master.get_digital(E_CONTROLLER_DIGITAL_Y)) {
-		LBUpRefreshed = false;
-		preCatch = 0;
-	}
-
-	if ((preCatch == 0 && master.get_digital(E_CONTROLLER_DIGITAL_Y))) {
-		holdLB = false;
-		ladybrownMotor.move(127);
-		if (ladybrownMotor.get_position() < 70.0) {
-			holdLB = false;
-			preCatch = 1;
-		}
-	}
-
-	if (!holdLB && preCatch == 0 && !master.get_digital(E_CONTROLLER_DIGITAL_Y)) {
-		holdLB = true;
-		LBUpRefreshed = false;
-	}
-
-
-	if (master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)) {
-		ladybrownMotor.move(-127);
-	}
-}
-
+// #include "autons.h"
 
 
 // using json = nlohmann::json;
@@ -76,25 +30,8 @@ void lbController() {
  */
 void initialize() {
 
-	// std::cout << "foxglove" << std::endl;
-	// lcd::initialize();
-
-	// colour_sensor.set_led_pwm(100);
-	// colour_sensor.set_integration_time(60);
-	// horizontal_tracker.set_data_rate(5);
-	// vertical_tracker.set_data_rate(5);
-	// imu.set_data_rate(5);
-	// horizontal_tracker.set_position(0);
-	// vertical_tracker.set_position(0);
-	// horizontal_tracker.reset();
-	// vertical_tracker.reset();
-	// chassis.calibrate();
-	// ladybrownMotor.tare_position();
-	// // gps_sensor.set_data_rate(5);
-	// // gps_sensor.set_offset(-6.0*0.0254, -0.25*0.0254);
-	// // gps_sensor.set_position(-62.2343, 0, 90);
-	// // chassis.setPose(-62.2343, 0, 90);
-	// master.clear();
+	ladybrownMotor.tare_position();
+	master.clear();
 
 	// // Task odom_task([&]() {
 	// // 	while (true) {
@@ -107,16 +44,8 @@ void initialize() {
 	// // 	}
 	// // });
 
-	// Task lbtask(ladybrown_and_color_task);
-	// Task stopRing(monitor_and_stop_conveyor);
-	// Task lbunjam(unjamLBTask);
-
-	// // Task gps_task(gps_sensor_task);
-
-	// // NOTE: colour_task has logging, remove if not needed
-
-	
-
+	Task lbtask(ladybrownTask);
+	Task reactClawClamp(reactiveClawClamp);
 
 }
 
@@ -201,19 +130,6 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	float lastDistFuncReading = 0;
-
-	// hang.retract();
-	
-	// auton_active = false; //CHANGE BEFORE PROVS TO FALSE
-	// sorter_active = true; //CHANGE BACK TO TRUE
-	// auton_active = true;
-	// skills(); //REMOVE LATER
-	// auton_active = false;
-	// chassis.setPose(0, 0, 0); vc
-	
-
-	// int count = 0; //used for automatic PID tuning
 
 	while (true) {
 		
@@ -222,81 +138,37 @@ void opcontrol() {
 		
 		chassis.arcade(leftY, rightX, false, 0.75);
 
-		// if(master.get_digital(E_CONTROLLER_DIGITAL_A)){
-		// 	chassis.moveToPoint(0, 24, 3000);
-		// 	// chassis.moveToPose(0, 48, 0, 2000);
-		// 	// chassis.turnToHeading(90, 1000);
-		// 	// lastDistFuncReading = check_distance_back_BOTTOM_WALL();
-		// }
-		// if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)){
-		// 	chassis.moveToPoint(0, 0, 3000, {.forwards = false});
-		// 	// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
-		// 	// chassis.turnToHeading(0, 1000);
-		// }
 
-		// Doinker mode activated
-		if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
-			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)) {
-				// Toggle Right Doinker
+		
+		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
+			ringDoinker.toggle();
+		}
+
+		
+		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) {
+			intakeRiser.toggle();
+		}
+		
+		if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) { //claw doinker mode activated
+			if (!clawDoinker.is_extended()) {
+				clawDoinker.extend();
 			}
-
-			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)) {
-				// Toggle Left Doinker
+			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L2)) {
+				if (claw.is_extended()) {
+					claw.retract();
+				} else {
+					reactiveClawClampOn = true;
+				}
 			}
-
-			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
-				// Toggle Claw Doinker Clamp
-			}
-
 		} else {
-			lbController();
-
-			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
-				mogoclamp.toggle();
+			clawDoinker.retract();
+			reactiveClawClampOn = false;
+			claw.retract();
+			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_R1)) {
+				mogoClamp.toggle();
 			}
 		}
 
-		if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
-			intake.move(127);
-			conveyor.move(127);
-		} else if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
-			intake.move(-127);
-			conveyor.move(-127);
-		} else {
-			intake.move(0);
-			conveyor.move(0);
-		}
-
-
-		// // print to brain screen
-		// lcd::print(0, "x: %f", chassis.getPose().x);
-		// lcd::print(1, "y: %f", chassis.getPose().y);
-		// lcd::print(2, "theta: %f", chassis.getPose().theta);
-
-		// if (master.get_digital(E_CONTROLLER_DIGITAL_LEFT)) {
-		// 	if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)) {
-		// 		chassis.lateralPID.kD += 0.1;
-		// 	} else if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_DOWN)) {
-		// 		chassis.lateralPID.kD -= 0.1;
-		// 	}
-		// } else {
-		// 	if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)) {
-		// 		chassis.lateralPID.kP += 0.1;
-		// 	} else if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_DOWN)) {
-		// 		chassis.lateralPID.kP -= 0.1;
-		// 	}
-		// }
-
-
-		// if (count == 3) {
-		// 	master.print(0, 0, "P: %f", chassis.lateralPID.kP);
-		// }
-		// if (count == 6) {
-		// 	master.print(1, 0, "D: %f", chassis.lateralPID.kD);
-		// 	count = 0;
-		// }
-
-		// count++;
 
 		delay(20);
 

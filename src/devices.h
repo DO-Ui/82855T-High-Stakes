@@ -2,32 +2,20 @@
 
 Controller master(E_CONTROLLER_MASTER);
 
-MotorGroup right({11, 12, 13}, v5::MotorGears::blue, v5::MotorUnits::rotations);
-MotorGroup left({-14, -15, -16}, v5::MotorGears::blue, v5::MotorUnits::rotations);
+MotorGroup right({-1, -2, -3}, v5::MotorGears::blue, v5::MotorUnits::rotations);
+MotorGroup left({4, 5, 6}, v5::MotorGears::blue, v5::MotorUnits::rotations);
 
 
+Motor ladybrownMotor(8, v5::MotorGears::green, v5::MotorUnits::degrees);
+Motor intake(9, v5::MotorGears::rpm_200);
+Motor conveyor(10, v5::MotorGears::blue);
 
-Motor intake(10, v5::MotorGears::rpm_200);
-Motor conveyor(18, v5::MotorGears::blue);
-Motor ladybrownMotor(17, v5::MotorGears::green, v5::MotorUnits::degrees);
-Imu imu(7);
-
-Rotation horizontal_tracker(-9);
-Rotation vertical_tracker(8);
-
-Optical colour_sensor(20);
-Distance distance_sensor(18); //FIRST COLOR DISTANCE SENSOR
-Distance final_distance_sensor(21); //COLOR FINAL DISTANCE SENSOR
-
-Distance left_distance(10);
-Distance back_distance(13);
-GPS gps_sensor(10);
-
-
-adi::Pneumatics mogoclamp('a', false);
-adi::Pneumatics doinker('b', false);
-adi::Pneumatics intakeRiser('c', false);
-adi::Pneumatics hang('d', false);
+adi::Pneumatics claw('a', false);
+adi::Pneumatics clawDoinker('b', false);
+adi::Pneumatics ringDoinker('c', false);
+adi::Pneumatics intakeRiser('d', false);
+adi::Pneumatics mogoClamp('e', false);
+adi::DigitalIn clawLimitSwitch('g');
 
 lemlib::PID ladybrownPID(3, // kP
                 0, // kI
@@ -40,12 +28,12 @@ ArmController ladybrownController(
     ladybrownPID
 );
 
-lemlib::Drivetrain drivetrain(&left, &right, 12, lemlib::Omniwheel::NEW_275, 450, 2);
+lemlib::Drivetrain drivetrain(&left, &right, 12, lemlib::Omniwheel::NEW_275, 600, 2);
 
-lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_tracker, lemlib::Omniwheel::OLD_275_HALF, -1.5);
-lemlib::TrackingWheel vertical_tracking_wheel(&vertical_tracker, lemlib::Omniwheel::NEW_2, -1.25);
+// lemlib::TrackingWheel horizontal_tracking_wheel(nullptr, lemlib::Omniwheel::OLD_275_HALF, -1.5);
+// lemlib::TrackingWheel vertical_tracking_wheel(nullptr, lemlib::Omniwheel::NEW_2, -1.25);
 
-lemlib::OdomSensors sensors(&vertical_tracking_wheel, nullptr, &horizontal_tracking_wheel, nullptr, &imu);
+lemlib::OdomSensors sensors(nullptr, nullptr, nullptr, nullptr, nullptr);
 
 // lemlib::ControllerSettings lateral_controller(10, 0, 60, 3, 1, 500, 3, 750, 15);
 lemlib::ControllerSettings lateral_controller(18.5, 0, 200, 3, 1, 100, 3, 500, 1.5);
