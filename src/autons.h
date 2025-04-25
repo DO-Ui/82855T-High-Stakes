@@ -234,37 +234,43 @@ inline void redRingRush(){
 }
 
 inline void blueRingRush(){
-	chassis.setPose(48.432, 29.406, 286);
+	chassis.setPose(49.5, 29, 285);
 	ringDoinker.extend();
 	intake.move(127);
 	conveyor.move(127);
-	chassis.moveToPoint(13.075, 39.544, 1500, {.minSpeed = 100}); //rush rings
-	delay(300);
-	chassis.turnToPoint(15.991, 32.553, 500, {.forwards = false}); //turn to mogo
-	chassis.moveToPoint(15.991, 32.553, 1000, {.forwards = false});
-	approachAndAutoClampMogo(300); //clamp first mogo
-	chassis.moveToPoint(23.496, 15.537, 1000, {.forwards = false}); //move back so doinkerd ring is aligned with the other ring
-	chassis.turnToPoint(23.738, 46.837, 1000);
+	chassis.moveToPoint(9.743, 41, 1000); //rush rings
+	delay(400);
+	stopNextRing = true;
+	chassis.turnToPoint(8.728, 31.29, 700, {.forwards = false});
+	chassis.moveToPoint(8.728, 31.29, 800, {.forwards = false, .minSpeed = 20, .earlyExitRange = 1});
+	chassis.turnToHeading(300, 600, {.minSpeed = 20, .earlyExitRange = 10});
+	chassis.moveToPoint(14.78, 28.385, 600, {.forwards = false});
+	// chassis.moveToPoint(18.896, 37.585, 600, {.forwards = false, .minSpeed = 30, .earlyExitRange = 1}); //move to intermediate point
+	// chassis.turnToPoint(21, 24.789, 600, {.forwards = false}); //move back into mogo
+	// chassis.moveToPoint(21, 24.789, 1300, {.forwards = false}); //move back into mogo
+	approachAndAutoClampMogo(500); //clamp first mogo
 	ringDoinker.retract();
-	chassis.moveToPoint(23.738, 46.837, 1000);
-	chassis.turnToHeading(90, 1000); 
-	chassis.moveToPose(59.327, 57.974, 45, 1500); //move to corner
+	conveyor.move(127);
+	chassis.turnToPoint(21, 46.837, 1000);
+	chassis.moveToPoint(21, 46.837, 1000, {.maxSpeed = 100}); //move to double ring stack behind rushed rings
+	delay(400); //intake ring
+	chassis.turnToPoint(56.179, 57.974, 1500); //move to corner
+	chassis.moveToPoint(56.179, 57.974, 1500); //move to corner
+	chassis.turnToHeading(45, 700);
 	chassis.waitUntilDone();
-	chassis.tank(80, 80);
+	chassis.tank(100, 100);
 	intake.move(127);
-	delay(1000);
-	chassis.moveToPoint(-55.072, -54.775, 1000, {.forwards = false}); //move back out
-	chassis.moveToPose(59.327, 57.974, 45, 1500); //move back to corner
-	intakeRiser.retract();
-	chassis.tank(80, 80);
+	delay(2000);
+	chassis.moveToPoint(51, 51, 1000, {.forwards = false}); //move back out
+	intakeRiser.toggle();
+	chassis.moveToPoint(59.327, 57.974, 1500); //move back to corner
+	chassis.tank(100, 100);
 	intake.move(127);
-	delay(1000);
-	chassis.moveToPoint(-55.072, -54.775, 1000, {.forwards = false}); //move back out
+	delay(2000);
+	chassis.moveToPoint(53, 53, 1000, {.forwards = false}); //move back out
+	intakeRiser.toggle();
 	chassis.turnToPoint(54.242, 42.237, 600);
-	chassis.moveToPoint(54.242, 42.237, 1000); //move back to ring preload
-	
-
-	
+	chassis.moveToPoint(54.242, 42.237, 1000); //move back to ring preload and intake it
 }
 
 

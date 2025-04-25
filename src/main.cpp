@@ -61,7 +61,7 @@ void initialize() {
 	Task reactClawClamp(reactiveClawClamp);
 	Task autoClamp(autoClampTask);
 	Task stopRing(monitor_and_stop_conveyor);
-	Task lbAngleReset(lbAngleResetTask);
+	// Task lbAngleReset(lbAngleResetTask);
 
 	// autoSelector();
 	// Task lbunjam(unjamLBTask);
@@ -208,11 +208,12 @@ void opcontrol() {
 
 			chassis.arcade(leftY, rightX, false, 0.75);
 
-			if (master.get_digital(E_CONTROLLER_DIGITAL_A)) {
+			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
 				// find_tracking_center(10000);
 				// chassis.moveToPoint(0, 24, 3000);
 				// chassis.moveToPose(0, 48, 0, 2000);
 				// chassis.turnToHeading(180, 1000);
+				ringDoinker.toggle();
 			}
 			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
 				// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
@@ -245,6 +246,7 @@ void opcontrol() {
 					}
 				}
 			}
+
 
 
 
