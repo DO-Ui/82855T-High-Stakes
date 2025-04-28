@@ -44,7 +44,7 @@ armController ladybrownController(
 );
 
 //drivetrain is 12 inches wide and 11.5 inches from back to front, all measured from midwheels
-lemlib::Drivetrain drivetrain(&left, &right, 12, lemlib::Omniwheel::NEW_275, 450, 2);
+lemlib::Drivetrain drivetrain(&left, &right, 12, lemlib::Omniwheel::NEW_275, 600, 2);
 
 lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_tracker, lemlib::Omniwheel::NEW_275, 1.59448913102);
 lemlib::TrackingWheel vertical_tracking_wheel(&vertical_tracker, lemlib::Omniwheel::NEW_275, -1.2087590096);

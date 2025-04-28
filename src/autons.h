@@ -1,4 +1,90 @@
 #pragma once
+
+inline void SORAuto() {
+
+	// Alliance stake
+	delay(100);
+	ladybrownMotor.move(127);
+	delay(1000);
+	ladybrownMotor.move(-127);
+	
+	// Blue Ring Side
+	// chassis.setPose(58, 8, 160);
+	// chassis.moveToPoint(47, 46, 1000, {.forwards=false});
+	// chassis.turnToPoint(24, 46.5, 1000);
+	// ladybrownMotor.move(0);
+	// intake.move(127);
+	// chassis.moveToPoint(24, 46.5, 1000);
+	// chassis.turnToPoint(25, 26, 1000, {.forwards=false});
+	// chassis.moveToPoint(25, 28, 1000, {.forwards=false});
+	// chassis.waitUntilDone();
+	// approachAndClampMogo();
+	// conveyor.move(127);
+	// chassis.moveToPoint(60, 60, 1500, {.minSpeed = 40, .earlyExitRange=2});
+	// chassis.waitUntilDone();
+	// chassis.tank(127, 127);
+	// delay(1500);
+	// chassis.tank(0, 0);
+
+
+
+	// Touch Ladder
+	// delay(600);
+	// chassis.turnToPoint(16, 16, 1000);
+	// chassis.moveToPoint(20, 20, 1000);	
+	// chassis.waitUntilDone();
+	// ladybrownMotor.move(127);
+	// delay(1000);
+	// ladybrownMotor.move(0);
+
+
+	// Red Ring Side
+	chassis.setPose(-60, 8, 192);
+	chassis.moveToPoint(-47, 46, 1000, {.forwards=false});
+	chassis.turnToPoint(-24, 46.5, 1000);
+	ladybrownMotor.move(0);
+	intake.move(127);
+	chassis.moveToPoint(-24, 46.5, 1000);
+	chassis.turnToPoint(-26, 26, 1000, {.forwards=false});
+	chassis.moveToPoint(-26, 29, 1000, {.forwards=false});
+	chassis.waitUntilDone();
+	approachAndClampMogo();
+	conveyor.move(127);
+	chassis.moveToPoint(-60, 60, 1500, {.minSpeed = 40, .earlyExitRange=2});
+	chassis.waitUntilDone();
+	chassis.tank(127, 127);
+	delay(1500);
+	chassis.tank(0, 0);
+
+	
+
+
+
+
+	// chassis.setPose(-59, -14, 320);
+	// chassis.moveToPoint(-36, -36, 1000);
+	// chassis.turnToPoint(-23, -47, 1000);
+	// chassis.moveToPoint(-23, -47, 1000);
+	// intake.move(127);
+	// // conveyor.move(127);
+	// chassis.waitUntilDone();
+	// delay(500);
+	// chassis.turnToPoint(-23, -23, 1000, {.forwards = false});
+	// chassis.moveToPoint(-23, -36, 1000, {.forwards = false});
+	// chassis.waitUntilDone();
+	// chassis.tank(-90, -90);
+	// delay(460);
+	// mogoclamp.toggle();
+	// conveyor.move(127);
+	// delay(2000);
+	// chassis.tank(0,0);
+	
+
+
+
+}
+
+
 /**
  * SKILLS ROUTE FOR PROVS
  * by Grant

@@ -110,6 +110,18 @@ void autonomous() {
 	auton_active = true;
 	team_color = 'b'; //KEEP THiS COLOR IN BOT
 
+
+	// lbTarget = 2;
+	// delay(100);
+	// ladybrownMotor.move(127);
+	// delay(2000);
+	// ladybrownMotor.move(0);
+
+	SORAuto();
+
+
+	// ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+
 	// revealRingRush();
 
 	//WORLDS AUTOS
@@ -119,7 +131,7 @@ void autonomous() {
 	// redRingRush();
 	// redRightCenterRingAlliance5Ring();
 	// revealRingRush();
-	blueRingRush();
+	// blueRingRush();
 
 
 
@@ -157,16 +169,17 @@ void autonomous() {
  */
 void opcontrol() {
 
+
+
 	sorter_active = true;
 	auton_active = false;
-	team_color = 'r'; //KEEP THiS COLOR IN BOT
+	team_color = 'b'; //KEEP THiS COLOR IN BOT
 
 	// revealRingRush();
 
 	//WORLDS AUTOS
 	//RED SIDE
 	// redMogoRush();
-
 
 
 
@@ -183,22 +196,22 @@ void opcontrol() {
 
 	while (true) {
 
-		if (auton_active) {
-			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
-				if (auto_selected == 1) {
-					redMogoRush();
-				} else if (auto_selected == 2) {
-					redRightCenterRingAlliance5Ring();
-				} else {
-					revealRingRush();
-				}
-				auton_active = false;
-			} else if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
-				auton_active = false;
-			}
-		}
+		// if (auton_active) {
+		// 	if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
+		// 		if (auto_selected == 1) {
+		// 			redMogoRush();
+		// 		} else if (auto_selected == 2) {
+		// 			redRightCenterRingAlliance5Ring();
+		// 		} else {
+		// 			revealRingRush();
+		// 		}
+		// 		auton_active = false;
+		// 	} else if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
+		// 		auton_active = false;
+		// 	}
+		// }
 
-		else { //THIs ELSE SHOULD BE REMOVED WHEN AUTO MOVES BACK TO autonomous() function
+		// else { //THIs ELSE SHOULD BE REMOVED WHEN AUTO MOVES BACK TO autonomous() function
 
 
 
@@ -208,58 +221,73 @@ void opcontrol() {
 
 			chassis.arcade(leftY, rightX, false, 0.75);
 
-			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
+			// if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
 				// find_tracking_center(10000);
 				// chassis.moveToPoint(0, 24, 3000);
 				// chassis.moveToPose(0, 48, 0, 2000);
 				// chassis.turnToHeading(180, 1000);
-				ringDoinker.toggle();
-			}
-			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
+				// ringDoinker.toggle();
+			// }
+			// if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
 				// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
 				// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
 				// chassis.turnToHeading(0, 1000);
-			}
+			// }
 
 			// lbController();
 
-			if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) { //claw doinker mode activated
-				if (!clawDoinker.is_extended()) {
-					clawDoinker.extend();
-				}
-				if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_R2)) {
-					if (claw.is_extended()) {
-						claw.retract();
-					} else {
-						reactiveClawClampOn = true;
-					}
-				}
-			} else {
-				clawDoinker.retract();
-				reactiveClawClampOn = false;
-				claw.retract();
+			// if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) { //claw doinker mode activated
+			// 	if (!clawDoinker.is_extended()) {
+			// 		clawDoinker.extend();
+			// 	}
+			// 	if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_R2)) {
+			// 		if (claw.is_extended()) {
+			// 			claw.retract();
+			// 		} else {
+			// 			reactiveClawClampOn = true;
+			// 		}
+			// 	}
+			// } else {
+				// clawDoinker.retract();
+				// reactiveClawClampOn = false;
+				// claw.retract();
 				if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
-					if (mogoclamp.is_extended()) {
-						mogoclamp.retract();
-					} else {
-						clampRequested = true;
-					}
+					// if (mogoclamp.is_extended()) {
+					// 	mogoclamp.retract();
+					// } else {
+					// 	clampRequested = true;
+					// }
+					mogoclamp.toggle();
 				}
-			}
+
+				if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
+					if (!ringDoinker.is_extended()) {
+						ringDoinker.extend();
+					}
+				}  else {
+					if (ringDoinker.is_extended()) {
+						ringDoinker.retract();
+					}		
+				}
 
 
+			// }
+
+				if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
+					ladybrownMotor.tare_position();
+				}
 
 
 
 
 
 			// // print to brain screen
-			lcd::print(0, "x: %f", chassis.getPose().x);
-			lcd::print(1, "y: %f", chassis.getPose().y);
-			lcd::print(2, "theta: %f", chassis.getPose().theta);
-			lcd::print(3, "hori tracker: %f", horizontal_tracking_wheel.getDistanceTraveled());
-			lcd::print(4, "verti tracker: %f", vertical_tracking_wheel.getDistanceTraveled());
-		}
+			// lcd::print(0, "x: %f", chassis.getPose().x);
+			// lcd::print(1, "y: %f", chassis.getPose().y);
+			// lcd::print(2, "theta: %f", chassis.getPose().theta);
+			// lcd::print(3, "hori tracker: %f", horizontal_tracking_wheel.getDistanceTraveled());
+			// lcd::print(4, "verti tracker: %f", vertical_tracking_wheel.getDistanceTraveled());
+		// }
 
 		// if (master.get_digital(E_CONTROLLER_DIGITAL_LEFT)) {
 		// 	if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)) {

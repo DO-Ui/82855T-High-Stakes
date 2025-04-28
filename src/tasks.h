@@ -2,7 +2,7 @@
 
 //DON'T COMMUNICATE WITH MAIN THREAD. Reading is fine, never write
 const float REST = 0;
-const float CAPTURE = 40;
+const float CAPTURE = 42;
 const float WALLSTAKE_PREP = 100;
 const float WALLSTAKE = 141;
 const float MANUAL = 350;
@@ -157,18 +157,20 @@ void ladybrown_and_color_task() {
 
 
 
-        if (positions[lbTarget] == CAPTURE) {
-            float powerGiven = ladybrownController.update(currTheta, (positions[lbTarget] - currTheta));
-            ladybrownMotor.move(powerGiven); //update PID and motor voltage
-        } else { //manual mode is active
-            if (master.get_digital(E_CONTROLLER_DIGITAL_Y) && master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)) {
-                ladybrownMotor.move(0);
-            } else if (master.get_digital(E_CONTROLLER_DIGITAL_Y)) {
-                ladybrownMotor.move(127);
-            } else if (master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)) {
-                ladybrownMotor.move(-127);
-            } else ladybrownMotor.move(0);
-            if (currTheta < CAPTURE) lbTarget = 0;
+        if (!auton_active) {
+            if (positions[lbTarget] == CAPTURE) {
+                float powerGiven = ladybrownController.update(currTheta, (positions[lbTarget] - currTheta));
+                ladybrownMotor.move(powerGiven); //update PID and motor voltage
+            } else { //manual mode is active
+                if (master.get_digital(E_CONTROLLER_DIGITAL_Y) && master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)) {
+                    ladybrownMotor.move(0);
+                } else if (master.get_digital(E_CONTROLLER_DIGITAL_Y)) {
+                    ladybrownMotor.move(127);
+                } else if (master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)) {
+                    ladybrownMotor.move(-127);
+                } else ladybrownMotor.move(0);
+                if (currTheta < CAPTURE) lbTarget = 0;
+            }
         }
 
 
@@ -248,7 +250,7 @@ void ladybrown_and_color_task() {
 void autoClampTask() {
     while (true) {
         if (clampRequested) {
-            if (mogo_distance.get() < 7 && !mogoclamp.is_extended()) { // clamp the mogo when it is close enough
+            if (mogo_distance.get() < 11 && !mogoclamp.is_extended()) { // clamp the mogo when it is close enough
                 mogoclamp.extend();
                 clampRequested = false;
             }
@@ -273,7 +275,7 @@ void lbAngleResetTask() {
                 count = 0;
             }
         }
-        std::cout << ladybrownMotor.get_position() / 3 << std::endl; 
+        std::cout << ladybrownMotor.get_position() / 3 << std::endl;
         delay(30);
     }
 }
