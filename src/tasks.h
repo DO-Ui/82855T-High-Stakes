@@ -1,40 +1,9 @@
 #pragma once
+//FYI DON'T COMMUNICATE WITH MAIN THREAD. Reading is fine, never write
 
-//DON'T COMMUNICATE WITH MAIN THREAD. Reading is fine, never write
-const float REST = 0;
-const float CAPTURE = 42;
-const float WALLSTAKE_PREP = 100;
-const float WALLSTAKE = 141;
-const float MANUAL = 350;
-float positions[4] = {REST, CAPTURE, WALLSTAKE_PREP, WALLSTAKE};
-
-const float DESCORE_POSITION = 90;
-const float WALLSTAKE_RING_6 = 160;
-const float WALLSTAKE_RING_5 = 170;
-const float WALLSTAKE_RING_4 = 180;
-const float WALLSTAKE_RING_3 = 190;
-const float WALLSTAKE_RING_2 = 200;
-const float WALLSTAKE_RING_1 = 210;
-float descorePositions[7] = {DESCORE_POSITION, WALLSTAKE_RING_6, WALLSTAKE_RING_5, WALLSTAKE_RING_4, WALLSTAKE_RING_3, WALLSTAKE_RING_2, WALLSTAKE_RING_1};
-int lbTarget = 0; //NUMBER FROM 0-SIZE OF POSITIONS ARRAY, DO NOT PUT THE ACTUAL ANGLE
-
-float conveyor_speed = 127;
-
-
-int find_closest_LBPosition(float lbArmAngle, bool findPositionBehind){
-    if(lbArmAngle > 340 || lbArmAngle < 0) lbArmAngle = 1; //if the angle is slightly past hard stop, making it do a full rotation over to 359.99 degrees, this accounts for that case
-    if(lbArmAngle > positions[sizeof(positions)/sizeof(positions[0])-1]) return sizeof(positions)/sizeof(positions[0])-1; //arm is greater than the maximum target angle, so return the max target angle
-    for(int i = 0; i < sizeof(positions)/sizeof(positions[0])-1; i++){
-        float lowerBound = positions[i];
-        float upperBound = positions[i+1];
-        if(lowerBound <= lbArmAngle && lbArmAngle < upperBound){
-            if(findPositionBehind) return i;
-            else return i+1;
-        }
-    }
-    return -1;
-}
-
+/**
+ * activates doinker claw clamp when the doinker's limit switch is activated
+ */
 void reactiveClawClamp() {
     while (true) {
         if (reactiveClawClampOn) {
@@ -63,6 +32,10 @@ void monitor_and_stop_conveyor() {
         delay(30);
     }
 }
+
+/**
+ * if the ladybrown is trying to go down with a ring in it this will back the conveyor up so the ladybrown can go down
+ */
 void unjamLBTask() {
 
     int jamCount = 0;
@@ -95,7 +68,7 @@ void unjamLBTask() {
 void driver_inputs() {
     if (!auton_active) { //don't run driver inputs if auton is active
         if (master.get_digital(E_CONTROLLER_DIGITAL_R1)) {
-            conveyor.move(conveyor_speed);
+            conveyor.move(127);
         } else if (master.get_digital(E_CONTROLLER_DIGITAL_R2) && !clawDoinker.is_extended()) {
             conveyor.move(-127);
         } else {
@@ -113,27 +86,14 @@ void driver_inputs() {
 }
 
 
-void ladybrown_and_color_task() {
-
-    bool lbAboveCapture = false;
-    bool newSwitchToAutoLB = false;
-    bool manualLBMode = false;
-    bool lbDescoreMode = false;
-    ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
-    int lbTarget = 0;
-    int lbDescoreTarget = 0;
-
+void colorSortTask() {
+    int controller_print = 0;
 
     char colour_detected = 'n'; // 'n' means empty
     bool wrong_color_detected = false;
-    float wrong_color_detected_time = 0;
-    int controller_print = 0;
 
 
     while (true) {
-        // lcd::print(0, "x: %f", chassis.getPose().x);
-        // lcd::print(1, "y: %f", chassis.getPose().y);
-        // lcd::print(2, "theta: %f", imu.get_heading());
 
         // below code is for manual override
         // if(auton_active && master.get_digital(E_CONTROLLER_DIGITAL_LEFT)){ //REMOVE BEFORE PROVS
@@ -169,6 +129,42 @@ void ladybrown_and_color_task() {
                 team_color = 'r';
             }
         }
+
+        if (sorter_active && team_color != 'n' && team_color != colour_detected && colour_detected != 'n' && distance_sensor.get() < CONVEYOR_DISTANCE_OFFSET) {
+            wrong_color_detected = false;
+            int voltageBeforeStop = conveyor.get_voltage();
+            delay(25);
+            conveyor.move(-127);
+            delay(250);
+            conveyor.move_voltage(voltageBeforeStop); //reset the voltage to what it was before reversing the conveyor
+            colour_detected = 'n';
+        } else {
+            driver_inputs();
+        }
+
+        if (controller_print == 0) {
+            master.print(0, 0, "Sorter State: %s", sorter_active ? "Active" : "Inactive");
+            controller_print = 10;
+        } else if (controller_print == 5) {
+            master.print(1, 0, "Team Color: %s", team_color == 'r' ? "Red" : "Blue");
+        }
+       
+
+        if (controller_print > 0) {
+            controller_print--;
+        }
+
+        delay(15);
+    }
+}
+
+void ladybrownTask(){
+    int controller_print = 0;
+
+    ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+    bool newSwitchToAutoLB = false;
+
+    while(true){
 
         float currTheta = ladybrownMotor.get_position() / 3;
 
@@ -216,19 +212,10 @@ void ladybrown_and_color_task() {
                 else if(powerGiven < 0) ladybrownMotor.move(-127);
                 else ladybrownMotor.brake();
             }
-
-
             newSwitchToAutoLB = false;
         }
 
-       
-
-
-
-
-
-
-
+        
         // else if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)){ //moves the arm up in positions in the wallstake chain of action
         //     if(manualLBMode){
         //         lbTarget = find_closest_LBPosition(currAngle, false);
@@ -269,28 +256,12 @@ void ladybrown_and_color_task() {
         //     // lcd::print(2, "power given: %f", powerGiven);
         // }
 
-        if (sorter_active && team_color != 'n' && team_color != colour_detected && colour_detected != 'n' && distance_sensor.get() < CONVEYOR_DISTANCE_OFFSET) {
-            wrong_color_detected = false;
-            int voltageBeforeStop = conveyor.get_voltage();
-            delay(25);
-            conveyor.move(-127);
-            delay(250);
-            conveyor.move_voltage(voltageBeforeStop); //reset the voltage to what it was before reversing the conveyor
-            colour_detected = 'n';
-        } else {
-            driver_inputs();
-        }
-
-        if (controller_print == 0) {
-            master.print(0, 0, "Sorter State: %s", sorter_active ? "Active" : "Inactive");
-            controller_print = 16;
-        } else if (controller_print == 4) {
-            master.print(1, 0, "Team Color: %s", team_color == 'r' ? "Red" : "Blue");
-        }
-        else if(controller_print == 8){
+        
+        if(controller_print == 0){
             master.print(2, 0, "LB Manual: %s", manualLBMode ? "ON" : "OFF");
+            controller_print = 10;
         }
-        else if(controller_print == 12){
+        else if(controller_print == 5){
             master.print(3, 0, "LB Descore: %s", lbDescoreMode ? "ON" : "OFF");
         }
 
@@ -305,10 +276,10 @@ void ladybrown_and_color_task() {
 
 void autoClampTask() {
     while (true) {
-        if (clampRequested) {
+        if (mogoClampRequested) {
             if (mogo_distance.get() < 11 && !mogoclamp.is_extended()) { // clamp the mogo when it is close enough
                 mogoclamp.extend();
-                clampRequested = false;
+                mogoClampRequested = false;
             }
         }
         delay(30);
@@ -331,7 +302,7 @@ void lbAngleResetTask() {
                 count = 0;
             }
         }
-        std::cout << ladybrownMotor.get_position() / 3 << std::endl;
+        // std::cout << ladybrownMotor.get_position() / 3 << std::endl;
         delay(30);
     }
 }

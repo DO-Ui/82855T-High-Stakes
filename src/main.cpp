@@ -57,7 +57,8 @@ void initialize() {
 	// // 	}
 	// // });
 
-	Task lbtask(ladybrown_and_color_task);
+	Task lbtask(ladybrownTask);
+	Task colorTask(colorSortTask);
 	Task reactClawClamp(reactiveClawClamp);
 	Task autoClamp(autoClampTask);
 	Task stopRing(monitor_and_stop_conveyor);
@@ -169,20 +170,9 @@ void autonomous() {
  */
 void opcontrol() {
 
-
-
 	sorter_active = true;
 	auton_active = false;
-	team_color = 'b'; //KEEP THiS COLOR IN BOT
-
-	// revealRingRush();
-
-	//WORLDS AUTOS
-	//RED SIDE
-	// redMogoRush();
-
-
-
+	team_color = 'b';
 
 
 	//FOLLOWING LINES SHOULD BE UNCOMMENTED WHEN AUTO MOVES BACK TO autonomous() function
@@ -255,7 +245,7 @@ void opcontrol() {
 					// if (mogoclamp.is_extended()) {
 					// 	mogoclamp.retract();
 					// } else {
-					// 	clampRequested = true;
+					// 	mogoClampRequested = true;
 					// }
 					mogoclamp.toggle();
 				}

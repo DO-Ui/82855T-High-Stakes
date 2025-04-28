@@ -28,6 +28,25 @@ bool coordinateWithinRectangle(float coordX, float coordY, float x1, float y1, f
 	else return false;
 }
 
+
+/**
+ * given the current arm angle, returns the closest position in the positions[] array to that arm angle
+ * @findPositionBehind whether to return the closest position behind or in front of the current angle  
+ */
+int find_closest_LBPosition(float lbArmAngle, bool findPositionBehind){
+    if(lbArmAngle > 340 || lbArmAngle < 0) lbArmAngle = 1; //if the angle is slightly past hard stop, making it do a full rotation over to 359.99 degrees, this accounts for that case
+    if(lbArmAngle > positions[sizeof(positions)/sizeof(positions[0])-1]) return sizeof(positions)/sizeof(positions[0])-1; //arm is greater than the maximum target angle, so return the max target angle
+    for(int i = 0; i < sizeof(positions)/sizeof(positions[0])-1; i++){
+        float lowerBound = positions[i];
+        float upperBound = positions[i+1];
+        if(lowerBound <= lbArmAngle && lbArmAngle < upperBound){
+            if(findPositionBehind) return i;
+            else return i+1;
+        }
+    }
+    return -1;
+}
+
 // void find_tracking_center(uint32_t time){
 // 	chassis.setPose(0, 0, 0);
 // 	unsigned long n = 0;

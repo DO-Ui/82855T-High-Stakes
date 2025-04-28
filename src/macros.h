@@ -1,8 +1,8 @@
 #pragma once
-#define leftDistanceXOffset -6
-#define leftDistanceYOffset -0.25
-#define backDistanceXOffset -5.25
-#define backDistanceYOffset -1.5
+// #define leftDistanceXOffset -6
+// #define leftDistanceYOffset -0.25
+// #define backDistanceXOffset -5.25
+// #define backDistanceYOffset -1.5
 // #define backHypo sqrt(pow(backDistanceYOffset, 2) + pow(backDistanceXOffset, 2));
 // #define leftHypo sqrt(pow(leftDistanceYOffset, 2) + pow(leftDistanceXOffset, 2));
 // const float backDistanceOffsetAngle = lemlib::radToDeg(atan(abs(backDistanceXOffset/backDistanceYOffset))); //74.0546
@@ -28,18 +28,18 @@ void approachAndClampMogo(int motorPower){
 void approachAndAutoClampMogo(int motorPower, int timeout) {
 	chassis.waitUntilDone();
 	chassis.tank(-motorPower, -motorPower);
-	clampRequested = true;
+	mogoClampRequested = true;
 	int start = millis();
 	while (millis() <= start+timeout) {
-		if (!clampRequested) {
+		if (!mogoClampRequested) {
 			chassis.tank(0, 0);
-			clampRequested = false;
+			mogoClampRequested = false;
 			return;
 		}
 		delay(10);
 	}
 	chassis.tank(0, 0);
-	clampRequested = false;
+	mogoClampRequested = false;
 	mogoclamp.extend();
 }
 
