@@ -7,9 +7,9 @@
 #include "armController.h"
 #include "./devices.h"
 #include "macros.h"
+#include <string>
 #include <cmath>
 #include <iostream>
-#include <string>
 #include "util.h"
 #include "logging.hpp"
 #include "json.hpp"

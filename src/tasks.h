@@ -2,22 +2,27 @@
 //FYI DON'T COMMUNICATE WITH MAIN THREAD. Reading is fine, never write
 
 /**
- * prints out information 
+ * prints out information to controller screen
  */
 void controllerPrinting(){
     int controller_print = 0;
     while(true){
         if (controller_print == 0) {
-            master.print(0, 0, "Sorter State: %s", sorter_active ? "Active" : "Inactive");
-            controller_print = 4;
-        } else if (controller_print == 1) {
-            master.print(1, 0, "Team Color: %s", team_color == 'r' ? "Red" : "Blue");
+            std::string printOut = "ERROR";
+            if(!sorter_active || team_color == 'n') printOut = "None";
+            else if(team_color == 'r') printOut = "Red";
+            else if(team_color == 'b') printOut = "Blue";
+            master.clear_line(0);
+            master.print(0, 0, "Team Color: %s", printOut);
+            controller_print = 2;
         }
-        else if(controller_print == 2){
-            master.print(2, 0, "LB Manual: %s", manualLBMode ? "ON" : "OFF");
-        }
-        else if(controller_print == 3){
-            master.print(3, 0, "LB Descore: %s", lbDescoreMode ? "ON" : "OFF");
+        else if(controller_print == 1){
+            std::string printOut = "ERROR";
+            if(lbDescoreMode) printOut = "Descore";
+            else if(manualLBMode) printOut = "Manual";
+            else printOut = "Stages";
+            master.clear_line(1);
+            master.print(1, 0, "LB Mode: %s", printOut);
         }
         if (controller_print > 0) {
             controller_print--;
@@ -222,7 +227,7 @@ void ladybrownTask(){
             float powerGiven = ladybrownController.update(currTheta, (descorePositions[lbTarget] - currTheta));
             if(newSwitchToDescoreLB) powerGiven = 0; //ensures that the arm doesn't begin moving immediately after switching modes
 
-            if (descorePositions[lbTarget] == CAPTURE) { //PID required
+            if (descorePositions[lbTarget] != DESCORED_POSITION) { //PID required
                 ladybrownMotor.move(powerGiven); //update PID and motor voltage
             }
             else { //bang bang controller
