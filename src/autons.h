@@ -56,10 +56,6 @@ inline void SORAuto() {
 	delay(1500);
 	chassis.tank(0, 0);
 
-	
-
-
-
 
 	// chassis.setPose(-59, -14, 320);
 	// chassis.moveToPoint(-36, -36, 1000);
@@ -292,13 +288,6 @@ inline void skills(){
 
 }
 
-inline void revealRingRush(){
-	ringDoinker.extend();
-	chassis.setPose(0, 0, 0);
-	chassis.moveToPoint(0, 44, 1000, {.minSpeed = 127});
-	chassis.moveToPoint(0, 0, 1200, {.forwards = false});
-}
-
 inline void redRingRush(){
 	ringDoinker.extend();
 	chassis.setPose(-50.165, 62.047, 100);
@@ -327,30 +316,38 @@ inline void blueRingRush(){
 	chassis.moveToPoint(9.743, 41, 1000); //rush rings
 	delay(400);
 	stopNextRing = true;
-	chassis.turnToPoint(8.728, 31.29, 700, {.forwards = false});
-	chassis.moveToPoint(8.728, 31.29, 800, {.forwards = false, .minSpeed = 20, .earlyExitRange = 1});
-	chassis.turnToHeading(300, 600, {.minSpeed = 20, .earlyExitRange = 10});
-	chassis.moveToPoint(14.78, 28.385, 600, {.forwards = false});
+	chassis.moveToPoint(14.78, 39.565, 700, {.forwards = false});
+	chassis.turnToPoint(10.023, 30.791, 700, {.forwards = false, .maxSpeed = 80});
+	// chassis.moveToPoint(10.023, 30.791, 800, {.forwards = false, .minSpeed = 20, .earlyExitRange = 1});
+	chassis.moveToPose(11.056, 24.591, 300, 1200, {.forwards = false});
+	// chassis.turnToHeading(300, 600, {.minSpeed = 20, .earlyExitRange = 10});
+	// chassis.moveToPoint(14.78, 28.385, 600, {.forwards = false});
 	// chassis.moveToPoint(18.896, 37.585, 600, {.forwards = false, .minSpeed = 30, .earlyExitRange = 1}); //move to intermediate point
 	// chassis.turnToPoint(21, 24.789, 600, {.forwards = false}); //move back into mogo
 	// chassis.moveToPoint(21, 24.789, 1300, {.forwards = false}); //move back into mogo
 	approachAndAutoClampMogo(500); //clamp first mogo
 	ringDoinker.retract();
 	conveyor.move(127);
-	chassis.turnToPoint(21, 46.837, 1000);
-	chassis.moveToPoint(21, 46.837, 1000, {.maxSpeed = 100}); //move to double ring stack behind rushed rings
+	chassis.turnToPoint(21, 58.431, 1000);
+	chassis.moveToPoint(21, 58.431, 1000, {.maxSpeed = 80}); //move to double ring stack behind rushed rings
 	delay(400); //intake ring
-	chassis.turnToPoint(56.179, 57.974, 1500); //move to corner
-	chassis.moveToPoint(56.179, 57.974, 1500); //move to corner
+	chassis.turnToPoint(53.936, 61.789, 800); //move to corner
+	chassis.moveToPoint(53.936, 61.789, 1500); //move to corner
 	chassis.turnToHeading(45, 700);
 	chassis.waitUntilDone();
-	chassis.tank(100, 100);
+	chassis.tank(80, 80);
 	intake.move(127);
-	delay(2000);
+	delay(500);
+	chassis.tank(100, 60);
+	delay(500);
+	chassis.tank(60, 100);
+	delay(500);
+	chassis.tank(80, 80);
+	delay(500);
 	chassis.moveToPoint(51, 51, 1000, {.forwards = false}); //move back out
 	intakeRiser.toggle();
 	chassis.moveToPoint(59.327, 57.974, 1500); //move back to corner
-	chassis.tank(100, 100);
+	chassis.tank(80, 80);
 	intake.move(127);
 	delay(2000);
 	chassis.moveToPoint(53, 53, 1000, {.forwards = false}); //move back out
@@ -932,8 +929,6 @@ inline void redMogoRush(){
 		approachAndAutoClampMogo(500);
 		conveyor.move(127);
 	}
-	
-
 	
 
 }

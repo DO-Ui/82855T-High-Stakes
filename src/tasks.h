@@ -2,6 +2,31 @@
 //FYI DON'T COMMUNICATE WITH MAIN THREAD. Reading is fine, never write
 
 /**
+ * prints out information 
+ */
+void controllerPrinting(){
+    int controller_print = 0;
+    while(true){
+        if (controller_print == 0) {
+            master.print(0, 0, "Sorter State: %s", sorter_active ? "Active" : "Inactive");
+            controller_print = 4;
+        } else if (controller_print == 1) {
+            master.print(1, 0, "Team Color: %s", team_color == 'r' ? "Red" : "Blue");
+        }
+        else if(controller_print == 2){
+            master.print(2, 0, "LB Manual: %s", manualLBMode ? "ON" : "OFF");
+        }
+        else if(controller_print == 3){
+            master.print(3, 0, "LB Descore: %s", lbDescoreMode ? "ON" : "OFF");
+        }
+        if (controller_print > 0) {
+            controller_print--;
+        }
+        delay(50);
+    }
+}
+
+/**
  * activates doinker claw clamp when the doinker's limit switch is activated
  */
 void reactiveClawClamp() {
@@ -19,7 +44,7 @@ void reactiveClawClamp() {
 }
 
 /// @brief Stops the conveyor when a ring is detected by the distance sensor
-void monitor_and_stop_conveyor() {
+void monitorAndStopConveyor() {
     while (true) {
         if (auton_active) {
             if (stopNextRing) {
@@ -29,7 +54,7 @@ void monitor_and_stop_conveyor() {
                 }
             }
         }
-        delay(30);
+        delay(20);
     }
 }
 
@@ -87,7 +112,6 @@ void driver_inputs() {
 
 
 void colorSortTask() {
-    int controller_print = 0;
 
     char colour_detected = 'n'; // 'n' means empty
     bool wrong_color_detected = false;
@@ -142,25 +166,13 @@ void colorSortTask() {
             driver_inputs();
         }
 
-        if (controller_print == 0) {
-            master.print(0, 0, "Sorter State: %s", sorter_active ? "Active" : "Inactive");
-            controller_print = 10;
-        } else if (controller_print == 5) {
-            master.print(1, 0, "Team Color: %s", team_color == 'r' ? "Red" : "Blue");
-        }
-       
-
-        if (controller_print > 0) {
-            controller_print--;
-        }
+        
 
         delay(15);
     }
 }
 
 void ladybrownTask(){
-    int controller_print = 0;
-
     ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
     bool newSwitchToAutoLB = false;
 
@@ -172,7 +184,7 @@ void ladybrownTask(){
             manualLBMode = !manualLBMode;
             if(!manualLBMode) newSwitchToAutoLB = true;
         }
-        else if(manualLBMode){ //manual control
+        if(manualLBMode){ //manual control
             if(master.get_digital(E_CONTROLLER_DIGITAL_Y) && master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)){
                 ladybrownMotor.move(0);
             }
@@ -203,14 +215,18 @@ void ladybrownTask(){
                 }
             }
             float powerGiven = ladybrownController.update(currTheta, (positions[lbTarget] - currTheta));
+            if(newSwitchToAutoLB) powerGiven = 0;
 
             if (positions[lbTarget] == CAPTURE) { //PID required
                 ladybrownMotor.move(powerGiven); //update PID and motor voltage
             }
             else { //bang bang controller
-                if(powerGiven > 0) ladybrownMotor.move(127);
-                else if(powerGiven < 0) ladybrownMotor.move(-127);
-                else ladybrownMotor.brake();
+                if(abs(positions[lbTarget] - currTheta) < 5) ladybrownMotor.brake();
+                else {
+                    if(powerGiven > 0) ladybrownMotor.move(127);
+                    else if(powerGiven < 0) ladybrownMotor.move(-127);
+                    else ladybrownMotor.brake();    
+                }
             }
             newSwitchToAutoLB = false;
         }
@@ -256,18 +272,6 @@ void ladybrownTask(){
         //     // lcd::print(2, "power given: %f", powerGiven);
         // }
 
-        
-        if(controller_print == 0){
-            master.print(2, 0, "LB Manual: %s", manualLBMode ? "ON" : "OFF");
-            controller_print = 10;
-        }
-        else if(controller_print == 5){
-            master.print(3, 0, "LB Descore: %s", lbDescoreMode ? "ON" : "OFF");
-        }
-
-        if (controller_print > 0) {
-            controller_print--;
-        }
 
         delay(15);
     }

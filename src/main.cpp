@@ -61,7 +61,8 @@ void initialize() {
 	Task colorTask(colorSortTask);
 	Task reactClawClamp(reactiveClawClamp);
 	Task autoClamp(autoClampTask);
-	Task stopRing(monitor_and_stop_conveyor);
+	Task stopRing(monitorAndStopConveyor);
+	Task controllerPrint(controllerPrinting);
 	// Task lbAngleReset(lbAngleResetTask);
 
 	// autoSelector();
@@ -70,8 +71,6 @@ void initialize() {
 	// // Task gps_task(gps_sensor_task);
 
 	// // NOTE: colour_task has logging, remove if not needed
-
-
 
 
 }
@@ -111,19 +110,8 @@ void autonomous() {
 	auton_active = true;
 	team_color = 'b'; //KEEP THiS COLOR IN BOT
 
+	// SORAuto();
 
-	// lbTarget = 2;
-	// delay(100);
-	// ladybrownMotor.move(127);
-	// delay(2000);
-	// ladybrownMotor.move(0);
-
-	SORAuto();
-
-
-	// ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
-
-	// revealRingRush();
 
 	//WORLDS AUTOS
 	//RED SIDE
@@ -132,7 +120,7 @@ void autonomous() {
 	// redRingRush();
 	// redRightCenterRingAlliance5Ring();
 	// revealRingRush();
-	// blueRingRush();
+	blueRingRush();
 
 
 

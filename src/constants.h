@@ -6,7 +6,7 @@ const float CONVEYOR_DISTANCE_OFFSET = 35;
 const float REST = 0;
 const float CAPTURE = 42;
 const float WALLSTAKE_PREP = 100;
-const float WALLSTAKE = 141;
+const float WALLSTAKE = 200;
 const float MANUAL = 350;
 const float positions[4] = {REST, CAPTURE, WALLSTAKE_PREP, WALLSTAKE};
 
