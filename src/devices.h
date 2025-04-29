@@ -20,9 +20,7 @@ Distance mogo_distance(7);
 Optical colour_sensor(9);
 Distance distance_sensor(8);
 
-Distance left_distance(10);
-Distance back_distance(13);
-GPS gps_sensor(10);
+
 
 
 adi::Pneumatics mogoclamp('a', false);

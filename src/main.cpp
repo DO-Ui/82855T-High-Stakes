@@ -108,7 +108,7 @@ void autonomous() {
 
 	sorter_active = true;
 	auton_active = true;
-	team_color = 'b'; //KEEP THiS COLOR IN BOT
+	team_color = 'r'; //KEEP THiS COLOR IN BOT
 
 	// SORAuto();
 
@@ -120,8 +120,8 @@ void autonomous() {
 	// redRingRush();
 	// redRightCenterRingAlliance5Ring();
 	// revealRingRush();
-	blueRingRush();
-
+	// blueRingRush();
+	blueMogoSideCenterRing();
 
 
 
@@ -160,7 +160,7 @@ void opcontrol() {
 
 	sorter_active = true;
 	auton_active = false;
-	team_color = 'b';
+	team_color = 'r';
 
 
 	//FOLLOWING LINES SHOULD BE UNCOMMENTED WHEN AUTO MOVES BACK TO autonomous() function
@@ -239,12 +239,12 @@ void opcontrol() {
 				}
 
 				if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
-					if (!ringDoinker.is_extended()) {
-						ringDoinker.extend();
+					if (!clawDoinker.is_extended()) {
+						clawDoinker.extend();
 					}
 				}  else {
-					if (ringDoinker.is_extended()) {
-						ringDoinker.retract();
+					if (clawDoinker.is_extended()) {
+						clawDoinker.retract();
 					}		
 				}
 
@@ -260,9 +260,9 @@ void opcontrol() {
 
 
 			// // print to brain screen
-			// lcd::print(0, "x: %f", chassis.getPose().x);
-			// lcd::print(1, "y: %f", chassis.getPose().y);
-			// lcd::print(2, "theta: %f", chassis.getPose().theta);
+			lcd::print(0, "x: %f", chassis.getPose().x);
+			lcd::print(1, "y: %f", chassis.getPose().y);
+			lcd::print(2, "theta: %f", chassis.getPose().theta);
 			// lcd::print(3, "hori tracker: %f", horizontal_tracking_wheel.getDistanceTraveled());
 			// lcd::print(4, "verti tracker: %f", vertical_tracking_wheel.getDistanceTraveled());
 		// }

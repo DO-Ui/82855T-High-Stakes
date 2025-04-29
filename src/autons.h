@@ -1,5 +1,29 @@
 #pragma once
 
+// delrin 5 inches from wall
+inline void blueMogoSideCenterRing() {
+	chassis.setPose(58, -23, 90);
+	chassis.moveToPoint(36.5, -29, 900, {.forwards=false, .minSpeed=15, .earlyExitRange=3});
+	chassis.swingToPoint(24, -22, lemlib::DriveSide::LEFT, 900, {.forwards=false, .maxSpeed=100});
+	approachAndClampMogo();
+	delay(200);
+	chassis.turnToPoint(16.7, -16, 1000);
+	chassis.moveToPose(15, -16, 285, 900, {.lead=0.1, .maxSpeed=90});
+	chassis.waitUntilDone();
+	ringDoinker.toggle();
+	delay(300);
+	chassis.moveToPoint(35, -18, 900, {.forwards=false});
+	chassis.waitUntilDone();
+	ringDoinker.toggle();
+	intake.move(127);
+	conveyor.move(127);
+	chassis.moveToPose(14, -15, 320, 1000);
+
+
+
+}
+
+
 inline void SORAuto() {
 
 	// Alliance stake
