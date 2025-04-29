@@ -175,6 +175,7 @@ void colorSortTask() {
 void ladybrownTask(){
     ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
     bool newSwitchToAutoLB = false;
+    bool newSwitchToDescoreLB = false;
 
     while(true){
 
@@ -183,6 +184,10 @@ void ladybrownTask(){
         if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)){ //toggle manual mode
             manualLBMode = !manualLBMode;
             if(!manualLBMode) newSwitchToAutoLB = true;
+        }
+        else if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_DOWN)){
+            lbDescoreMode = !lbDescoreMode;
+            if(!lbDescoreMode) newSwitchToDescoreLB = true;
         }
         if(manualLBMode){ //manual control
             if(master.get_digital(E_CONTROLLER_DIGITAL_Y) && master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)){
@@ -196,6 +201,39 @@ void ladybrownTask(){
             } else {
                 ladybrownMotor.move(0);
             }
+        }
+        else if(lbDescoreMode){
+            if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)) {
+                if(newSwitchToDescoreLB){
+                    lbDescoreTarget = findClosestDescorePosition(currTheta, false);
+                }
+                else if (lbDescoreTarget < (sizeof(positions) / sizeof(positions[0])) - 1) {
+                    lbDescoreTarget++;
+                }
+            }
+            if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)) {
+                if(newSwitchToDescoreLB){
+                    lbDescoreTarget = findClosestDescorePosition(currTheta, true);
+                }
+                else if(lbDescoreTarget > 0){
+                    lbDescoreTarget--;
+                }
+            }
+            float powerGiven = ladybrownController.update(currTheta, (descorePositions[lbTarget] - currTheta));
+            if(newSwitchToDescoreLB) powerGiven = 0; //ensures that the arm doesn't begin moving immediately after switching modes
+
+            if (descorePositions[lbTarget] == CAPTURE) { //PID required
+                ladybrownMotor.move(powerGiven); //update PID and motor voltage
+            }
+            else { //bang bang controller
+                if(abs(descorePositions[lbTarget] - currTheta) < 5) ladybrownMotor.move(powerGiven);
+                else {
+                    if(powerGiven > 0) ladybrownMotor.move(127);
+                    else if(powerGiven < 0) ladybrownMotor.move(-127);
+                    else ladybrownMotor.brake();
+                }
+            }
+            newSwitchToDescoreLB = false;
         }
         else{ //stages activated
             if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)) {
@@ -215,17 +253,17 @@ void ladybrownTask(){
                 }
             }
             float powerGiven = ladybrownController.update(currTheta, (positions[lbTarget] - currTheta));
-            if(newSwitchToAutoLB) powerGiven = 0;
+            if(newSwitchToAutoLB) powerGiven = 0; //ensures that the arm doesn't begin moving immediately after switching modes
 
             if (positions[lbTarget] == CAPTURE) { //PID required
                 ladybrownMotor.move(powerGiven); //update PID and motor voltage
             }
             else { //bang bang controller
-                if(abs(positions[lbTarget] - currTheta) < 5) ladybrownMotor.brake();
+                if(abs(positions[lbTarget] - currTheta) < 5) ladybrownMotor.move(powerGiven);
                 else {
                     if(powerGiven > 0) ladybrownMotor.move(127);
                     else if(powerGiven < 0) ladybrownMotor.move(-127);
-                    else ladybrownMotor.brake();    
+                    else ladybrownMotor.brake();
                 }
             }
             newSwitchToAutoLB = false;
