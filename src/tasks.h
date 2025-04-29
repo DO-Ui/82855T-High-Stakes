@@ -12,16 +12,14 @@ void controllerPrinting(){
             if(!sorter_active || team_color == 'n') printOut = "None";
             else if(team_color == 'r') printOut = "Red";
             else if(team_color == 'b') printOut = "Blue";
-            master.clear_line(0);
             master.print(0, 0, "Team Color: %s", printOut);
             controller_print = 2;
         }
         else if(controller_print == 1){
             std::string printOut = "ERROR";
-            if(lbDescoreMode) printOut = "Descore";
-            else if(manualLBMode) printOut = "Manual";
+            if(manualLBMode) printOut = "Manual";
+            else if(lbDescoreMode) printOut = "Descore";
             else printOut = "Stages";
-            master.clear_line(1);
             master.print(1, 0, "LB Mode: %s", printOut);
         }
         if (controller_print > 0) {

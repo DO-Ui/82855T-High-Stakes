@@ -8,7 +8,7 @@ inline void blueMogoSideCenterRing() {
 	approachAndClampMogo();
 	delay(200);
 	chassis.turnToPoint(16.7, -16, 1000);
-	chassis.moveToPose(14.8, -16, 285, 900, {.lead=0.1, .maxSpeed=90}); // move to grab center ring
+	chassis.moveToPose(14.8, -16, 285, 1100, {.lead=0.1, .maxSpeed=90}); // move to grab center ring
 	chassis.waitUntilDone();
 	ringDoinker.toggle();
 	delay(300);
@@ -18,12 +18,12 @@ inline void blueMogoSideCenterRing() {
 	intake.move(127);
 	conveyor.move(127);
 	chassis.moveToPoint(35.5, -12, 900); // grab dragged ring
-	chassis.moveToPoint(24, -50, 1100); // go to the safe ring stack
-	chassis.turnToPoint(65, -62, 900);
-	chassis.moveToPoint(65, -62, 1000, {.maxSpeed=80, .minSpeed=10, .earlyExitRange=10});
-	chassis.moveToPoint(65, -62, 1000, {.maxSpeed=30});
+	chassis.moveToPoint(24, -55, 1100); // go to the safe ring stack
+	chassis.turnToPoint(65, -45, 900);
+	chassis.moveToPoint(40, -61, 1000, {.minSpeed=10, .earlyExitRange=5});
+	chassis.moveToPoint(65, -61, 1000, {.maxSpeed=90});
 	chassis.waitUntilDone();
-	chassis.tank(60, 35);
+	chassis.tank(105, 100);
 
 
 
