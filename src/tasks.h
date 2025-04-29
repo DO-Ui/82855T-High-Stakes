@@ -226,7 +226,7 @@ void ladybrownTask(){
                 ladybrownMotor.move(powerGiven); //update PID and motor voltage
             }
             else { //bang bang controller
-                if(abs(descorePositions[lbTarget] - currTheta) < 5) ladybrownMotor.move(powerGiven);
+                if(abs(descorePositions[lbTarget] - currTheta) < 8) ladybrownMotor.move(powerGiven);
                 else {
                     if(powerGiven > 0) ladybrownMotor.move(127);
                     else if(powerGiven < 0) ladybrownMotor.move(-127);
@@ -259,7 +259,7 @@ void ladybrownTask(){
                 ladybrownMotor.move(powerGiven); //update PID and motor voltage
             }
             else { //bang bang controller
-                if(abs(positions[lbTarget] - currTheta) < 5) ladybrownMotor.move(powerGiven);
+                if(abs(positions[lbTarget] - currTheta) < 8) ladybrownMotor.move(powerGiven);
                 else {
                     if(powerGiven > 0) ladybrownMotor.move(127);
                     else if(powerGiven < 0) ladybrownMotor.move(-127);

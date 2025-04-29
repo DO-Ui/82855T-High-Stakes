@@ -108,7 +108,7 @@ void autonomous() {
 
 	sorter_active = true;
 	auton_active = true;
-	team_color = 'r'; //KEEP THiS COLOR IN BOT
+	team_color = 'b'; //KEEP THiS COLOR IN BOT
 
 	// SORAuto();
 
@@ -160,7 +160,7 @@ void opcontrol() {
 
 	sorter_active = true;
 	auton_active = false;
-	team_color = 'r';
+	team_color = 'b';
 
 
 	//FOLLOWING LINES SHOULD BE UNCOMMENTED WHEN AUTO MOVES BACK TO autonomous() function

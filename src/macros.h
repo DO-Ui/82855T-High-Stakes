@@ -59,7 +59,7 @@ void approachAndAutoClampMogo(int timeout) {
 void approachAndClampMogo(){
 	chassis.waitUntilDone();
 	chassis.tank(-100, -100);
-	delay(250);
+	delay(300);
 	chassis.tank(0, 0);
 	mogoclamp.toggle(); //clamp mogo
 }

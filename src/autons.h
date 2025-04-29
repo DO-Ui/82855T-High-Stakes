@@ -3,21 +3,29 @@
 // delrin 5 inches from wall
 inline void blueMogoSideCenterRing() {
 	chassis.setPose(58, -23, 90);
-	chassis.moveToPoint(36.5, -29, 900, {.forwards=false, .minSpeed=15, .earlyExitRange=3});
-	chassis.swingToPoint(24, -22, lemlib::DriveSide::LEFT, 900, {.forwards=false, .maxSpeed=100});
+	chassis.moveToPoint(38.5, -29, 900, {.forwards=false, .minSpeed=15, .earlyExitRange=3});
+	chassis.swingToPoint(24, -22, lemlib::DriveSide::LEFT, 900, {.forwards=false, .maxSpeed=100}); // swing to grab mogo
 	approachAndClampMogo();
 	delay(200);
 	chassis.turnToPoint(16.7, -16, 1000);
-	chassis.moveToPose(15, -16, 285, 900, {.lead=0.1, .maxSpeed=90});
+	chassis.moveToPose(14.8, -16, 285, 900, {.lead=0.1, .maxSpeed=90}); // move to grab center ring
 	chassis.waitUntilDone();
 	ringDoinker.toggle();
 	delay(300);
-	chassis.moveToPoint(35, -18, 900, {.forwards=false});
+	chassis.moveToPoint(58, -20, 900, {.forwards=false}); // move back to drag back ring
 	chassis.waitUntilDone();
 	ringDoinker.toggle();
 	intake.move(127);
 	conveyor.move(127);
-	chassis.moveToPose(14, -15, 320, 1000);
+	chassis.moveToPoint(35.5, -12, 900); // grab dragged ring
+	chassis.moveToPoint(24, -50, 1100); // go to the safe ring stack
+	chassis.turnToPoint(65, -62, 900);
+	chassis.moveToPoint(65, -62, 1000, {.maxSpeed=80, .minSpeed=10, .earlyExitRange=10});
+	chassis.moveToPoint(65, -62, 1000, {.maxSpeed=30});
+	chassis.waitUntilDone();
+	chassis.tank(60, 35);
+
+
 
 
 
