@@ -180,7 +180,6 @@ void colorSortTask() {
 void ladybrownTask(){
     ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
     bool newSwitchToAutoLB = false;
-    bool newSwitchToDescoreLB = false;
 
     while(true){
 
@@ -192,7 +191,7 @@ void ladybrownTask(){
         }
         else if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_DOWN)){
             lbDescoreMode = !lbDescoreMode;
-            if(!lbDescoreMode) newSwitchToDescoreLB = true;
+            if(!lbDescoreMode && !manualLBMode) newSwitchToAutoLB = true;
         }
         if(manualLBMode){ //manual control
             if(master.get_digital(E_CONTROLLER_DIGITAL_Y) && master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)){
@@ -209,7 +208,7 @@ void ladybrownTask(){
         }
         else if(lbDescoreMode){
             if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)) {
-                if(newSwitchToDescoreLB){
+                if(newSwitchToAutoLB){
                     lbDescoreTarget = findClosestDescorePosition(currTheta, false);
                 }
                 else if (lbDescoreTarget < (sizeof(positions) / sizeof(positions[0])) - 1) {
@@ -217,28 +216,28 @@ void ladybrownTask(){
                 }
             }
             if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)) {
-                if(newSwitchToDescoreLB){
+                if(newSwitchToAutoLB){
                     lbDescoreTarget = findClosestDescorePosition(currTheta, true);
                 }
                 else if(lbDescoreTarget > 0){
                     lbDescoreTarget--;
                 }
             }
-            float powerGiven = ladybrownController.update(currTheta, (descorePositions[lbTarget] - currTheta));
-            if(newSwitchToDescoreLB) powerGiven = 0; //ensures that the arm doesn't begin moving immediately after switching modes
+            float powerGiven = ladybrownController.update(currTheta, (descorePositions[lbDescoreTarget] - currTheta));
+            if(newSwitchToAutoLB) powerGiven = 0; //ensures that the arm doesn't begin moving immediately after switching modes
 
-            if (descorePositions[lbTarget] != DESCORED_POSITION) { //PID required
+            if (descorePositions[lbDescoreTarget] != DESCORED_POSITION) { //PID required
                 ladybrownMotor.move(powerGiven); //update PID and motor voltage
             }
             else { //bang bang controller
-                if(abs(descorePositions[lbTarget] - currTheta) < 8) ladybrownMotor.move(powerGiven);
+                if(abs(descorePositions[lbDescoreTarget] - currTheta) < 8) ladybrownMotor.move(powerGiven);
                 else {
                     if(powerGiven > 0) ladybrownMotor.move(127);
                     else if(powerGiven < 0) ladybrownMotor.move(-127);
                     else ladybrownMotor.brake();
                 }
             }
-            newSwitchToDescoreLB = false;
+            newSwitchToAutoLB = false;
         }
         else{ //stages activated
             if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)) {
