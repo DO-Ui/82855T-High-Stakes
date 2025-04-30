@@ -185,11 +185,13 @@ void ladybrownTask(){
 
         if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)){ //toggle manual mode
             manualLBMode = !manualLBMode;
-            if(!manualLBMode) newSwitchToAutoLB = true;
+            lbDescoreMode = false;
+            newSwitchToAutoLB = true;
         }
         else if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_DOWN)){
             lbDescoreMode = !lbDescoreMode;
-            if(!lbDescoreMode && !manualLBMode) newSwitchToAutoLB = true;
+            newSwitchToAutoLB = true;
+            manualLBMode = false;
         }
         if(manualLBMode){ //manual control
             if(master.get_digital(E_CONTROLLER_DIGITAL_Y) && master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)){
@@ -209,7 +211,7 @@ void ladybrownTask(){
                 if(newSwitchToAutoLB){
                     lbDescoreTarget = findClosestDescorePosition(currTheta, false);
                 }
-                else if (lbDescoreTarget < (sizeof(positions) / sizeof(positions[0])) - 1) {
+                else if (lbDescoreTarget < (sizeof(descorePositions) / sizeof(descorePositions[0])) - 1) {
                     lbDescoreTarget++;
                 }
             }
@@ -249,6 +251,8 @@ void ladybrownTask(){
             if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)) {
                 if(newSwitchToAutoLB){
                     lbTarget = find_closest_LBPosition(currTheta, true);
+                } else if(positions[lbTarget] == WALLSTAKE) {
+                    lbTarget = 1;
                 }
                 else if(lbTarget > 0){
                     lbTarget--;
@@ -265,7 +269,7 @@ void ladybrownTask(){
                 else {
                     if(powerGiven > 0) ladybrownMotor.move(127);
                     else if(powerGiven < 0) ladybrownMotor.move(-127);
-                    else ladybrownMotor.brake();
+                    else ladybrownMotor.move(LB_STABILIZER);
                 }
             }
             newSwitchToAutoLB = false;

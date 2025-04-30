@@ -212,8 +212,6 @@ void opcontrol() {
 				// chassis.turnToHeading(0, 1000);
 			// }
 
-			// lbController();
-
 			// if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) { //claw doinker mode activated
 			// 	if (!clawDoinker.is_extended()) {
 			// 		clawDoinker.extend();
