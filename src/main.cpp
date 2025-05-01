@@ -221,6 +221,7 @@ void opcontrol() {
 				if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_R2)) {
 					if (claw.is_extended()) {
 						claw.retract();
+					}
 				}
 			} else {
 				clawDoinker.retract();
