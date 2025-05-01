@@ -203,13 +203,14 @@ void ladybrownTask(){
             else if(master.get_digital(E_CONTROLLER_DIGITAL_RIGHT)){
                 ladybrownMotor.move(-127);
             } else {
-                ladybrownMotor.move(0);
+                ladybrownMotor.move(LB_STABILIZER);
             }
         }
         else if(lbDescoreMode){
             if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)) {
                 if(newSwitchToAutoLB){
                     lbDescoreTarget = findClosestDescorePosition(currTheta, false);
+                    newSwitchToAutoLB = false;
                 }
                 else if (lbDescoreTarget < (sizeof(descorePositions) / sizeof(descorePositions[0])) - 1) {
                     lbDescoreTarget++;
@@ -218,6 +219,7 @@ void ladybrownTask(){
             if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)) {
                 if(newSwitchToAutoLB){
                     lbDescoreTarget = findClosestDescorePosition(currTheta, true);
+                    newSwitchToAutoLB = false;
                 }
                 else if(lbDescoreTarget > 0){
                     lbDescoreTarget--;
@@ -234,15 +236,15 @@ void ladybrownTask(){
                 else {
                     if(powerGiven > 0) ladybrownMotor.move(127);
                     else if(powerGiven < 0) ladybrownMotor.move(-127);
-                    else ladybrownMotor.brake();
+                    else ladybrownMotor.move(LB_STABILIZER);
                 }
             }
-            newSwitchToAutoLB = false;
         }
         else{ //stages activated
             if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)) {
                 if(newSwitchToAutoLB){
                     lbTarget = find_closest_LBPosition(currTheta, false);
+                    newSwitchToAutoLB = false;
                 }
                 else if (lbTarget < (sizeof(positions) / sizeof(positions[0])) - 1) {
                     lbTarget++;
@@ -251,6 +253,7 @@ void ladybrownTask(){
             if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)) {
                 if(newSwitchToAutoLB){
                     lbTarget = find_closest_LBPosition(currTheta, true);
+                    newSwitchToAutoLB = false;
                 } else if(positions[lbTarget] == WALLSTAKE) {
                     lbTarget = 1;
                 }
@@ -272,7 +275,6 @@ void ladybrownTask(){
                     else ladybrownMotor.move(LB_STABILIZER);
                 }
             }
-            newSwitchToAutoLB = false;
         }
 
         

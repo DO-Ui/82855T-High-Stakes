@@ -212,29 +212,18 @@ void opcontrol() {
 				// chassis.turnToHeading(0, 1000);
 			// }
 
-			// if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) { //claw doinker mode activated
-			// 	if (!clawDoinker.is_extended()) {
-			// 		clawDoinker.extend();
-			// 	}
-			// 	if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_R2)) {
-			// 		if (claw.is_extended()) {
-			// 			claw.retract();
-			// 		} else {
-			// 			reactiveClawClampOn = true;
-			// 		}
-			// 	}
-			// } else {
-				// clawDoinker.retract();
-				// reactiveClawClampOn = false;
-				// claw.retract();
-				if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
-					// if (mogoclamp.is_extended()) {
-					// 	mogoclamp.retract();
-					// } else {
-					// 	mogoClampRequested = true;
-					// }
-					mogoclamp.toggle();
+			if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) { //claw doinker mode activated
+				if (!clawDoinker.is_extended()) {
+					clawDoinker.extend();
 				}
+				if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_R2)) {
+					if (claw.is_extended()) {
+						claw.retract();
+				}
+			} else {
+				clawDoinker.retract();
+				claw.retract();
+				
 
 				if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
 					if (!clawDoinker.is_extended()) {
@@ -245,13 +234,18 @@ void opcontrol() {
 						clawDoinker.retract();
 					}		
 				}
+			}
+
+			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
+				mogoclamp.toggle();
+			}
 
 
-			// }
+		// }
 
-				if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
-					ladybrownMotor.tare_position();
-				}
+			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
+				ladybrownMotor.tare_position();
+			}
 
 
 

@@ -179,8 +179,10 @@ inline void blueRingRush(){
 
 
 
-
-inline void redMogoRushClampedMogo(){
+/**
+ * DON'T CALL IN MAIN
+ */
+inline void redMogoRushSuccessfulMogoClamp(){
 	chassis.waitUntilDone();
 	conveyor.move(127);
 
@@ -239,7 +241,7 @@ inline void redMogoRush(){
 	approachAndAutoClampMogo(80, 400); //clamp the rushed mogo
 	
 	if(mogo_distance.get_distance() < 10){ //we have clamped mogo
-		redMogoRushClampedMogo();
+		redMogoRushSuccessfulMogoClamp();
 	}
 	else{
 		mogoclamp.retract();
