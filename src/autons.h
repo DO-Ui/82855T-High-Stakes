@@ -92,22 +92,28 @@ inline void worldsSoloAWP() {
 	chassis.moveToPoint(-26, 47, 900, { .minSpeed = 90 , .earlyExitRange=2}); // move to grab rings
 	ladybrownMotor.move(0); // stop lb
 	// chassis.turnToPoint(-47, 30, 900, { .minSpeed = 80, .earlyExitRange = 5 }); // turn to rings
-	chassis.moveToPose(-45, 29, 180, 900, {.minSpeed=120, .earlyExitRange=5}); // move to rings intermediate
-	chassis.moveToPose(-49.5, 12.5, 180, 900, { .lead = 0.1, .minSpeed=50 }); // move to rings
+	chassis.moveToPose(-45, 29, 180, 900, {.minSpeed=120, .earlyExitRange=5}); // move to upside down rings intermediate
+	chassis.moveToPose(-49.5, 12.5, 180, 900, { .lead = 0.1, .minSpeed=50 }); // move to upside down rings
 	chassis.waitUntil(16);
 	mogoclamp.toggle(); // release mogo
 	intakeRiser.toggle(); // raise intake
 	conveyor.move(0);
-	chassis.moveToPoint(-49.5, -14, 900, {.minSpeed=127});
+	chassis.moveToPoint(-49.5, -14, 900, {.minSpeed=127}); // move past upside down rings
 	chassis.waitUntil(8);
+	conveyor.move(0); // stop conveyor
 	intakeRiser.toggle();
-	chassis.swingToPoint(-24, -24, DriveSide::RIGHT, 900, {.forwards=false, .minSpeed=45, .earlyExitRange=2}); // swing to corner
-	chassis.swingToPoint(-24, -24, DriveSide::LEFT, 900, {.forwards=false, .minSpeed=45, .earlyExitRange=2}); // swing to corner
+	chassis.turnToPoint(-32.5, -19, 900, { .forwards= false, .minSpeed = 80, .earlyExitRange = 5 }); // turn to mogo
+	chassis.moveToPoint(-32.5, -19, 900, {.forwards=false, .minSpeed=80, .earlyExitRange=2}); // move mogo
 
-	chassis.moveToPose(-33.5, -17, 300, 900, {.forwards=false, .lead=0.2, .minSpeed=80, .earlyExitRange=3}); // move to corner
+	// chassis.swingToPoint(-24, -24, DriveSide::RIGHT, 900, {.forwards=false, .minSpeed=45, .earlyExitRange=2}); // swing to corner
+	// chassis.swingToPoint(-24, -24, DriveSide::LEFT, 900, {.forwards=false, .minSpeed=45, .earlyExitRange=2}); // swing to corner
+	// chassis.moveToPose(-32.5, -19, 35, 900, {.forwards=false, .lead=0.2, .minSpeed=80, .earlyExitRange=2}); // move to corner
+	
 	approachAndClampMogo(); // clamp mogo
 	conveyor.move(127); // start conveyor
-
+	chassis.turnToPoint(-24, -48, 900, { .minSpeed = 80, .earlyExitRange = 5 }); // turn to corner
+	chassis.moveToPose(-24, -48, 240, 1000, {.lead=0.2, .minSpeed=90, .earlyExitRange=2}); // move to safe ring stack
+	chassis.turnToPoint(-62, -62, 900, {.minSpeed=80, .earlyExitRange=5}); // turn to corner
 
 	//move to clamp
 	// chassis.swingToHeading(265, lemlib::DriveSide::LEFT, 400);
