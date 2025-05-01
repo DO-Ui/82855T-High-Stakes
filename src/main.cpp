@@ -196,45 +196,45 @@ void opcontrol() {
 
 
 
-			int leftY = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-			int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
+		int leftY = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+		int rightX = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
 
-			chassis.arcade(leftY, rightX, false, 0.75);
+		chassis.arcade(leftY, rightX, false, 0.75);
 
-			// if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
-				// find_tracking_center(10000);
-				// chassis.moveToPoint(0, 24, 3000);
-				// chassis.moveToPose(0, 48, 0, 2000);
-				// chassis.turnToHeading(180, 1000);
-				// ringDoinker.toggle();
-			// }
-			// if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
-				// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
-				// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
-				// chassis.turnToHeading(0, 1000);
-			// }
+		// if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
+			// find_tracking_center(10000);
+			// chassis.moveToPoint(0, 24, 3000);
+			// chassis.moveToPose(0, 48, 0, 2000);
+			// chassis.turnToHeading(180, 1000);
+			// ringDoinker.toggle();
+		// }
+		// if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
+			// chassis.moveToPoint(0, 0, 3000, {.forwards = false});
+			// chassis.moveToPose(0, 0, 0, 2000, {.forwards = false});
+			// chassis.turnToHeading(0, 1000);
+		// }
 
-			if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) { //claw doinker mode activated
-				if (!clawDoinker.is_extended()) {
-					clawDoinker.extend();
-				}
-				if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_R2)) {
-					if (claw.is_extended()) {
-						claw.retract();
+		if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) { //claw doinker mode activated
+			if (!clawDoinker.is_extended()) {
+				clawDoinker.extend();
+			}
+			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_R2)) {
+				if (claw.is_extended()) {
+					claw.retract();
 				}
 			} else {
 				clawDoinker.retract();
 				claw.retract();
-				
+
 
 				if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
 					if (!clawDoinker.is_extended()) {
 						clawDoinker.extend();
 					}
-				}  else {
+				} else {
 					if (clawDoinker.is_extended()) {
 						clawDoinker.retract();
-					}		
+					}
 				}
 			}
 
@@ -243,7 +243,7 @@ void opcontrol() {
 			}
 
 
-		// }
+			// }
 
 			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
 				ladybrownMotor.tare_position();
@@ -286,7 +286,7 @@ void opcontrol() {
 
 		// count++;
 
-		delay(20);
-
+			delay(20);
+		}
 	}
 }
