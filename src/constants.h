@@ -1,5 +1,5 @@
 //Detection threshold in mm for distance sensor at the top of conveyor
-const float CONVEYOR_DISTANCE_OFFSET = 35;
+const float CONVEYOR_DISTANCE_OFFSET = 45;
 
 
 //Ladybrown constants

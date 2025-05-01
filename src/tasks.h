@@ -4,21 +4,20 @@
 /**
  * prints out information to controller screen
  */
-void controllerPrinting(){
+void controllerPrinting() {
     int controller_print = 0;
-    while(true){
+    while (true) {
         if (controller_print == 0) {
             std::string printOut = "ERROR";
-            if(!sorter_active || team_color == 'n') printOut = "None";
-            else if(team_color == 'r') printOut = "Red";
-            else if(team_color == 'b') printOut = "Blue";
+            if (!sorter_active || team_color == 'n') printOut = "None";
+            else if (team_color == 'r') printOut = "Red";
+            else if (team_color == 'b') printOut = "Blue";
             master.print(0, 0, "Team Color: %s", printOut);
             controller_print = 2;
-        }
-        else if(controller_print == 1){
+        } else if (controller_print == 1) {
             std::string printOut = "ERROR";
-            if(manualLBMode) printOut = "Manual";
-            else if(lbDescoreMode) printOut = "Descore";
+            if (manualLBMode) printOut = "Manual";
+            else if (lbDescoreMode) printOut = "Descore";
             else printOut = "Stages";
             master.print(1, 0, "LB Mode: %s", printOut);
         }
@@ -46,12 +45,25 @@ void reactiveClawClamp() {
     }
 }
 
-/// @brief Stops the conveyor when a ring is detected by the distance sensor
+/// @brief Stops the conveyor when a ring OF THE TEAM's COLOUR is detected by the distance sensor
 void monitorAndStopConveyor() {
+
+    char colour_detected = 'n'; 
+
     while (true) {
         if (auton_active) {
             if (stopNextRing) {
-                if (distance_sensor.get() < CONVEYOR_DISTANCE_OFFSET) {
+                double hue = colour_sensor.get_hue();
+
+                if (in_range(hue, 190, 215)) {
+                    colour_detected = 'b';
+                } else if (in_range(hue, 5, 18)) {
+                    colour_detected = 'r';
+                } else {
+                    colour_detected = 'n';
+                }
+
+                if (distance_sensor.get() < CONVEYOR_DISTANCE_OFFSET && (colour_detected == team_color)) {
                     conveyor.move(0);
                     stopNextRing = false;
                 }
@@ -137,7 +149,7 @@ void colorSortTask() {
 
         if (in_range(hue, 190, 215)) {
             colour_detected = 'b';
-        } else if (in_range(hue, 5, 15)) {
+        } else if (in_range(hue, 5, 18)) {
             colour_detected = 'r';
         } else {
             colour_detected = 'n';
@@ -169,19 +181,21 @@ void colorSortTask() {
             driver_inputs();
         }
 
-        
+
 
         delay(15);
     }
 }
 
-void ladybrownTask(){
+void ladybrownTask() {
     ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
     bool newSwitchToAutoLB = false;
 
-    while(true){
+    while (true) {
 
-        float currTheta = ladybrownMotor.get_position() / 3;
+        if (!auton_active) {
+
+            float currTheta = ladybrownMotor.get_position() / 3;
 
         if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)){ //toggle manual mode
             manualLBMode = !manualLBMode;
@@ -277,46 +291,7 @@ void ladybrownTask(){
             }
         }
 
-        
-        // else if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y)){ //moves the arm up in positions in the wallstake chain of action
-        //     if(manualLBMode){
-        //         lbTarget = find_closest_LBPosition(currAngle, false);
-        //     }
-        //     else if(lbTarget < (sizeof(positions) / sizeof(positions[0]))-1){
-        //         lbTarget++;
-        //     }
-        //     manualLBMode = false;
-        // }
-        // else if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)){ //arm recovery
-        //     if(manualLBMode){
-        //         lbTarget = find_closest_LBPosition(currAngle, true);
-        //     }
-        //     else if(lbTarget > 0){
-        //         lbTarget--;
-        //     }
-        //     manualLBMode = false;
-        // }
-        // else if(manualLBMode && (!auton_active)){
-        //     ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
-        //     ladybrownMotor.brake();
-        // }
-
-        // if(!manualLBMode){ //no manual overrides have been given, move on to macros
-        //     // float powerGiven = ladybrownPID.update(positions[lbTarget] - currAngle);
-        //     float powerGiven = ladybrownController.update(currAngle, (positions[lbTarget] - currAngle));
-        //     if(positions[lbTarget] == WALLSTAKE) powerGiven = 127;
-        //     if(currAngle <= 142 || positions[lbTarget] < WALLSTAKE) {
-        //         ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_COAST);
-        //         ladybrownMotor.move(powerGiven); //update PID and motor voltage
-        //     }
-        //     else {
-        //         ladybrownMotor.set_brake_mode(E_MOTOR_BRAKE_HOLD);
-        //         ladybrownMotor.brake();
-        //     }
-        //     // lcd::print(0, "targetAngle: %f", positions[lbTarget]);
-        //     // lcd::print(1, "lbAngleAdjusted: %f", lbAngle);
-        //     // lcd::print(2, "power given: %f", powerGiven);
-        // }
+        }
 
 
         delay(15);
