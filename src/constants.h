@@ -5,7 +5,7 @@ const float CONVEYOR_DISTANCE_OFFSET = 45;
 //Ladybrown constants
 const float KCOS = 13;
 const float LB_STARTING_ANGLE = 20; //angle between ladybrown starting angle and the horizontal
-#define LB_STABILIZER (cos(lemlib::degToRad((LB_STARTING_ANGLE-currTheta)))) * KCOS
+#define LB_STABILIZER (cos(lemlib::degToRad((LB_STARTING_ANGLE-currTheta)))) * KCOS //if you want to brake the ladybrown put ladybrown.move(LB_STABILIZER) so it doesn't sink down
 
 const float REST = 0;
 const float CAPTURE = 44;

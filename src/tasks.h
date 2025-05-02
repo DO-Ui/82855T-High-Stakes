@@ -63,7 +63,7 @@ void monitorAndStopConveyor() {
                     colour_detected = 'n';
                 }
 
-                if (distance_sensor.get() < CONVEYOR_DISTANCE_OFFSET && (colour_detected == team_color)) {
+                if ((distance_sensor.get() < CONVEYOR_DISTANCE_OFFSET) && (colour_detected == team_color)) {
                     conveyor.move(0);
                     stopNextRing = false;
                 }

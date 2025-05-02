@@ -110,8 +110,6 @@ void autonomous() {
 	auton_active = true;
 	team_color = 'r'; //KEEP THiS COLOR IN BOT
 
-	// SORAuto();
-
 
 	//WORLDS AUTOS
 	//RED SIDE
@@ -119,7 +117,6 @@ void autonomous() {
 
 	// redRingRush();
 	// redRightCenterRingAlliance5Ring();
-	// revealRingRush();
 	// blueRingRush();
 	// blueMogoSideCenterRing();
 
@@ -214,52 +211,40 @@ void opcontrol() {
 			// chassis.turnToHeading(0, 1000);
 		// }
 
-			if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) { //claw doinker mode activated
-				if (!clawDoinker.is_extended()) {
-					clawDoinker.extend();
-				}
-				if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_R2)) {
-					if (claw.is_extended()) {
-						claw.retract();
-					}
-				}
-			} else {
-				clawDoinker.retract();
-				claw.retract();
-
-
-				if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
-					if (!clawDoinker.is_extended()) {
-						clawDoinker.extend();
-					}
-				} else {
-					if (clawDoinker.is_extended()) {
-						clawDoinker.retract();
-					}
-				}
+		if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) { //claw doinker mode activated
+			if (!clawDoinker.is_extended()) {
+				clawDoinker.extend();
 			}
-
-			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
-				mogoclamp.toggle();
+			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_R2)) {
+				claw.toggle();
 			}
+		} else {
+			clawDoinker.retract();
+			claw.retract();
+		}
+
+		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)) {
+			mogoclamp.toggle();
+		}
 
 
-			// }
+		// }
 
-			if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
-				ladybrownMotor.tare_position();
-			}
-
-
-
+		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
+			// ladybrownMotor.tare_position();
+			ringDoinker.toggle();
+		}
 
 
-			// // print to brain screen
-			lcd::print(0, "x: %f", chassis.getPose().x);
-			lcd::print(1, "y: %f", chassis.getPose().y);
-			lcd::print(2, "theta: %f", chassis.getPose().theta);
-			// lcd::print(3, "hori tracker: %f", horizontal_tracking_wheel.getDistanceTraveled());
-			// lcd::print(4, "verti tracker: %f", vertical_tracking_wheel.getDistanceTraveled());
+
+
+
+		// // print to brain screen
+		lcd::print(0, "x: %f", chassis.getPose().x);
+		lcd::print(1, "y: %f", chassis.getPose().y);
+		lcd::print(2, "theta: %f", chassis.getPose().theta);
+		// lcd::print(3, "hori tracker: %f", horizontal_tracking_wheel.getDistanceTraveled());
+		// lcd::print(4, "verti tracker: %f", vertical_tracking_wheel.getDistanceTraveled());
 		// }
 
 		// if (master.get_digital(E_CONTROLLER_DIGITAL_LEFT)) {
@@ -287,7 +272,6 @@ void opcontrol() {
 
 		// count++;
 
-			delay(20);
-		}
+		delay(20);
 	}
 }
