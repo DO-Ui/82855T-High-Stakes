@@ -1,3 +1,19 @@
+SECOND RING IN CORNER CODE:
+
+chassis.moveToPoint(-64, 64, 1000, {.maxSpeed = 100}); // move to corner
+	intake.move(0);
+	chassis.moveToPoint(-70, 70, 500, {.maxSpeed = 65});
+	intake.move(127);
+	delay(200);
+	chassis.waitUntilDone();
+	chassis.tank(-70, -70);
+	delay(800);
+	intakeRiser.toggle();
+	chassis.moveToPoint(-70, 70, 700, {.maxSpeed = 80});
+	chassis.waitUntilDone();
+	intakeRiser.toggle();
+	chassis.tank(-40, -40);
+	delay(500);
 
 /**
  * SKILLS ROUTE FOR PROVS

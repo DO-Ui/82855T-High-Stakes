@@ -108,37 +108,24 @@ void autonomous() {
 
 	sorter_active = true;
 	auton_active = true;
-	team_color = 'r'; //KEEP THiS COLOR IN BOT
+	team_color = 'b'; //KEEP THiS COLOR IN BOT
 
 
 	//WORLDS AUTOS
 	//RED SIDE
 	// redMogoRush();
-
+	// redRingSideTeammateAWP();
 	// redRingRush();
 	// redRightCenterRingAlliance5Ring();
-	// blueRingRush();
-	// blueMogoSideCenterRing();
 
-	worldsSoloAWP();
-
-
-
-
-	// blueLeftMogoRush();
-	// These ones below work
-	// skills(); // FOR PROVS
-	//RED SIDE
-	// redRightSoloAWP(); // NOT WOKRING
-	// redLeftSoloAWP(); //WORKS FOR PROVS
-	// redRingSidePROVSSoloAWP(); // FOR PROVS runs across half the field
-	// globalRightsideSoloAWPSAFE(); //should also work FOR PROVS
 	//BLUE SIDE
-	// blueRingSidePROVSSoloAWP(); // FOR PROVS runs across half the field
-	// blueMogoRush();
-	// blueRightPROVSAlliancePlus5Ring(); //WORKS FOR PROVS
-	// globalLeftsideSoloAWPSAFE(); //should also work FOR PROVS
-	// blueLeftSoloAWP();
+	// blueRingRush();
+	blueMogoSideCenterRing();
+	// blueRingSideTeammateAWP();
+
+	//GLOBAL
+	// worldsSoloAWP();
+
 
 }
 
@@ -159,8 +146,6 @@ void opcontrol() {
 
 	sorter_active = true;
 	auton_active = false;
-	team_color = 'r';
-
 
 	//FOLLOWING LINES SHOULD BE UNCOMMENTED WHEN AUTO MOVES BACK TO autonomous() function
 	// auton_active = false; 
@@ -232,8 +217,8 @@ void opcontrol() {
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
 			// ladybrownMotor.tare_position();
-			// ringDoinker.toggle();
-			intakeRiser.toggle();
+			ringDoinker.toggle();
+			// intakeRiser.toggle();
 		}
 
 
