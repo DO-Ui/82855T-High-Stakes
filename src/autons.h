@@ -84,16 +84,17 @@ inline void worldsSoloAWP() {
 	chassis.waitUntil(8);
 	ladybrownMotor.move(127);
 	delay(900);
+	chassis.moveToPose(-26, 24.3, 280, 1200, { .forwards = false, .maxSpeed=90, .minSpeed = 40}); // move to grab mogo
+	chassis.waitUntil(9);
 	ladybrownMotor.move(-127);
-	chassis.moveToPose(-26, 24.5, 280, 900, { .forwards = false, .minSpeed = 90, .earlyExitRange = 5 }); // move to grab mogo
 	approachAndClampMogo();
 	intake.move(127);
 	conveyor.move(127);
 	chassis.moveToPoint(-25.4, 47, 900, { .minSpeed = 90 , .earlyExitRange=2}); // move to grab rings
-	ladybrownMotor.move(0); // stop lb
 	// chassis.turnToPoint(-47, 30, 900, { .minSpeed = 80, .earlyExitRange = 5 }); // turn to rings
 	chassis.moveToPose(-45, 29, 180, 900, {.minSpeed=120, .earlyExitRange=5}); // move to upside down rings intermediate
-	chassis.moveToPose(-49.5, 2, 180, 1200, { .lead = 0.1 , .maxSpeed=90 }); // move to upside down rings
+	ladybrownMotor.move(0); // stop lb
+	chassis.moveToPose(-49.5, 2, 180, 1500, { .lead = 0.2 , .maxSpeed=60 }); // move to upside down rings
 	intakeRiser.toggle();
 	chassis.waitUntil(16);
 	mogoclamp.toggle(); // release mogo
@@ -107,7 +108,10 @@ inline void worldsSoloAWP() {
 	// conveyor.move(127);
 	// delay(600);
 	// conveyor.move(0);
-	chassis.moveToPoint(-49.5, -3, 600, {.maxSpeed = 70, .minSpeed = 30, .earlyExitRange = 1}); // move past upside down rings
+	chassis.waitUntilDone();
+	delay(300);
+	intakeRiser.toggle();
+	// chassis.moveToPoint(-49.5, -3, 600, {.maxSpeed = 70, .minSpeed = 30, .earlyExitRange = 1}); // move past upside down rings
 	conveyor.move(0);
 	chassis.moveToPoint(-49.5, -9, 600, {.minSpeed = 120});
 	
@@ -118,7 +122,6 @@ inline void worldsSoloAWP() {
 
 
 	chassis.turnToPoint(-32.5, -21, 900, { .forwards = false , .minSpeed=30, .earlyExitRange=5}); // turn to mogo
-	intakeRiser.toggle();
 	chassis.moveToPose(-32.5, -21, 300, 1000, {.forwards = false , .lead=0.2, .minSpeed=90 }); // move mogo
 
 	// chassis.swingToPoint(-24, -24, DriveSide::RIGHT, 900, {.forwards=false, .minSpeed=45, .earlyExitRange=2}); // swing to corner
@@ -129,28 +132,31 @@ inline void worldsSoloAWP() {
 	delay(150);
 	conveyor.move(127); // start conveyor
 	chassis.turnToPoint(-28, -48, 900, { .minSpeed = 80, .earlyExitRange = 5 }); // turn to stack
-	chassis.moveToPose(-28, -48, 240, 1000, {.lead=0.2, .minSpeed=90, .earlyExitRange=2}); // move to safe ring 
-	// chassis.turnToPoint(-62, -62, 900, {.minSpeed=80, .earlyExitRange=5}); // turn to corner
+	chassis.moveToPoint(-28, -48, 1000, {.minSpeed=90, .earlyExitRange=2}); // move to safe ring 
 
-	// chassis.moveToPose(-50, -50, 235, 900, {.lead=0.2, .minSpeed=80, .earlyExitRange=2}); // 
-	chassis.moveToPose(-66, -66, 225, 1000, {.minSpeed = 80, .earlyExitRange=1}); // go into corner
-	chassis.waitUntil(11.5);
-	ladybrownMotor.move(50); // start lb
-	chassis.moveToPoint(-52, -52, 1000, {.forwards = false});
-	ladybrownMotor.move(0); // stop lb
-	ladybrownMotor.brake();
-	delay(700);
-	chassis.moveToPoint(-64, -64, 1500);
-	intakeRiser.toggle();
-	conveyor.move(127);
-	intake.move(127);
-	chassis.moveToPoint(-50, -50, 1000, {.forwards = false});
-	delay(400);
-	intakeRiser.toggle();
-	ladybrownMotor.move(-127);
-	chassis.turnToPoint(-20, -20, 900);
-	chassis.moveToPoint(-20, -20, 900, {.maxSpeed=80});
-	chassis.waitUntil(10);
+	// Corner grab stuff:
+	// chassis.moveToPose(-66, -66, 225, 1000, {.minSpeed = 80, .earlyExitRange=1}); // go into corner
+	// chassis.waitUntil(11.5);
+	// ladybrownMotor.move(127); // start lb
+	// chassis.waitUntilDone();
+	// chassis.moveToPoint(-52, -52, 1000, {.forwards = false});
+	// ladybrownMotor.move(0); // stop lb
+	// ladybrownMotor.brake();
+	// delay(700);
+	// chassis.moveToPoint(-64, -64, 1500);
+	// intakeRiser.toggle();
+	// conveyor.move(127);
+	// intake.move(127);
+	// chassis.moveToPoint(-50, -50, 1000, {.forwards = false});
+	// delay(400);
+	// intakeRiser.toggle();
+	// ladybrownMotor.move(-127);
+
+
+	chassis.turnToPoint(-21, -21, 900);
+	chassis.moveToPose(-21, -21, 45, 900, {.lead=0.2, .maxSpeed=80});
+	chassis.waitUntil(12);
+
 	ladybrownMotor.move(127);
 	delay(900);
 	ladybrownMotor.move(0);

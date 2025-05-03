@@ -232,7 +232,8 @@ void opcontrol() {
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
 			// ladybrownMotor.tare_position();
-			ringDoinker.toggle();
+			// ringDoinker.toggle();
+			intakeRiser.toggle();
 		}
 
 
