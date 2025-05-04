@@ -36,9 +36,6 @@ void reactiveClawClamp() {
         if (reactiveClawClampOn) {
             if (clawLimitSwitch.get_new_press() == 1) {
                 claw.extend();
-                if (auton_active) {
-                    chassis.cancelMotion();
-                }
             }
         }
         delay(30);

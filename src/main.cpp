@@ -108,23 +108,46 @@ void autonomous() {
 
 	sorter_active = true;
 	auton_active = true;
-	team_color = 'b'; //KEEP THiS COLOR IN BOT
+	team_color = 'r'; //KEEP THiS COLOR IN BOT
 
 
 	//WORLDS AUTOS
 	//RED SIDE
-	// redMogoRush();
+	redMogoRush();
 	// redRingSideTeammateAWP();
 	// redRingRush();
 	// redRightCenterRingAlliance5Ring();
 
 	//BLUE SIDE
 	// blueRingRush();
-	blueMogoSideCenterRing();
+	// blueMogoSideCenterRing();
 	// blueRingSideTeammateAWP();
+	// blueMogoRush();
 
 	//GLOBAL
 	// worldsSoloAWP();
+
+	//corner testing
+	// mogoclamp.toggle();
+	// conveyor.move(127);
+	// chassis.setPose(-50, -50, 225);
+	// chassis.moveToPose(-70, -70, 223, 1000, {.maxSpeed = 50}); //move to corner
+	// intake.move(0);
+	// chassis.moveToPose(-70, -70, 223, 1500, {.minSpeed = 100}); //move to corner
+	// intake.move(127);
+	// chassis.waitUntilDone();
+	// chassis.tank(-30, -30);
+	// delay(200);
+	// chassis.tank(-70, -70);
+	// delay(500);
+	// intakeRiser.toggle();
+	// chassis.moveToPose(-65, -65, 223, 1500, {.maxSpeed = 70}); //move to corner
+	// chassis.waitUntilDone();
+	// intakeRiser.toggle();
+	// chassis.tank(-40, -40);
+	// delay(300);
+	// conveyor.move(50);
+	// stopNextRing = true;
 
 
 }
@@ -217,8 +240,8 @@ void opcontrol() {
 
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
 			// ladybrownMotor.tare_position();
-			ringDoinker.toggle();
-			// intakeRiser.toggle();
+			// ringDoinker.toggle();
+			intakeRiser.toggle();
 		}
 
 
