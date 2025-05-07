@@ -47,6 +47,21 @@ int find_closest_LBPosition(float lbArmAngle, bool findPositionBehind){
     return -1;
 }
 
+/**
+ * sets the ladybrown target position to a specific angle
+ * ONLY USE IN AUTONOMOUS
+ * @position the desired angle
+ */
+void setLBTargetPosition(float position){
+    for(int i = 0; i < positions[sizeof(positions)/sizeof(positions[0])-1]; i++){
+        if(positions[i] == position){
+            lbTarget = i;
+            return;
+        }
+    }
+    return;
+}
+
 
 /**
  * given the current arm angle, returns the closest position in the descorePositions[] array to that arm angle

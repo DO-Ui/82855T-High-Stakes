@@ -249,9 +249,9 @@ void opcontrol() {
 
 
 		// // print to brain screen
-		lcd::print(0, "x: %f", chassis.getPose().x);
-		lcd::print(1, "y: %f", chassis.getPose().y);
-		lcd::print(2, "theta: %f", chassis.getPose().theta);
+		// lcd::print(0, "x: %f", chassis.getPose().x);
+		// lcd::print(1, "y: %f", chassis.getPose().y);
+		// lcd::print(2, "theta: %f", chassis.getPose().theta);
 		// lcd::print(3, "hori tracker: %f", horizontal_tracking_wheel.getDistanceTraveled());
 		// lcd::print(4, "verti tracker: %f", vertical_tracking_wheel.getDistanceTraveled());
 		// }
