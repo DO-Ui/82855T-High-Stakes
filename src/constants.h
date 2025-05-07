@@ -10,7 +10,7 @@ const float LB_STARTING_ANGLE = 20; //angle between ladybrown starting angle and
 const float REST = 0;
 const float CAPTURE = 44;
 const float WALLSTAKE_PREP = 100;
-const float WALLSTAKE = 200;
+const float WALLSTAKE = 220;
 const float MANUAL = 350;
 const float positions[4] = {REST, CAPTURE, WALLSTAKE_PREP, WALLSTAKE};
 

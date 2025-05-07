@@ -108,12 +108,12 @@ void autonomous() {
 
 	sorter_active = true;
 	auton_active = true;
-	team_color = 'r'; //KEEP THiS COLOR IN BOT
+	team_color = 'b'; //KEEP THiS COLOR IN BOT
 
 
 	//WORLDS AUTOS
 	//RED SIDE
-	redMogoRush();
+	// redMogoRush();
 	// redRingSideTeammateAWP();
 	// redRingRush();
 	// redRightCenterRingAlliance5Ring();
@@ -121,7 +121,7 @@ void autonomous() {
 	//BLUE SIDE
 	// blueRingRush();
 	// blueMogoSideCenterRing();
-	// blueRingSideTeammateAWP();
+	blueRingSideTeammateAWP();
 	// blueMogoRush();
 
 	//GLOBAL
@@ -237,11 +237,11 @@ void opcontrol() {
 
 
 		// }
-
+  
 		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
-			// ladybrownMotor.tare_position();
+			ladybrownMotor.tare_position();
 			// ringDoinker.toggle();
-			intakeRiser.toggle();
+			// intakeRiser.toggle();
 		}
 
 
