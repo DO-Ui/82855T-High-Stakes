@@ -12,7 +12,7 @@ const float CAPTURE = 44;
 const float WALLSTAKE_PREP = 100;
 const float WALLSTAKE = 220;
 const float MANUAL = 350;
-const float positions[4] = {REST, CAPTURE, WALLSTAKE_PREP, WALLSTAKE};
+const float positions[5] = {REST, CAPTURE, WALLSTAKE_PREP, WALLSTAKE, MANUAL};
 
 const float DESCORED_POSITION = 90;
 const float WALLSTAKE_RING_6 = 160;

@@ -121,11 +121,18 @@ void autonomous() {
 	//BLUE SIDE
 	// blueRingRush();
 	// blueMogoSideCenterRing();
-	blueRingSideTeammateAWP();
+	// blueRingSideTeammateAWP();
 	// blueMogoRush();
 
 	//GLOBAL
 	// worldsSoloAWP();
+
+	setLBTargetPosition(CAPTURE);
+	conveyor.move(127);
+	delay(500);
+	conveyor.move(0);
+	delay(1000);
+	setLBTargetPosition(WALLSTAKE);
 
 	//corner testing
 	// mogoclamp.toggle();
