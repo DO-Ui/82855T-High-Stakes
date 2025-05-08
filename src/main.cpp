@@ -80,7 +80,9 @@ void initialize() {
  * the VEX Competition Switch, following either autonomous or opcontrol. When
  * the robot is enabled, this task will exit.
  */
-void disabled() {}
+void disabled() {
+	ladybrownMotor.move(0);
+}
 
 /**
  * Runs after initialize(), and before autonomous when connected to the Field
@@ -108,31 +110,42 @@ void autonomous() {
 
 	sorter_active = true;
 	auton_active = true;
-	team_color = 'b'; //KEEP THiS COLOR IN BOT
+	team_color = 'b'; //KEEP THIS COLOR IN BOT
 
 
 	//WORLDS AUTOS
 	//RED SIDE
 	// redMogoRush();
 	// redRingSideTeammateAWP();
+	// redRingTeammateSwinging();
 	// redRingRush();
 	// redRightCenterRingAlliance5Ring();
 
-	//BLUE SIDE
+	//BLUE SIDE`
 	// blueRingRush();
 	// blueMogoSideCenterRing();
-	// blueRingSideTeammateAWP();
+	blueRingSideTeammateAWP();
 	// blueMogoRush();
 
 	//GLOBAL
 	// worldsSoloAWP();
 
-	setLBTargetPosition(CAPTURE);
-	conveyor.move(127);
-	delay(500);
-	conveyor.move(0);
-	delay(1000);
-	setLBTargetPosition(WALLSTAKE);
+
+	// chassis.setPose(-54, 13.5, 270);
+	// setLBTargetPosition(CAPTURE);
+	// delay(200);
+	// conveyor.move(105);
+	// delay(300);
+	// conveyor.move(0);
+	// chassis.swingToHeading(215, lemlib::DriveSide::LEFT, 900); // swing to alliance stake
+	// //alliance
+	// chassis.waitUntil(8);
+	// setLBTargetPosition(WALLSTAKE);
+	// delay(800);
+	// chassis.moveToPoint(-49.84, 23.817, 1500, {.forwards = false, .minSpeed = 30, .earlyExitRange = 3}); //prep to intake upside down rings
+	// chassis.waitUntil(9);
+	// setLBTargetPosition(REST);
+
 
 	//corner testing
 	// mogoclamp.toggle();

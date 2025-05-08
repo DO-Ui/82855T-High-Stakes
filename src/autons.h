@@ -1,6 +1,9 @@
 #pragma once
 
-
+/**
+ * @brief NOT TESTED
+ * 
+ */
 inline void blueMogoRush(){
 	clawDoinker.extend();
 	chassis.setPose(50.319, -60.135, 291.7);
@@ -574,6 +577,11 @@ inline void redMogoRush() {
 //score alliance stake -> grab upside down stack -> clamp mogo, get all rings in center, get corner, go to ladder
 inline void redRingSideTeammateAWP(){
 	chassis.setPose(-54, 13.5, 270);
+	setLBTargetPosition(CAPTURE);
+	delay(200);
+	conveyor.move(105);
+	delay(300);
+	conveyor.move(0);
 	chassis.swingToHeading(215, lemlib::DriveSide::LEFT, 900); // swing to alliance stake
 	//alliance
 	chassis.waitUntil(8);
@@ -583,7 +591,6 @@ inline void redRingSideTeammateAWP(){
 	chassis.waitUntil(9);
 	setLBTargetPosition(REST);
 	intakeRiser.toggle();
-	intake.move(127);
 	chassis.turnToPoint(-49.84, 2, 700, {.minSpeed = 30, .earlyExitRange = 5});
 	chassis.moveToPoint(-49.84, 2, 1500, {.maxSpeed=60 }); // move to upside down rings
 	stopNextRing = true;
@@ -593,6 +600,7 @@ inline void redRingSideTeammateAWP(){
 	delay(200);
 	chassis.moveToPose(-34.374, 17.6, 230, 1200, {.forwards = false, .minSpeed = 70}); //go to mogo
 	approachAndClampMogo();
+	intake.move(127);
 	conveyor.move(127);
 	delay(100);
 	chassis.turnToPoint(-13.484, 35.441, 800); // turn to contested ring stack
@@ -601,19 +609,21 @@ inline void redRingSideTeammateAWP(){
 	delay(300);
 	chassis.moveToPoint(-27, 25, 1500, {.forwards=false, .minSpeed=75, .earlyExitRange=5}); // move to intermediate point
 	chassis.moveToPoint(-27, 48, 800, {.minSpeed=60, .earlyExitRange=2}); // move to safe
-	chassis.turnToPoint(-14, 50.5, 800, {.minSpeed=40, .earlyExitRange=5}); // turn to 2nd contested ring stack
-	chassis.moveToPoint(-14, 50.5, 1000); //move to second contested ring stack
+	chassis.turnToPoint(-14, 51.5, 800, {.minSpeed=40, .earlyExitRange=5}); // turn to 2nd contested ring stack
+	chassis.moveToPoint(-14, 51.5, 1000); //move to second contested ring stack
 
 	chassis.moveToPoint(-50, 52, 900, {.forwards=false, .minSpeed=40, .earlyExitRange=5}); // move to intermediate point
 	chassis.turnToPoint(-64, 64, 800, {.minSpeed=15, .earlyExitRange=9}); // turn to corner
-	chassis.moveToPoint(-64, 64, 1000, {.maxSpeed = 100}); // move to corner
+	chassis.moveToPoint(-64, 64, 1000, {.maxSpeed = 70}); // move to corner
 	intake.move(0);
-	chassis.moveToPoint(-70, 70, 500, {.maxSpeed = 65});
+	chassis.moveToPoint(-70, 70, 500, {.maxSpeed = 100, .minSpeed = 70});
+	conveyor.move(0);
 	intake.move(127);
-	delay(200);
 	chassis.waitUntilDone();
-	chassis.tank(-70, -70);
-	delay(500);
+	chassis.tank(-60, -60);
+	delay(400);
+	// chassis.tank(0, 0);
+	// delay(400);
 	// intakeRiser.toggle();
 	// chassis.moveToPoint(-70, 70, 700, {.maxSpeed = 80});
 	// chassis.waitUntilDone();
@@ -624,8 +634,9 @@ inline void redRingSideTeammateAWP(){
 	
 	
 	chassis.turnToPoint(-21.75, 23.3, 700);
-	chassis.moveToPose(-23.75-5, 26.3+3, 140, 2000, {.lead = 0.2, .minSpeed = 30}); //go to ladder
-	chassis.waitUntil(32);
+	chassis.moveToPose(-23.75-8, 26.3+6, 140, 2000, {.lead = 0.2, .minSpeed = 30}); //go to ladder
+	conveyor.move(127);
+	chassis.waitUntil(36);
 	setLBTargetPosition(WALLSTAKE);
 	// chassis.moveToPose(-54.456, -57.507, 0, 2000, {.forwards = false}); rush positive corner
 
@@ -635,26 +646,34 @@ inline void redRingSideTeammateAWP(){
 //score alliance stake -> grab upside down stack -> clamp mogo, get all rings in center, get corner, go to ladder
 inline void blueRingSideTeammateAWP(){
 	chassis.setPose(54, 13.5, 90);
+	// setLBTargetPosition(CAPTURE);
+	// delay(200);
+	// conveyor.move(105);
+	// delay(300);
+	// conveyor.move(0);
+	delay(1000);
 	chassis.swingToHeading(145, lemlib::DriveSide::RIGHT, 900); // swing to alliance stake
+	
 	//alliance
 	chassis.waitUntil(8);
-	setLBTargetPosition(WALLSTAKE);
+	// setLBTargetPosition(WALLSTAKE);
 	delay(800);
 	chassis.moveToPoint(49.84, 23.817, 1500, {.forwards = false, .minSpeed = 30, .earlyExitRange = 3}); //prep to intake upside down rings
 	chassis.waitUntil(9);
 	setLBTargetPosition(REST);
-	intakeRiser.toggle();
-	intake.move(127);
+	// intakeRiser.toggle();
+	intake.move(-127);
 	chassis.turnToPoint(49.84, 2, 700, {.minSpeed = 30, .earlyExitRange = 5});
 	chassis.moveToPoint(49.84, 2, 1500, {.maxSpeed=60 }); // move to upside down rings
-	stopNextRing = true;
-	conveyor.move(60);
+	// stopNextRing = true;
+	conveyor.move(0);
 	chassis.waitUntil(20);
-	intakeRiser.toggle();
+	// intakeRiser.toggle();
 	delay(200);
 	chassis.moveToPose(34.374, 17.6, 130, 1200, {.forwards = false, .minSpeed = 70}); //go to mogo
 	approachAndClampMogo();
 	conveyor.move(127);
+	intake.move(127);
 	delay(100);
 	chassis.turnToPoint(13.484, 35.441, 800); // turn to contested ring stack
 	chassis.moveToPoint(13.484, 35.441, 950); //move to ring stack
@@ -666,14 +685,15 @@ inline void blueRingSideTeammateAWP(){
 	chassis.moveToPoint(14, 52, 1000); //move to second contested ring stack
 
 	chassis.moveToPoint(50, 52, 700, {.forwards=false, .minSpeed=40, .earlyExitRange=5}); // move to intermediate point
-	chassis.turnToPoint(64, 64, 800, {.minSpeed=15, .earlyExitRange=9}); // turn to corner
+	chassis.turnToPoint(64, 64, 800, {.minSpeed=15, .earlyExitRange=7}); // turn to corner
 	chassis.moveToPoint(64, 64, 600, {.maxSpeed = 50}); // move to corner
 	intake.move(0);
 	chassis.moveToPoint(70, 70, 800, {.maxSpeed = 100, .minSpeed = 60});
+	conveyor.move(0);
 	intake.move(127);
 	chassis.waitUntilDone();
 	chassis.tank(-60, -60);
-	delay(1600);
+	delay(1000);
 	// intakeRiser.toggle();
 	// chassis.moveToPoint(-70, 70, 700, {.maxSpeed = 80});
 	// chassis.waitUntilDone();
@@ -685,6 +705,7 @@ inline void blueRingSideTeammateAWP(){
 	
 	chassis.turnToPoint(21.75, 23.3, 700);
 	chassis.moveToPose(21.75+7, 23.3+7, 220, 2000, {.lead = 0.2, .minSpeed = 30}); //go to ladder
+	conveyor.move(127);
 	chassis.waitUntil(32);
 	setLBTargetPosition(WALLSTAKE);
 
@@ -693,7 +714,12 @@ inline void blueRingSideTeammateAWP(){
 }
 
 
-inline void redMogoRushMiddleRing(){
+/**
+ * @brief NOT DONE
+ * 
+ */
+
+inline void redMogoRushCenterRing(){
 	clawDoinker.extend();
 	chassis.setPose(-49.906, -36.887, 110);
 	intake.move(127);
@@ -708,4 +734,133 @@ inline void redMogoRushMiddleRing(){
 	clawDoinker.retract();
 	chassis.tank(-40, -40);
 	delay(800);
+}
+
+inline void blueMogoRushCenterRing(){
+	clawDoinker.extend();
+	chassis.setPose(50.319, -60.135, 291.7);
+	intake.move(127);
+	chassis.moveToPose(17.15, -47, 290.6, 1200, {.lead=0.2, .minSpeed=127});
+	// chassis.moveToPoint(17.161, -46.94, 1500, { .minSpeed = 127 }); //rush mogo
+	reactiveClawClampOn = true;
+	chassis.moveToPoint(34.544, -53.857, 2000, { .forwards = false, .minSpeed = 127 });
+	claw.extend();
+	reactiveClawClampOn = false;
+	chassis.waitUntil(20);
+	claw.retract();
+	clawDoinker.retract();
+	chassis.tank(-40, -40);
+	delay(600);
+	chassis.moveToPose(30.7, -27.656, 120, 2000, {.forwards = false}); //clamp mogo
+	approachAndClampMogo();
+	conveyor.move(127);
+	chassis.moveToPose(55, -55, 120, 1500); //move to corner
+	chassis.moveToPose(64, -64, 120, 800, {.maxSpeed = 50, .minSpeed = 20}); //move to corner
+	intake.move(0);
+	chassis.moveToPoint(70, -70, 1000, {.maxSpeed = 100, .minSpeed = 60});
+	intake.move(127);
+	chassis.waitUntilDone();
+	chassis.tank(-30, -30);
+	delay(200);
+	chassis.tank(-60, -60);
+	delay(800);
+	chassis.tank(0, 0);
+	delay(300);
+	intakeRiser.toggle();
+	chassis.moveToPose(69, -69, 120, 1500, {.maxSpeed = 70}); //move to corner
+	chassis.waitUntilDone();
+	intakeRiser.toggle();
+	chassis.tank(-40, -40);
+	delay(600);
+	chassis.moveToPoint(32.392, -30.87, 1000, {.forwards = false, .minSpeed = 20, .earlyExitRange = 5}); //move to middle
+	chassis.turnToPoint(10.067, -16.832, 700);
+	chassis.moveToPose(14.65, -17, 300, 900, { .lead = 0.05, .maxSpeed = 100 }); // move to grab center ring
+	chassis.waitUntilDone();
+	ringDoinker.toggle();
+	delay(300);
+	chassis.moveToPoint(50, -20, 900, { .forwards = false, .minSpeed = 90 }); // move back to drag back ring
+	chassis.turnToPoint(15, -55, 650); // drag ring sideways
+	chassis.waitUntilDone();
+	ringDoinker.toggle();
+	delay(260);
+	intake.move(127);
+	conveyor.move(127);
+	chassis.turnToPoint(10, -55, 900); // go to the safe ring stack
+	chassis.moveToPose(35, -30, 190, 900, { .lead = 0.15, .maxSpeed = 90 }); // move to the grabbed ring
+
+
+}
+
+inline void redRingTeammateSwinging(){
+	chassis.setPose(-54, 13.5, 270);
+	// setLBTargetPosition(CAPTURE);
+	delay(200);
+	conveyor.move(127);
+	delay(300);
+	conveyor.move(0);
+	chassis.swingToHeading(215, lemlib::DriveSide::LEFT, 900); // swing to alliance stake
+	//alliance
+	chassis.waitUntil(8);
+	// setLBTargetPosition(WALLSTAKE);
+	delay(800);
+
+	// the following goes to inversed stack
+	chassis.moveToPoint(-49.84, 23.817, 1500, {.forwards = false, .minSpeed = 30, .earlyExitRange = 3}); //prep to intake upside down rings
+	chassis.waitUntil(9);
+	setLBTargetPosition(REST);
+	intakeRiser.toggle();
+	chassis.turnToPoint(-49.84, 2, 700, {.minSpeed = 30, .earlyExitRange = 5});
+	chassis.moveToPoint(-49.84, 2, 1500, {.maxSpeed=60 }); // move to upside down rings
+	stopNextRing = true;
+	conveyor.move(60);
+	chassis.waitUntil(20);
+	intakeRiser.toggle();
+	delay(200);
+	chassis.moveToPose(-34.374, 17.6, 230, 1200, {.forwards = false, .minSpeed = 70}); //go to mogo
+
+	// chassis.tank(-60, -60);
+	// delay(400);
+	// chassis.moveToPose(-34.374, 17.6, 230, 1200, {.forwards = false, .minSpeed = 70}); //go to mogo
+
+
+	approachAndClampMogo();
+	intake.move(127);
+	conveyor.move(127);
+	delay(100);
+	chassis.turnToPoint(-13.484, 35.441, 800); // turn to contested ring stack
+	chassis.moveToPoint(-13.484, 35.441, 950); //move to ring stack
+	stopNextRing = false;
+	delay(300);
+
+	chassis.moveToPose(-10.229, 49.467, 0, 1500, {.lead = .2, .maxSpeed = 80}); //sweeping motion
+	chassis.moveToPose(-21.053, 51, 233.2, 1500);
+
+	//this block moves to corner and then touches ladder
+	// chassis.moveToPose(-50, 52, 300, 1500, {.lead = .5, .minSpeed=40, .earlyExitRange=5}); // move to intermediate point
+	// chassis.turnToPoint(-64, 64, 800, {.minSpeed=15, .earlyExitRange=9}); // turn to corner
+	// chassis.moveToPoint(-64, 64, 1000, {.maxSpeed = 70}); // move to corner
+	// intake.move(0);
+	// chassis.moveToPoint(-70, 70, 500, {.maxSpeed = 100, .minSpeed = 70});
+	// intake.move(127);
+	// chassis.waitUntilDone();
+	// chassis.tank(-60, -60);
+	// delay(1000);
+	// intakeRiser.toggle();
+	// chassis.moveToPoint(-70, 70, 700, {.maxSpeed = 80});
+	// chassis.waitUntilDone();
+	// intakeRiser.toggle();
+	// chassis.tank(-40, -40);
+	// delay(500);
+	// chassis.turnToPoint(-21.75, 23.3, 700);
+	// chassis.moveToPose(-23.75-8, 26.3+6, 140, 2000, {.lead = 0.2, .minSpeed = 30}); //go to ladder
+	// chassis.waitUntil(40);
+	// setLBTargetPosition(WALLSTAKE);
+
+	//moves to ladder directly after getting ring behind two middle ring stacks
+	chassis.moveToPose(-22, 22, 120, 1000, {.lead=0.2});
+	chassis.waitUntil(20);
+	setLBTargetPosition(WALLSTAKE);
+
+
+	// chassis.moveToPose(-54.456, -57.507, 0, 2000, {.forwards = false}); rush positive corner
 }

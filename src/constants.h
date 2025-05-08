@@ -8,11 +8,11 @@ const float LB_STARTING_ANGLE = 20; //angle between ladybrown starting angle and
 #define LB_STABILIZER (cos(lemlib::degToRad((LB_STARTING_ANGLE-currTheta)))) * KCOS //if you want to brake the ladybrown put ladybrown.move(LB_STABILIZER) so it doesn't sink down
 
 const float REST = 0;
-const float CAPTURE = 44;
+const float CAPTURE = 40;
 const float WALLSTAKE_PREP = 100;
 const float WALLSTAKE = 220;
-const float MANUAL = 350;
-const float positions[5] = {REST, CAPTURE, WALLSTAKE_PREP, WALLSTAKE, MANUAL};
+const float MANUAL = 300;
+const float positions[4] = {REST, CAPTURE, WALLSTAKE, MANUAL};
 
 const float DESCORED_POSITION = 90;
 const float WALLSTAKE_RING_6 = 160;
